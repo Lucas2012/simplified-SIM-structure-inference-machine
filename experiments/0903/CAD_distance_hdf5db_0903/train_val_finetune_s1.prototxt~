@@ -1,0 +1,34 @@
+name: "CaffeNet"
+layer {
+  name: "dist"
+  type: "HDF5Data"
+  top: "data_dist"
+  include {
+    phase: TRAIN
+  }
+  hdf5_data_param {
+    source: "val.txt"
+    batch_size: 28
+  }
+}
+layer {
+  name: "dist"
+  type: "HDF5Data"
+  top: "data_dist"
+  include {
+    phase: TEST
+  }
+  hdf5_data_param {
+    source: "train.txt"
+    batch_size: 5
+  }
+}
+layer {
+  name: "Data_check"
+  type: "Python"
+  bottom: "data_dist"
+  python_param{
+    module: "check_diff"
+    layer: "check_diff"
+  }
+}

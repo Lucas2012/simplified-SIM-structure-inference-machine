@@ -1,0 +1,2542 @@
+I0921 20:46:02.560654 30053 caffe.cpp:113] Use GPU with device ID 0
+I0921 20:46:02.892307 30053 caffe.cpp:121] Starting Optimization
+I0921 20:46:02.892418 30053 solver.cpp:32] Initializing solver from parameters: 
+test_iter: 140
+test_interval: 1000
+base_lr: 0.001
+display: 20
+max_iter: 100000
+lr_policy: "step"
+gamma: 0.1
+momentum: 0.9
+weight_decay: 0.0005
+stepsize: 10000
+snapshot: 1000
+snapshot_prefix: "snapshots_iter1_nogate/snapshots_s1"
+solver_mode: GPU
+net: "BP_RNN_ACTION.prototxt"
+I0921 20:46:02.892449 30053 solver.cpp:70] Creating training net from net file: BP_RNN_ACTION.prototxt
+I0921 20:46:02.897323 30053 net.cpp:261] The NetState phase (0) differed from the phase (1) specified by a rule in layer data_action
+I0921 20:46:02.897379 30053 net.cpp:261] The NetState phase (0) differed from the phase (1) specified by a rule in layer data_pose
+I0921 20:46:02.897414 30053 net.cpp:261] The NetState phase (0) differed from the phase (1) specified by a rule in layer data_frame
+I0921 20:46:02.897459 30053 net.cpp:261] The NetState phase (0) differed from the phase (1) specified by a rule in layer accuracy_scene
+I0921 20:46:02.897470 30053 net.cpp:261] The NetState phase (0) differed from the phase (1) specified by a rule in layer accuracy_action
+I0921 20:46:02.897488 30053 net.cpp:261] The NetState phase (0) differed from the phase (1) specified by a rule in layer accuracy_pose
+I0921 20:46:02.899096 30053 net.cpp:42] Initializing net from parameters: 
+name: "CaffeNet"
+force_backward: true
+state {
+  phase: TRAIN
+}
+layer {
+  name: "data_action"
+  type: "Data"
+  top: "data_action"
+  top: "label_action"
+  include {
+    phase: TRAIN
+  }
+  transform_param {
+    mirror: false
+    crop_size: 227
+    mean_file: "imagenet_mean.binaryproto"
+  }
+  data_param {
+    source: "/cs/vml2/zhiweid/CVPR16_NEW/bp-rnn/experiments/0419_context/CAD_train_lmdb_0419_context"
+    batch_size: 70
+    backend: LMDB
+  }
+}
+layer {
+  name: "conv1_action"
+  type: "Convolution"
+  bottom: "data_action"
+  top: "conv1_action"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 96
+    kernel_size: 11
+    stride: 4
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "relu1_action"
+  type: "ReLU"
+  bottom: "conv1_action"
+  top: "conv1_action"
+}
+layer {
+  name: "pool1_action"
+  type: "Pooling"
+  bottom: "conv1_action"
+  top: "pool1_action"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "norm1_action"
+  type: "LRN"
+  bottom: "pool1_action"
+  top: "norm1_action"
+  lrn_param {
+    local_size: 5
+    alpha: 0.0001
+    beta: 0.75
+  }
+}
+layer {
+  name: "conv2_action"
+  type: "Convolution"
+  bottom: "norm1_action"
+  top: "conv2_action"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 256
+    pad: 2
+    kernel_size: 5
+    group: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layer {
+  name: "relu2_action"
+  type: "ReLU"
+  bottom: "conv2_action"
+  top: "conv2_action"
+}
+layer {
+  name: "pool2_action"
+  type: "Pooling"
+  bottom: "conv2_action"
+  top: "pool2_action"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "norm2_action"
+  type: "LRN"
+  bottom: "pool2_action"
+  top: "norm2_action"
+  lrn_param {
+    local_size: 5
+    alpha: 0.0001
+    beta: 0.75
+  }
+}
+layer {
+  name: "conv3_action"
+  type: "Convolution"
+  bottom: "norm2_action"
+  top: "conv3_action"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 384
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "relu3_action"
+  type: "ReLU"
+  bottom: "conv3_action"
+  top: "conv3_action"
+}
+layer {
+  name: "conv4_action"
+  type: "Convolution"
+  bottom: "conv3_action"
+  top: "conv4_action"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 384
+    pad: 1
+    kernel_size: 3
+    group: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layer {
+  name: "relu4_action"
+  type: "ReLU"
+  bottom: "conv4_action"
+  top: "conv4_action"
+}
+layer {
+  name: "conv5_action"
+  type: "Convolution"
+  bottom: "conv4_action"
+  top: "conv5_action"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 256
+    pad: 1
+    kernel_size: 3
+    group: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layer {
+  name: "relu5_action"
+  type: "ReLU"
+  bottom: "conv5_action"
+  top: "conv5_action"
+}
+layer {
+  name: "pool5_action"
+  type: "Pooling"
+  bottom: "conv5_action"
+  top: "pool5_action"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "fc6_action"
+  type: "InnerProduct"
+  bottom: "pool5_action"
+  top: "fc6_action"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 4096
+    weight_filler {
+      type: "gaussian"
+      std: 0.005
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layer {
+  name: "relu6_action"
+  type: "ReLU"
+  bottom: "fc6_action"
+  top: "fc6_action"
+}
+layer {
+  name: "drop6_action"
+  type: "Dropout"
+  bottom: "fc6_action"
+  top: "fc6_action"
+  dropout_param {
+    dropout_ratio: 0.5
+  }
+}
+layer {
+  name: "fc7_action"
+  type: "InnerProduct"
+  bottom: "fc6_action"
+  top: "fc7_action"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 4096
+    weight_filler {
+      type: "gaussian"
+      std: 0.005
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layer {
+  name: "relu7_action"
+  type: "ReLU"
+  bottom: "fc7_action"
+  top: "fc7_action"
+}
+layer {
+  name: "drop7_action"
+  type: "Dropout"
+  bottom: "fc7_action"
+  top: "fc7_action"
+  dropout_param {
+    dropout_ratio: 0.5
+  }
+}
+layer {
+  name: "fc8_CAD_action"
+  type: "InnerProduct"
+  bottom: "fc7_action"
+  top: "fc8_CAD_action_unnorm"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 7
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layer {
+  name: "prob_action_cad"
+  type: "Softmax"
+  bottom: "fc8_CAD_action_unnorm"
+  top: "fc8_CAD_action"
+}
+layer {
+  name: "data_pose"
+  type: "Data"
+  top: "data_pose"
+  top: "label_pose"
+  include {
+    phase: TRAIN
+  }
+  transform_param {
+    mirror: true
+    crop_size: 227
+    mean_file: "imagenet_mean.binaryproto"
+  }
+  data_param {
+    source: "/cs/vml2/zhiweid/CVPR16_NEW/bp-rnn/experiments/0419_context/CAD_train_lmdb_0419_context"
+    batch_size: 70
+    backend: LMDB
+  }
+}
+layer {
+  name: "conv1_pose"
+  type: "Convolution"
+  bottom: "data_pose"
+  top: "conv1_pose"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 96
+    kernel_size: 11
+    stride: 4
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "relu1_pose"
+  type: "ReLU"
+  bottom: "conv1_pose"
+  top: "conv1_pose"
+}
+layer {
+  name: "pool1_pose"
+  type: "Pooling"
+  bottom: "conv1_pose"
+  top: "pool1_pose"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "norm1_pose"
+  type: "LRN"
+  bottom: "pool1_pose"
+  top: "norm1_pose"
+  lrn_param {
+    local_size: 5
+    alpha: 0.0001
+    beta: 0.75
+  }
+}
+layer {
+  name: "conv2_pose"
+  type: "Convolution"
+  bottom: "norm1_pose"
+  top: "conv2_pose"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 256
+    pad: 2
+    kernel_size: 5
+    group: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layer {
+  name: "relu2_pose"
+  type: "ReLU"
+  bottom: "conv2_pose"
+  top: "conv2_pose"
+}
+layer {
+  name: "pool2_pose"
+  type: "Pooling"
+  bottom: "conv2_pose"
+  top: "pool2_pose"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "norm2_pose"
+  type: "LRN"
+  bottom: "pool2_pose"
+  top: "norm2_pose"
+  lrn_param {
+    local_size: 5
+    alpha: 0.0001
+    beta: 0.75
+  }
+}
+layer {
+  name: "conv3_pose"
+  type: "Convolution"
+  bottom: "norm2_pose"
+  top: "conv3_pose"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 384
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "relu3_pose"
+  type: "ReLU"
+  bottom: "conv3_pose"
+  top: "conv3_pose"
+}
+layer {
+  name: "conv4_pose"
+  type: "Convolution"
+  bottom: "conv3_pose"
+  top: "conv4_pose"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 384
+    pad: 1
+    kernel_size: 3
+    group: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layer {
+  name: "relu4_pose"
+  type: "ReLU"
+  bottom: "conv4_pose"
+  top: "conv4_pose"
+}
+layer {
+  name: "conv5_pose"
+  type: "Convolution"
+  bottom: "conv4_pose"
+  top: "conv5_pose"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 256
+    pad: 1
+    kernel_size: 3
+    group: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layer {
+  name: "relu5_pose"
+  type: "ReLU"
+  bottom: "conv5_pose"
+  top: "conv5_pose"
+}
+layer {
+  name: "pool5_pose"
+  type: "Pooling"
+  bottom: "conv5_pose"
+  top: "pool5_pose"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "fc6_pose"
+  type: "InnerProduct"
+  bottom: "pool5_pose"
+  top: "fc6_pose"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 4096
+    weight_filler {
+      type: "gaussian"
+      std: 0.005
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layer {
+  name: "relu6_pose"
+  type: "ReLU"
+  bottom: "fc6_pose"
+  top: "fc6_pose"
+}
+layer {
+  name: "drop6_pose"
+  type: "Dropout"
+  bottom: "fc6_pose"
+  top: "fc6_pose"
+  dropout_param {
+    dropout_ratio: 0.5
+  }
+}
+layer {
+  name: "fc7_pose"
+  type: "InnerProduct"
+  bottom: "fc6_pose"
+  top: "fc7_pose"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 4096
+    weight_filler {
+      type: "gaussian"
+      std: 0.005
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layer {
+  name: "relu7_pose"
+  type: "ReLU"
+  bottom: "fc7_pose"
+  top: "fc7_pose"
+}
+layer {
+  name: "drop7_pose"
+  type: "Dropout"
+  bottom: "fc7_pose"
+  top: "fc7_pose"
+  dropout_param {
+    dropout_ratio: 0.4
+  }
+}
+layer {
+  name: "fc8_CAD_pose"
+  type: "InnerProduct"
+  bottom: "fc7_pose"
+  top: "fc8_CAD_pose"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 8
+    bias_term: true
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+  }
+}
+layer {
+  name: "data_frame"
+  type: "Data"
+  top: "data_frame"
+  top: "label_frame"
+  include {
+    phase: TRAIN
+  }
+  transform_param {
+    mirror: true
+    crop_size: 227
+    mean_file: "imagenet_mean.binaryproto"
+  }
+  data_param {
+    source: "/cs/vml2/zhiweid/CVPR16_NEW/bp-rnn/experiments/0419_context/CAD_train_lmdb_0419_frame_context"
+    batch_size: 5
+    backend: LMDB
+  }
+}
+layer {
+  name: "conv1_frame"
+  type: "Convolution"
+  bottom: "data_frame"
+  top: "conv1_frame"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 96
+    kernel_size: 11
+    stride: 4
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "relu1_frame"
+  type: "ReLU"
+  bottom: "conv1_frame"
+  top: "conv1_frame"
+}
+layer {
+  name: "pool1_frame"
+  type: "Pooling"
+  bottom: "conv1_frame"
+  top: "pool1_frame"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "norm1_frame"
+  type: "LRN"
+  bottom: "pool1_frame"
+  top: "norm1_frame"
+  lrn_param {
+    local_size: 5
+    alpha: 0.0001
+    beta: 0.75
+  }
+}
+layer {
+  name: "conv2_frame"
+  type: "Convolution"
+  bottom: "norm1_frame"
+  top: "conv2_frame"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 256
+    pad: 2
+    kernel_size: 5
+    group: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layer {
+  name: "relu2_frame"
+  type: "ReLU"
+  bottom: "conv2_frame"
+  top: "conv2_frame"
+}
+layer {
+  name: "pool2_frame"
+  type: "Pooling"
+  bottom: "conv2_frame"
+  top: "pool2_frame"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "norm2_frame"
+  type: "LRN"
+  bottom: "pool2_frame"
+  top: "norm2_frame"
+  lrn_param {
+    local_size: 5
+    alpha: 0.0001
+    beta: 0.75
+  }
+}
+layer {
+  name: "conv3_frame"
+  type: "Convolution"
+  bottom: "norm2_frame"
+  top: "conv3_frame"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 384
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "relu3_frame"
+  type: "ReLU"
+  bottom: "conv3_frame"
+  top: "conv3_frame"
+}
+layer {
+  name: "conv4_frame"
+  type: "Convolution"
+  bottom: "conv3_frame"
+  top: "conv4_frame"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 384
+    pad: 1
+    kernel_size: 3
+    group: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layer {
+  name: "relu4_frame"
+  type: "ReLU"
+  bottom: "conv4_frame"
+  top: "conv4_frame"
+}
+layer {
+  name: "conv5_frame"
+  type: "Convolution"
+  bottom: "conv4_frame"
+  top: "conv5_frame"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 256
+    pad: 1
+    kernel_size: 3
+    group: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layer {
+  name: "relu5_frame"
+  type: "ReLU"
+  bottom: "conv5_frame"
+  top: "conv5_frame"
+}
+layer {
+  name: "pool5_frame"
+  type: "Pooling"
+  bottom: "conv5_frame"
+  top: "pool5_frame"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "fc6_frame"
+  type: "InnerProduct"
+  bottom: "pool5_frame"
+  top: "fc6_frame"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 4096
+    weight_filler {
+      type: "gaussian"
+      std: 0.005
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layer {
+  name: "relu6_frame"
+  type: "ReLU"
+  bottom: "fc6_frame"
+  top: "fc6_frame"
+}
+layer {
+  name: "drop6_frame"
+  type: "Dropout"
+  bottom: "fc6_frame"
+  top: "fc6_frame"
+  dropout_param {
+    dropout_ratio: 0.5
+  }
+}
+layer {
+  name: "fc7_frame"
+  type: "InnerProduct"
+  bottom: "fc6_frame"
+  top: "fc7_frame"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 4096
+    weight_filler {
+      type: "gaussian"
+      std: 0.005
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layer {
+  name: "relu7_frame"
+  type: "ReLU"
+  bottom: "fc7_frame"
+  top: "fc7_frame"
+}
+layer {
+  name: "drop7_frame"
+  type: "Dropout"
+  bottom: "fc7_frame"
+  top: "fc7_frame"
+  dropout_param {
+    dropout_ratio: 0.5
+  }
+}
+layer {
+  name: "fc8_CAD_frame"
+  type: "InnerProduct"
+  bottom: "fc7_frame"
+  top: "fc8_CAD_frame"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 5
+    bias_term: true
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+  }
+}
+layer {
+  name: "prob_frame"
+  type: "Softmax"
+  bottom: "fc8_CAD_frame"
+  top: "fc8_CAD_frame_prob"
+}
+layer {
+  name: "prob_action"
+  type: "Softmax"
+  bottom: "fc8_CAD_action"
+  top: "fc8_CAD_prob"
+}
+layer {
+  name: "prob_pose"
+  type: "Softmax"
+  bottom: "fc8_CAD_pose"
+  top: "fc8_CAD_pose_prob"
+}
+layer {
+  name: "concatenation_a_p"
+  type: "Concat"
+  bottom: "fc8_CAD_prob"
+  bottom: "fc8_CAD_pose_prob"
+  top: "concat_action_pose"
+  concat_param {
+    concat_dim: 1
+  }
+}
+layer {
+  name: "fc9"
+  type: "InnerProduct"
+  bottom: "concat_action_pose"
+  top: "fc9_unnorm"
+  param {
+    lr_mult: 10
+    decay_mult: 10
+  }
+  param {
+    lr_mult: 20
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 40
+    weight_filler {
+      type: "gaussian"
+      std: 0.005
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layer {
+  name: "prob_action_pose"
+  type: "Softmax"
+  bottom: "fc9_unnorm"
+  top: "fc9"
+}
+layer {
+  name: "Data_arrange_layer_filter"
+  type: "Python"
+  bottom: "fc8_CAD_action"
+  bottom: "label_action"
+  bottom: "fc9"
+  top: "fc9_filtered"
+  python_param {
+    module: "Data_arrange"
+    layer: "Data_Arrange_Layer"
+  }
+}
+layer {
+  name: "concatenation_s_a_p"
+  type: "Concat"
+  bottom: "fc8_CAD_frame_prob"
+  bottom: "fc9_filtered"
+  top: "concat_all"
+  concat_param {
+    concat_dim: 1
+  }
+}
+layer {
+  name: "Data_arrange_layer_init_message"
+  type: "Python"
+  bottom: "concat_all"
+  bottom: "label_action"
+  top: "Initial_Messages"
+  python_param {
+    module: "Initialize_Message"
+    layer: "Initial_Message"
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network"
+  type: "BP_RNN"
+  bottom: "Initial_Messages"
+  bottom: "concat_all"
+  bottom: "label_action"
+  bottom: "fc8_CAD_frame"
+  bottom: "concat_all"
+  top: "action_pred"
+  top: "scene_pred"
+  param {
+    lr_mult: 10
+    decay_mult: 10
+  }
+  param {
+    lr_mult: 20
+    decay_mult: 0
+  }
+  bp_recurrent_param {
+    num_output: 1000
+    weight_filler {
+      type: "uniform"
+      min: -0.08
+      max: 0.08
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+    num_iteration: 2
+    num_frame: 0
+    num_people: 14
+    scene_class: 5
+    action_class: 7
+  }
+}
+layer {
+  name: "Data_arrange_layer_filter_mean"
+  type: "Python"
+  bottom: "action_pred"
+  bottom: "label_action"
+  top: "action_pred_clean"
+  top: "label_action_clean"
+  python_param {
+    module: "Data_Arrange_Loss_Action"
+    layer: "Data_Arrange_Layer"
+  }
+}
+layer {
+  name: "Data_arrange_layer_accu"
+  type: "Python"
+  bottom: "action_pred_clean"
+  bottom: "label_action"
+  top: "action_pred_final"
+  top: "label_action_accu"
+  python_param {
+    module: "Data_Arrange_Accuracy_Action"
+    layer: "Data_Arrange_Layer"
+  }
+}
+layer {
+  name: "scene_accuracy_arrange"
+  type: "Python"
+  bottom: "scene_pred"
+  top: "scene_pred_final"
+  python_param {
+    module: "Data_Arrange_Accuracy_Scene"
+    layer: "Data_Arrange_Layer"
+  }
+}
+layer {
+  name: "scene_loss_arrange"
+  type: "Python"
+  bottom: "scene_pred"
+  bottom: "label_frame"
+  bottom: "fc8_CAD_frame"
+  top: "scene_pred_all"
+  top: "scene_label_all"
+  python_param {
+    module: "Data_Arrange_Loss_Scene"
+    layer: "Data_Arrange_Layer"
+  }
+}
+layer {
+  name: "silence_layer"
+  type: "Python"
+  bottom: "scene_pred_final"
+  bottom: "label_frame"
+  bottom: "label_action_accu"
+  bottom: "scene_pred_all"
+  bottom: "action_pred_clean"
+  bottom: "action_pred"
+  bottom: "action_pred_final"
+  python_param {
+    module: "Silence"
+    layer: "Silence_Layer"
+  }
+}
+layer {
+  name: "loss_scene"
+  type: "SoftmaxWithLoss"
+  bottom: "scene_pred_all"
+  bottom: "scene_label_all"
+  top: "loss_scene"
+}
+layer {
+  name: "loss_action"
+  type: "SoftmaxWithLoss"
+  bottom: "action_pred_clean"
+  bottom: "label_action_clean"
+  top: "loss_action"
+}
+layer {
+  name: "loss_pose"
+  type: "SoftmaxWithLoss"
+  bottom: "fc8_CAD_pose"
+  bottom: "label_pose"
+  top: "loss_pose"
+}
+I0921 20:46:02.899935 30053 layer_factory.hpp:74] Creating layer data_action
+I0921 20:46:02.899969 30053 net.cpp:84] Creating Layer data_action
+I0921 20:46:02.899986 30053 net.cpp:342] data_action -> data_action
+I0921 20:46:02.900038 30053 net.cpp:342] data_action -> label_action
+I0921 20:46:02.900056 30053 net.cpp:113] Setting up data_action
+I0921 20:46:02.904276 30053 db.cpp:34] Opened lmdb /cs/vml2/zhiweid/CVPR16_NEW/bp-rnn/experiments/0419_context/CAD_train_lmdb_0419_context
+I0921 20:46:02.904726 30053 data_layer.cpp:67] output data size: 70,3,227,227
+I0921 20:46:02.904739 30053 data_transformer.cpp:22] Loading mean file from: imagenet_mean.binaryproto
+I0921 20:46:02.914283 30053 net.cpp:120] Top shape: 70 3 227 227 (10821090)
+I0921 20:46:02.914300 30053 net.cpp:120] Top shape: 70 (70)
+I0921 20:46:02.914309 30053 layer_factory.hpp:74] Creating layer label_action_data_action_1_split
+I0921 20:46:02.914324 30053 net.cpp:84] Creating Layer label_action_data_action_1_split
+I0921 20:46:02.914330 30053 net.cpp:384] label_action_data_action_1_split <- label_action
+I0921 20:46:02.914345 30053 net.cpp:342] label_action_data_action_1_split -> label_action_data_action_1_split_0
+I0921 20:46:02.914358 30053 net.cpp:342] label_action_data_action_1_split -> label_action_data_action_1_split_1
+I0921 20:46:02.914366 30053 net.cpp:342] label_action_data_action_1_split -> label_action_data_action_1_split_2
+I0921 20:46:02.914376 30053 net.cpp:342] label_action_data_action_1_split -> label_action_data_action_1_split_3
+I0921 20:46:02.914382 30053 net.cpp:342] label_action_data_action_1_split -> label_action_data_action_1_split_4
+I0921 20:46:02.914389 30053 net.cpp:113] Setting up label_action_data_action_1_split
+I0921 20:46:02.914400 30053 net.cpp:120] Top shape: 70 (70)
+I0921 20:46:02.914407 30053 net.cpp:120] Top shape: 70 (70)
+I0921 20:46:02.914412 30053 net.cpp:120] Top shape: 70 (70)
+I0921 20:46:02.914417 30053 net.cpp:120] Top shape: 70 (70)
+I0921 20:46:02.914423 30053 net.cpp:120] Top shape: 70 (70)
+I0921 20:46:02.914427 30053 layer_factory.hpp:74] Creating layer conv1_action
+I0921 20:46:02.914440 30053 net.cpp:84] Creating Layer conv1_action
+I0921 20:46:02.914446 30053 net.cpp:384] conv1_action <- data_action
+I0921 20:46:02.914453 30053 net.cpp:342] conv1_action -> conv1_action
+I0921 20:46:02.914464 30053 net.cpp:113] Setting up conv1_action
+I0921 20:46:02.915065 30053 net.cpp:120] Top shape: 70 96 55 55 (20328000)
+I0921 20:46:02.915091 30053 layer_factory.hpp:74] Creating layer relu1_action
+I0921 20:46:02.915102 30053 net.cpp:84] Creating Layer relu1_action
+I0921 20:46:02.915107 30053 net.cpp:384] relu1_action <- conv1_action
+I0921 20:46:02.915112 30053 net.cpp:331] relu1_action -> conv1_action (in-place)
+I0921 20:46:02.915119 30053 net.cpp:113] Setting up relu1_action
+I0921 20:46:02.915127 30053 net.cpp:120] Top shape: 70 96 55 55 (20328000)
+I0921 20:46:02.915132 30053 layer_factory.hpp:74] Creating layer pool1_action
+I0921 20:46:02.915140 30053 net.cpp:84] Creating Layer pool1_action
+I0921 20:46:02.915145 30053 net.cpp:384] pool1_action <- conv1_action
+I0921 20:46:02.915151 30053 net.cpp:342] pool1_action -> pool1_action
+I0921 20:46:02.915161 30053 net.cpp:113] Setting up pool1_action
+I0921 20:46:02.915179 30053 net.cpp:120] Top shape: 70 96 27 27 (4898880)
+I0921 20:46:02.915185 30053 layer_factory.hpp:74] Creating layer norm1_action
+I0921 20:46:02.915194 30053 net.cpp:84] Creating Layer norm1_action
+I0921 20:46:02.915199 30053 net.cpp:384] norm1_action <- pool1_action
+I0921 20:46:02.915210 30053 net.cpp:342] norm1_action -> norm1_action
+I0921 20:46:02.915241 30053 net.cpp:113] Setting up norm1_action
+I0921 20:46:02.915254 30053 net.cpp:120] Top shape: 70 96 27 27 (4898880)
+I0921 20:46:02.915262 30053 layer_factory.hpp:74] Creating layer conv2_action
+I0921 20:46:02.915271 30053 net.cpp:84] Creating Layer conv2_action
+I0921 20:46:02.915276 30053 net.cpp:384] conv2_action <- norm1_action
+I0921 20:46:02.915285 30053 net.cpp:342] conv2_action -> conv2_action
+I0921 20:46:02.915295 30053 net.cpp:113] Setting up conv2_action
+I0921 20:46:02.920285 30053 net.cpp:120] Top shape: 70 256 27 27 (13063680)
+I0921 20:46:02.920306 30053 layer_factory.hpp:74] Creating layer relu2_action
+I0921 20:46:02.920315 30053 net.cpp:84] Creating Layer relu2_action
+I0921 20:46:02.920323 30053 net.cpp:384] relu2_action <- conv2_action
+I0921 20:46:02.920332 30053 net.cpp:331] relu2_action -> conv2_action (in-place)
+I0921 20:46:02.920341 30053 net.cpp:113] Setting up relu2_action
+I0921 20:46:02.920348 30053 net.cpp:120] Top shape: 70 256 27 27 (13063680)
+I0921 20:46:02.920356 30053 layer_factory.hpp:74] Creating layer pool2_action
+I0921 20:46:02.920366 30053 net.cpp:84] Creating Layer pool2_action
+I0921 20:46:02.920370 30053 net.cpp:384] pool2_action <- conv2_action
+I0921 20:46:02.920382 30053 net.cpp:342] pool2_action -> pool2_action
+I0921 20:46:02.920393 30053 net.cpp:113] Setting up pool2_action
+I0921 20:46:02.920403 30053 net.cpp:120] Top shape: 70 256 13 13 (3028480)
+I0921 20:46:02.920409 30053 layer_factory.hpp:74] Creating layer norm2_action
+I0921 20:46:02.920423 30053 net.cpp:84] Creating Layer norm2_action
+I0921 20:46:02.920430 30053 net.cpp:384] norm2_action <- pool2_action
+I0921 20:46:02.920439 30053 net.cpp:342] norm2_action -> norm2_action
+I0921 20:46:02.920450 30053 net.cpp:113] Setting up norm2_action
+I0921 20:46:02.920461 30053 net.cpp:120] Top shape: 70 256 13 13 (3028480)
+I0921 20:46:02.920467 30053 layer_factory.hpp:74] Creating layer conv3_action
+I0921 20:46:02.920513 30053 net.cpp:84] Creating Layer conv3_action
+I0921 20:46:02.920523 30053 net.cpp:384] conv3_action <- norm2_action
+I0921 20:46:02.920533 30053 net.cpp:342] conv3_action -> conv3_action
+I0921 20:46:02.920544 30053 net.cpp:113] Setting up conv3_action
+I0921 20:46:02.932665 30053 net.cpp:120] Top shape: 70 384 13 13 (4542720)
+I0921 20:46:02.932694 30053 layer_factory.hpp:74] Creating layer relu3_action
+I0921 20:46:02.932705 30053 net.cpp:84] Creating Layer relu3_action
+I0921 20:46:02.932710 30053 net.cpp:384] relu3_action <- conv3_action
+I0921 20:46:02.932719 30053 net.cpp:331] relu3_action -> conv3_action (in-place)
+I0921 20:46:02.932729 30053 net.cpp:113] Setting up relu3_action
+I0921 20:46:02.932734 30053 net.cpp:120] Top shape: 70 384 13 13 (4542720)
+I0921 20:46:02.932739 30053 layer_factory.hpp:74] Creating layer conv4_action
+I0921 20:46:02.932747 30053 net.cpp:84] Creating Layer conv4_action
+I0921 20:46:02.932751 30053 net.cpp:384] conv4_action <- conv3_action
+I0921 20:46:02.932762 30053 net.cpp:342] conv4_action -> conv4_action
+I0921 20:46:02.932771 30053 net.cpp:113] Setting up conv4_action
+I0921 20:46:02.941965 30053 net.cpp:120] Top shape: 70 384 13 13 (4542720)
+I0921 20:46:02.941992 30053 layer_factory.hpp:74] Creating layer relu4_action
+I0921 20:46:02.942003 30053 net.cpp:84] Creating Layer relu4_action
+I0921 20:46:02.942008 30053 net.cpp:384] relu4_action <- conv4_action
+I0921 20:46:02.942016 30053 net.cpp:331] relu4_action -> conv4_action (in-place)
+I0921 20:46:02.942025 30053 net.cpp:113] Setting up relu4_action
+I0921 20:46:02.942031 30053 net.cpp:120] Top shape: 70 384 13 13 (4542720)
+I0921 20:46:02.942035 30053 layer_factory.hpp:74] Creating layer conv5_action
+I0921 20:46:02.942044 30053 net.cpp:84] Creating Layer conv5_action
+I0921 20:46:02.942049 30053 net.cpp:384] conv5_action <- conv4_action
+I0921 20:46:02.942056 30053 net.cpp:342] conv5_action -> conv5_action
+I0921 20:46:02.942065 30053 net.cpp:113] Setting up conv5_action
+I0921 20:46:02.948267 30053 net.cpp:120] Top shape: 70 256 13 13 (3028480)
+I0921 20:46:02.948302 30053 layer_factory.hpp:74] Creating layer relu5_action
+I0921 20:46:02.948333 30053 net.cpp:84] Creating Layer relu5_action
+I0921 20:46:02.948338 30053 net.cpp:384] relu5_action <- conv5_action
+I0921 20:46:02.948346 30053 net.cpp:331] relu5_action -> conv5_action (in-place)
+I0921 20:46:02.948354 30053 net.cpp:113] Setting up relu5_action
+I0921 20:46:02.948360 30053 net.cpp:120] Top shape: 70 256 13 13 (3028480)
+I0921 20:46:02.948365 30053 layer_factory.hpp:74] Creating layer pool5_action
+I0921 20:46:02.948376 30053 net.cpp:84] Creating Layer pool5_action
+I0921 20:46:02.948380 30053 net.cpp:384] pool5_action <- conv5_action
+I0921 20:46:02.948387 30053 net.cpp:342] pool5_action -> pool5_action
+I0921 20:46:02.948396 30053 net.cpp:113] Setting up pool5_action
+I0921 20:46:02.948405 30053 net.cpp:120] Top shape: 70 256 6 6 (645120)
+I0921 20:46:02.948410 30053 layer_factory.hpp:74] Creating layer fc6_action
+I0921 20:46:02.948421 30053 net.cpp:84] Creating Layer fc6_action
+I0921 20:46:02.948426 30053 net.cpp:384] fc6_action <- pool5_action
+I0921 20:46:02.948431 30053 net.cpp:342] fc6_action -> fc6_action
+I0921 20:46:02.948442 30053 net.cpp:113] Setting up fc6_action
+I0921 20:46:03.428558 30053 net.cpp:120] Top shape: 70 4096 (286720)
+I0921 20:46:03.428593 30053 layer_factory.hpp:74] Creating layer relu6_action
+I0921 20:46:03.428604 30053 net.cpp:84] Creating Layer relu6_action
+I0921 20:46:03.428611 30053 net.cpp:384] relu6_action <- fc6_action
+I0921 20:46:03.428617 30053 net.cpp:331] relu6_action -> fc6_action (in-place)
+I0921 20:46:03.428625 30053 net.cpp:113] Setting up relu6_action
+I0921 20:46:03.428632 30053 net.cpp:120] Top shape: 70 4096 (286720)
+I0921 20:46:03.428637 30053 layer_factory.hpp:74] Creating layer drop6_action
+I0921 20:46:03.428647 30053 net.cpp:84] Creating Layer drop6_action
+I0921 20:46:03.428652 30053 net.cpp:384] drop6_action <- fc6_action
+I0921 20:46:03.428656 30053 net.cpp:331] drop6_action -> fc6_action (in-place)
+I0921 20:46:03.428664 30053 net.cpp:113] Setting up drop6_action
+I0921 20:46:03.428674 30053 net.cpp:120] Top shape: 70 4096 (286720)
+I0921 20:46:03.428678 30053 layer_factory.hpp:74] Creating layer fc7_action
+I0921 20:46:03.428686 30053 net.cpp:84] Creating Layer fc7_action
+I0921 20:46:03.428690 30053 net.cpp:384] fc7_action <- fc6_action
+I0921 20:46:03.428699 30053 net.cpp:342] fc7_action -> fc7_action
+I0921 20:46:03.428706 30053 net.cpp:113] Setting up fc7_action
+I0921 20:46:03.641919 30053 net.cpp:120] Top shape: 70 4096 (286720)
+I0921 20:46:03.641948 30053 layer_factory.hpp:74] Creating layer relu7_action
+I0921 20:46:03.641959 30053 net.cpp:84] Creating Layer relu7_action
+I0921 20:46:03.641965 30053 net.cpp:384] relu7_action <- fc7_action
+I0921 20:46:03.641973 30053 net.cpp:331] relu7_action -> fc7_action (in-place)
+I0921 20:46:03.641980 30053 net.cpp:113] Setting up relu7_action
+I0921 20:46:03.641988 30053 net.cpp:120] Top shape: 70 4096 (286720)
+I0921 20:46:03.641991 30053 layer_factory.hpp:74] Creating layer drop7_action
+I0921 20:46:03.641999 30053 net.cpp:84] Creating Layer drop7_action
+I0921 20:46:03.642002 30053 net.cpp:384] drop7_action <- fc7_action
+I0921 20:46:03.642009 30053 net.cpp:331] drop7_action -> fc7_action (in-place)
+I0921 20:46:03.642015 30053 net.cpp:113] Setting up drop7_action
+I0921 20:46:03.642022 30053 net.cpp:120] Top shape: 70 4096 (286720)
+I0921 20:46:03.642026 30053 layer_factory.hpp:74] Creating layer fc8_CAD_action
+I0921 20:46:03.642035 30053 net.cpp:84] Creating Layer fc8_CAD_action
+I0921 20:46:03.642038 30053 net.cpp:384] fc8_CAD_action <- fc7_action
+I0921 20:46:03.642043 30053 net.cpp:342] fc8_CAD_action -> fc8_CAD_action_unnorm
+I0921 20:46:03.642051 30053 net.cpp:113] Setting up fc8_CAD_action
+I0921 20:46:03.642444 30053 net.cpp:120] Top shape: 70 7 (490)
+I0921 20:46:03.642454 30053 layer_factory.hpp:74] Creating layer prob_action_cad
+I0921 20:46:03.642462 30053 net.cpp:84] Creating Layer prob_action_cad
+I0921 20:46:03.642467 30053 net.cpp:384] prob_action_cad <- fc8_CAD_action_unnorm
+I0921 20:46:03.642472 30053 net.cpp:342] prob_action_cad -> fc8_CAD_action
+I0921 20:46:03.642508 30053 net.cpp:113] Setting up prob_action_cad
+I0921 20:46:03.642516 30053 net.cpp:120] Top shape: 70 7 (490)
+I0921 20:46:03.642520 30053 layer_factory.hpp:74] Creating layer fc8_CAD_action_prob_action_cad_0_split
+I0921 20:46:03.642529 30053 net.cpp:84] Creating Layer fc8_CAD_action_prob_action_cad_0_split
+I0921 20:46:03.642532 30053 net.cpp:384] fc8_CAD_action_prob_action_cad_0_split <- fc8_CAD_action
+I0921 20:46:03.642539 30053 net.cpp:342] fc8_CAD_action_prob_action_cad_0_split -> fc8_CAD_action_prob_action_cad_0_split_0
+I0921 20:46:03.642544 30053 net.cpp:342] fc8_CAD_action_prob_action_cad_0_split -> fc8_CAD_action_prob_action_cad_0_split_1
+I0921 20:46:03.642550 30053 net.cpp:113] Setting up fc8_CAD_action_prob_action_cad_0_split
+I0921 20:46:03.642556 30053 net.cpp:120] Top shape: 70 7 (490)
+I0921 20:46:03.642561 30053 net.cpp:120] Top shape: 70 7 (490)
+I0921 20:46:03.642565 30053 layer_factory.hpp:74] Creating layer data_pose
+I0921 20:46:03.642576 30053 net.cpp:84] Creating Layer data_pose
+I0921 20:46:03.642582 30053 net.cpp:342] data_pose -> data_pose
+I0921 20:46:03.642591 30053 net.cpp:342] data_pose -> label_pose
+I0921 20:46:03.642598 30053 net.cpp:113] Setting up data_pose
+I0921 20:46:03.659232 30053 db.cpp:34] Opened lmdb /cs/vml2/zhiweid/CVPR16_NEW/bp-rnn/experiments/0419_context/CAD_train_lmdb_0419_context
+I0921 20:46:03.659695 30053 data_layer.cpp:67] output data size: 70,3,227,227
+I0921 20:46:03.659706 30053 data_transformer.cpp:22] Loading mean file from: imagenet_mean.binaryproto
+I0921 20:46:03.671100 30053 net.cpp:120] Top shape: 70 3 227 227 (10821090)
+I0921 20:46:03.671118 30053 net.cpp:120] Top shape: 70 (70)
+I0921 20:46:03.671124 30053 layer_factory.hpp:74] Creating layer conv1_pose
+I0921 20:46:03.671136 30053 net.cpp:84] Creating Layer conv1_pose
+I0921 20:46:03.671141 30053 net.cpp:384] conv1_pose <- data_pose
+I0921 20:46:03.671150 30053 net.cpp:342] conv1_pose -> conv1_pose
+I0921 20:46:03.671164 30053 net.cpp:113] Setting up conv1_pose
+I0921 20:46:03.671633 30053 net.cpp:120] Top shape: 70 96 55 55 (20328000)
+I0921 20:46:03.671648 30053 layer_factory.hpp:74] Creating layer relu1_pose
+I0921 20:46:03.671655 30053 net.cpp:84] Creating Layer relu1_pose
+I0921 20:46:03.671659 30053 net.cpp:384] relu1_pose <- conv1_pose
+I0921 20:46:03.671664 30053 net.cpp:331] relu1_pose -> conv1_pose (in-place)
+I0921 20:46:03.671671 30053 net.cpp:113] Setting up relu1_pose
+I0921 20:46:03.671677 30053 net.cpp:120] Top shape: 70 96 55 55 (20328000)
+I0921 20:46:03.671681 30053 layer_factory.hpp:74] Creating layer pool1_pose
+I0921 20:46:03.671689 30053 net.cpp:84] Creating Layer pool1_pose
+I0921 20:46:03.671692 30053 net.cpp:384] pool1_pose <- conv1_pose
+I0921 20:46:03.671697 30053 net.cpp:342] pool1_pose -> pool1_pose
+I0921 20:46:03.671705 30053 net.cpp:113] Setting up pool1_pose
+I0921 20:46:03.671713 30053 net.cpp:120] Top shape: 70 96 27 27 (4898880)
+I0921 20:46:03.671717 30053 layer_factory.hpp:74] Creating layer norm1_pose
+I0921 20:46:03.671725 30053 net.cpp:84] Creating Layer norm1_pose
+I0921 20:46:03.671730 30053 net.cpp:384] norm1_pose <- pool1_pose
+I0921 20:46:03.671735 30053 net.cpp:342] norm1_pose -> norm1_pose
+I0921 20:46:03.671741 30053 net.cpp:113] Setting up norm1_pose
+I0921 20:46:03.671748 30053 net.cpp:120] Top shape: 70 96 27 27 (4898880)
+I0921 20:46:03.671752 30053 layer_factory.hpp:74] Creating layer conv2_pose
+I0921 20:46:03.671759 30053 net.cpp:84] Creating Layer conv2_pose
+I0921 20:46:03.671763 30053 net.cpp:384] conv2_pose <- norm1_pose
+I0921 20:46:03.671769 30053 net.cpp:342] conv2_pose -> conv2_pose
+I0921 20:46:03.671775 30053 net.cpp:113] Setting up conv2_pose
+I0921 20:46:03.675900 30053 net.cpp:120] Top shape: 70 256 27 27 (13063680)
+I0921 20:46:03.675920 30053 layer_factory.hpp:74] Creating layer relu2_pose
+I0921 20:46:03.675935 30053 net.cpp:84] Creating Layer relu2_pose
+I0921 20:46:03.675940 30053 net.cpp:384] relu2_pose <- conv2_pose
+I0921 20:46:03.675947 30053 net.cpp:331] relu2_pose -> conv2_pose (in-place)
+I0921 20:46:03.675961 30053 net.cpp:113] Setting up relu2_pose
+I0921 20:46:03.675987 30053 net.cpp:120] Top shape: 70 256 27 27 (13063680)
+I0921 20:46:03.675992 30053 layer_factory.hpp:74] Creating layer pool2_pose
+I0921 20:46:03.675998 30053 net.cpp:84] Creating Layer pool2_pose
+I0921 20:46:03.676002 30053 net.cpp:384] pool2_pose <- conv2_pose
+I0921 20:46:03.676008 30053 net.cpp:342] pool2_pose -> pool2_pose
+I0921 20:46:03.676017 30053 net.cpp:113] Setting up pool2_pose
+I0921 20:46:03.676024 30053 net.cpp:120] Top shape: 70 256 13 13 (3028480)
+I0921 20:46:03.676029 30053 layer_factory.hpp:74] Creating layer norm2_pose
+I0921 20:46:03.676038 30053 net.cpp:84] Creating Layer norm2_pose
+I0921 20:46:03.676043 30053 net.cpp:384] norm2_pose <- pool2_pose
+I0921 20:46:03.676049 30053 net.cpp:342] norm2_pose -> norm2_pose
+I0921 20:46:03.676056 30053 net.cpp:113] Setting up norm2_pose
+I0921 20:46:03.676064 30053 net.cpp:120] Top shape: 70 256 13 13 (3028480)
+I0921 20:46:03.676067 30053 layer_factory.hpp:74] Creating layer conv3_pose
+I0921 20:46:03.676075 30053 net.cpp:84] Creating Layer conv3_pose
+I0921 20:46:03.676079 30053 net.cpp:384] conv3_pose <- norm2_pose
+I0921 20:46:03.676089 30053 net.cpp:342] conv3_pose -> conv3_pose
+I0921 20:46:03.676095 30053 net.cpp:113] Setting up conv3_pose
+I0921 20:46:03.688047 30053 net.cpp:120] Top shape: 70 384 13 13 (4542720)
+I0921 20:46:03.688072 30053 layer_factory.hpp:74] Creating layer relu3_pose
+I0921 20:46:03.688086 30053 net.cpp:84] Creating Layer relu3_pose
+I0921 20:46:03.688091 30053 net.cpp:384] relu3_pose <- conv3_pose
+I0921 20:46:03.688098 30053 net.cpp:331] relu3_pose -> conv3_pose (in-place)
+I0921 20:46:03.688107 30053 net.cpp:113] Setting up relu3_pose
+I0921 20:46:03.688113 30053 net.cpp:120] Top shape: 70 384 13 13 (4542720)
+I0921 20:46:03.688117 30053 layer_factory.hpp:74] Creating layer conv4_pose
+I0921 20:46:03.688127 30053 net.cpp:84] Creating Layer conv4_pose
+I0921 20:46:03.688133 30053 net.cpp:384] conv4_pose <- conv3_pose
+I0921 20:46:03.688138 30053 net.cpp:342] conv4_pose -> conv4_pose
+I0921 20:46:03.688153 30053 net.cpp:113] Setting up conv4_pose
+I0921 20:46:03.697361 30053 net.cpp:120] Top shape: 70 384 13 13 (4542720)
+I0921 20:46:03.697387 30053 layer_factory.hpp:74] Creating layer relu4_pose
+I0921 20:46:03.697398 30053 net.cpp:84] Creating Layer relu4_pose
+I0921 20:46:03.697403 30053 net.cpp:384] relu4_pose <- conv4_pose
+I0921 20:46:03.697417 30053 net.cpp:331] relu4_pose -> conv4_pose (in-place)
+I0921 20:46:03.697425 30053 net.cpp:113] Setting up relu4_pose
+I0921 20:46:03.697432 30053 net.cpp:120] Top shape: 70 384 13 13 (4542720)
+I0921 20:46:03.697435 30053 layer_factory.hpp:74] Creating layer conv5_pose
+I0921 20:46:03.697445 30053 net.cpp:84] Creating Layer conv5_pose
+I0921 20:46:03.697449 30053 net.cpp:384] conv5_pose <- conv4_pose
+I0921 20:46:03.697458 30053 net.cpp:342] conv5_pose -> conv5_pose
+I0921 20:46:03.697465 30053 net.cpp:113] Setting up conv5_pose
+I0921 20:46:03.703696 30053 net.cpp:120] Top shape: 70 256 13 13 (3028480)
+I0921 20:46:03.703722 30053 layer_factory.hpp:74] Creating layer relu5_pose
+I0921 20:46:03.703732 30053 net.cpp:84] Creating Layer relu5_pose
+I0921 20:46:03.703737 30053 net.cpp:384] relu5_pose <- conv5_pose
+I0921 20:46:03.703744 30053 net.cpp:331] relu5_pose -> conv5_pose (in-place)
+I0921 20:46:03.703752 30053 net.cpp:113] Setting up relu5_pose
+I0921 20:46:03.703759 30053 net.cpp:120] Top shape: 70 256 13 13 (3028480)
+I0921 20:46:03.703763 30053 layer_factory.hpp:74] Creating layer pool5_pose
+I0921 20:46:03.703770 30053 net.cpp:84] Creating Layer pool5_pose
+I0921 20:46:03.703774 30053 net.cpp:384] pool5_pose <- conv5_pose
+I0921 20:46:03.703783 30053 net.cpp:342] pool5_pose -> pool5_pose
+I0921 20:46:03.703790 30053 net.cpp:113] Setting up pool5_pose
+I0921 20:46:03.703799 30053 net.cpp:120] Top shape: 70 256 6 6 (645120)
+I0921 20:46:03.703804 30053 layer_factory.hpp:74] Creating layer fc6_pose
+I0921 20:46:03.703812 30053 net.cpp:84] Creating Layer fc6_pose
+I0921 20:46:03.703817 30053 net.cpp:384] fc6_pose <- pool5_pose
+I0921 20:46:03.703824 30053 net.cpp:342] fc6_pose -> fc6_pose
+I0921 20:46:03.703835 30053 net.cpp:113] Setting up fc6_pose
+I0921 20:46:04.184393 30053 net.cpp:120] Top shape: 70 4096 (286720)
+I0921 20:46:04.184422 30053 layer_factory.hpp:74] Creating layer relu6_pose
+I0921 20:46:04.184433 30053 net.cpp:84] Creating Layer relu6_pose
+I0921 20:46:04.184438 30053 net.cpp:384] relu6_pose <- fc6_pose
+I0921 20:46:04.184448 30053 net.cpp:331] relu6_pose -> fc6_pose (in-place)
+I0921 20:46:04.184456 30053 net.cpp:113] Setting up relu6_pose
+I0921 20:46:04.184463 30053 net.cpp:120] Top shape: 70 4096 (286720)
+I0921 20:46:04.184466 30053 layer_factory.hpp:74] Creating layer drop6_pose
+I0921 20:46:04.184473 30053 net.cpp:84] Creating Layer drop6_pose
+I0921 20:46:04.184481 30053 net.cpp:384] drop6_pose <- fc6_pose
+I0921 20:46:04.184486 30053 net.cpp:331] drop6_pose -> fc6_pose (in-place)
+I0921 20:46:04.184494 30053 net.cpp:113] Setting up drop6_pose
+I0921 20:46:04.184500 30053 net.cpp:120] Top shape: 70 4096 (286720)
+I0921 20:46:04.184504 30053 layer_factory.hpp:74] Creating layer fc7_pose
+I0921 20:46:04.184512 30053 net.cpp:84] Creating Layer fc7_pose
+I0921 20:46:04.184516 30053 net.cpp:384] fc7_pose <- fc6_pose
+I0921 20:46:04.184522 30053 net.cpp:342] fc7_pose -> fc7_pose
+I0921 20:46:04.184530 30053 net.cpp:113] Setting up fc7_pose
+I0921 20:46:04.397198 30053 net.cpp:120] Top shape: 70 4096 (286720)
+I0921 20:46:04.397228 30053 layer_factory.hpp:74] Creating layer relu7_pose
+I0921 20:46:04.397239 30053 net.cpp:84] Creating Layer relu7_pose
+I0921 20:46:04.397245 30053 net.cpp:384] relu7_pose <- fc7_pose
+I0921 20:46:04.397254 30053 net.cpp:331] relu7_pose -> fc7_pose (in-place)
+I0921 20:46:04.397264 30053 net.cpp:113] Setting up relu7_pose
+I0921 20:46:04.397269 30053 net.cpp:120] Top shape: 70 4096 (286720)
+I0921 20:46:04.397274 30053 layer_factory.hpp:74] Creating layer drop7_pose
+I0921 20:46:04.397280 30053 net.cpp:84] Creating Layer drop7_pose
+I0921 20:46:04.397284 30053 net.cpp:384] drop7_pose <- fc7_pose
+I0921 20:46:04.397289 30053 net.cpp:331] drop7_pose -> fc7_pose (in-place)
+I0921 20:46:04.397294 30053 net.cpp:113] Setting up drop7_pose
+I0921 20:46:04.397301 30053 net.cpp:120] Top shape: 70 4096 (286720)
+I0921 20:46:04.397305 30053 layer_factory.hpp:74] Creating layer fc8_CAD_pose
+I0921 20:46:04.397315 30053 net.cpp:84] Creating Layer fc8_CAD_pose
+I0921 20:46:04.397320 30053 net.cpp:384] fc8_CAD_pose <- fc7_pose
+I0921 20:46:04.397325 30053 net.cpp:342] fc8_CAD_pose -> fc8_CAD_pose
+I0921 20:46:04.397333 30053 net.cpp:113] Setting up fc8_CAD_pose
+I0921 20:46:04.397780 30053 net.cpp:120] Top shape: 70 8 (560)
+I0921 20:46:04.397790 30053 layer_factory.hpp:74] Creating layer fc8_CAD_pose_fc8_CAD_pose_0_split
+I0921 20:46:04.397797 30053 net.cpp:84] Creating Layer fc8_CAD_pose_fc8_CAD_pose_0_split
+I0921 20:46:04.397801 30053 net.cpp:384] fc8_CAD_pose_fc8_CAD_pose_0_split <- fc8_CAD_pose
+I0921 20:46:04.397806 30053 net.cpp:342] fc8_CAD_pose_fc8_CAD_pose_0_split -> fc8_CAD_pose_fc8_CAD_pose_0_split_0
+I0921 20:46:04.397814 30053 net.cpp:342] fc8_CAD_pose_fc8_CAD_pose_0_split -> fc8_CAD_pose_fc8_CAD_pose_0_split_1
+I0921 20:46:04.397820 30053 net.cpp:113] Setting up fc8_CAD_pose_fc8_CAD_pose_0_split
+I0921 20:46:04.397828 30053 net.cpp:120] Top shape: 70 8 (560)
+I0921 20:46:04.397833 30053 net.cpp:120] Top shape: 70 8 (560)
+I0921 20:46:04.397837 30053 layer_factory.hpp:74] Creating layer data_frame
+I0921 20:46:04.397847 30053 net.cpp:84] Creating Layer data_frame
+I0921 20:46:04.397855 30053 net.cpp:342] data_frame -> data_frame
+I0921 20:46:04.397864 30053 net.cpp:342] data_frame -> label_frame
+I0921 20:46:04.397879 30053 net.cpp:113] Setting up data_frame
+I0921 20:46:04.402431 30053 db.cpp:34] Opened lmdb /cs/vml2/zhiweid/CVPR16_NEW/bp-rnn/experiments/0419_context/CAD_train_lmdb_0419_frame_context
+I0921 20:46:04.402988 30053 data_layer.cpp:67] output data size: 5,3,227,227
+I0921 20:46:04.403002 30053 data_transformer.cpp:22] Loading mean file from: imagenet_mean.binaryproto
+I0921 20:46:04.405894 30053 net.cpp:120] Top shape: 5 3 227 227 (772935)
+I0921 20:46:04.405905 30053 net.cpp:120] Top shape: 5 (5)
+I0921 20:46:04.405912 30053 layer_factory.hpp:74] Creating layer label_frame_data_frame_1_split
+I0921 20:46:04.405941 30053 net.cpp:84] Creating Layer label_frame_data_frame_1_split
+I0921 20:46:04.405946 30053 net.cpp:384] label_frame_data_frame_1_split <- label_frame
+I0921 20:46:04.405953 30053 net.cpp:342] label_frame_data_frame_1_split -> label_frame_data_frame_1_split_0
+I0921 20:46:04.405962 30053 net.cpp:342] label_frame_data_frame_1_split -> label_frame_data_frame_1_split_1
+I0921 20:46:04.405969 30053 net.cpp:113] Setting up label_frame_data_frame_1_split
+I0921 20:46:04.405977 30053 net.cpp:120] Top shape: 5 (5)
+I0921 20:46:04.405983 30053 net.cpp:120] Top shape: 5 (5)
+I0921 20:46:04.405987 30053 layer_factory.hpp:74] Creating layer conv1_frame
+I0921 20:46:04.405997 30053 net.cpp:84] Creating Layer conv1_frame
+I0921 20:46:04.406002 30053 net.cpp:384] conv1_frame <- data_frame
+I0921 20:46:04.406008 30053 net.cpp:342] conv1_frame -> conv1_frame
+I0921 20:46:04.406016 30053 net.cpp:113] Setting up conv1_frame
+I0921 20:46:04.406515 30053 net.cpp:120] Top shape: 5 96 55 55 (1452000)
+I0921 20:46:04.406533 30053 layer_factory.hpp:74] Creating layer relu1_frame
+I0921 20:46:04.406540 30053 net.cpp:84] Creating Layer relu1_frame
+I0921 20:46:04.406545 30053 net.cpp:384] relu1_frame <- conv1_frame
+I0921 20:46:04.406551 30053 net.cpp:331] relu1_frame -> conv1_frame (in-place)
+I0921 20:46:04.406558 30053 net.cpp:113] Setting up relu1_frame
+I0921 20:46:04.406564 30053 net.cpp:120] Top shape: 5 96 55 55 (1452000)
+I0921 20:46:04.406569 30053 layer_factory.hpp:74] Creating layer pool1_frame
+I0921 20:46:04.406576 30053 net.cpp:84] Creating Layer pool1_frame
+I0921 20:46:04.406580 30053 net.cpp:384] pool1_frame <- conv1_frame
+I0921 20:46:04.406587 30053 net.cpp:342] pool1_frame -> pool1_frame
+I0921 20:46:04.406595 30053 net.cpp:113] Setting up pool1_frame
+I0921 20:46:04.406605 30053 net.cpp:120] Top shape: 5 96 27 27 (349920)
+I0921 20:46:04.406610 30053 layer_factory.hpp:74] Creating layer norm1_frame
+I0921 20:46:04.406617 30053 net.cpp:84] Creating Layer norm1_frame
+I0921 20:46:04.406623 30053 net.cpp:384] norm1_frame <- pool1_frame
+I0921 20:46:04.406630 30053 net.cpp:342] norm1_frame -> norm1_frame
+I0921 20:46:04.406638 30053 net.cpp:113] Setting up norm1_frame
+I0921 20:46:04.406646 30053 net.cpp:120] Top shape: 5 96 27 27 (349920)
+I0921 20:46:04.406651 30053 layer_factory.hpp:74] Creating layer conv2_frame
+I0921 20:46:04.406658 30053 net.cpp:84] Creating Layer conv2_frame
+I0921 20:46:04.406662 30053 net.cpp:384] conv2_frame <- norm1_frame
+I0921 20:46:04.406669 30053 net.cpp:342] conv2_frame -> conv2_frame
+I0921 20:46:04.406677 30053 net.cpp:113] Setting up conv2_frame
+I0921 20:46:04.411100 30053 net.cpp:120] Top shape: 5 256 27 27 (933120)
+I0921 20:46:04.411118 30053 layer_factory.hpp:74] Creating layer relu2_frame
+I0921 20:46:04.411128 30053 net.cpp:84] Creating Layer relu2_frame
+I0921 20:46:04.411133 30053 net.cpp:384] relu2_frame <- conv2_frame
+I0921 20:46:04.411141 30053 net.cpp:331] relu2_frame -> conv2_frame (in-place)
+I0921 20:46:04.411149 30053 net.cpp:113] Setting up relu2_frame
+I0921 20:46:04.411155 30053 net.cpp:120] Top shape: 5 256 27 27 (933120)
+I0921 20:46:04.411160 30053 layer_factory.hpp:74] Creating layer pool2_frame
+I0921 20:46:04.411167 30053 net.cpp:84] Creating Layer pool2_frame
+I0921 20:46:04.411171 30053 net.cpp:384] pool2_frame <- conv2_frame
+I0921 20:46:04.411180 30053 net.cpp:342] pool2_frame -> pool2_frame
+I0921 20:46:04.411190 30053 net.cpp:113] Setting up pool2_frame
+I0921 20:46:04.411197 30053 net.cpp:120] Top shape: 5 256 13 13 (216320)
+I0921 20:46:04.411202 30053 layer_factory.hpp:74] Creating layer norm2_frame
+I0921 20:46:04.411209 30053 net.cpp:84] Creating Layer norm2_frame
+I0921 20:46:04.411214 30053 net.cpp:384] norm2_frame <- pool2_frame
+I0921 20:46:04.411222 30053 net.cpp:342] norm2_frame -> norm2_frame
+I0921 20:46:04.411229 30053 net.cpp:113] Setting up norm2_frame
+I0921 20:46:04.411237 30053 net.cpp:120] Top shape: 5 256 13 13 (216320)
+I0921 20:46:04.411242 30053 layer_factory.hpp:74] Creating layer conv3_frame
+I0921 20:46:04.411270 30053 net.cpp:84] Creating Layer conv3_frame
+I0921 20:46:04.411275 30053 net.cpp:384] conv3_frame <- norm2_frame
+I0921 20:46:04.411283 30053 net.cpp:342] conv3_frame -> conv3_frame
+I0921 20:46:04.411290 30053 net.cpp:113] Setting up conv3_frame
+I0921 20:46:04.424001 30053 net.cpp:120] Top shape: 5 384 13 13 (324480)
+I0921 20:46:04.424015 30053 layer_factory.hpp:74] Creating layer relu3_frame
+I0921 20:46:04.424022 30053 net.cpp:84] Creating Layer relu3_frame
+I0921 20:46:04.424026 30053 net.cpp:384] relu3_frame <- conv3_frame
+I0921 20:46:04.424032 30053 net.cpp:331] relu3_frame -> conv3_frame (in-place)
+I0921 20:46:04.424038 30053 net.cpp:113] Setting up relu3_frame
+I0921 20:46:04.424044 30053 net.cpp:120] Top shape: 5 384 13 13 (324480)
+I0921 20:46:04.424048 30053 layer_factory.hpp:74] Creating layer conv4_frame
+I0921 20:46:04.424057 30053 net.cpp:84] Creating Layer conv4_frame
+I0921 20:46:04.424062 30053 net.cpp:384] conv4_frame <- conv3_frame
+I0921 20:46:04.424068 30053 net.cpp:342] conv4_frame -> conv4_frame
+I0921 20:46:04.424077 30053 net.cpp:113] Setting up conv4_frame
+I0921 20:46:04.432855 30053 net.cpp:120] Top shape: 5 384 13 13 (324480)
+I0921 20:46:04.432868 30053 layer_factory.hpp:74] Creating layer relu4_frame
+I0921 20:46:04.432873 30053 net.cpp:84] Creating Layer relu4_frame
+I0921 20:46:04.432878 30053 net.cpp:384] relu4_frame <- conv4_frame
+I0921 20:46:04.432884 30053 net.cpp:331] relu4_frame -> conv4_frame (in-place)
+I0921 20:46:04.432891 30053 net.cpp:113] Setting up relu4_frame
+I0921 20:46:04.432898 30053 net.cpp:120] Top shape: 5 384 13 13 (324480)
+I0921 20:46:04.432901 30053 layer_factory.hpp:74] Creating layer conv5_frame
+I0921 20:46:04.432917 30053 net.cpp:84] Creating Layer conv5_frame
+I0921 20:46:04.432921 30053 net.cpp:384] conv5_frame <- conv4_frame
+I0921 20:46:04.432929 30053 net.cpp:342] conv5_frame -> conv5_frame
+I0921 20:46:04.432936 30053 net.cpp:113] Setting up conv5_frame
+I0921 20:46:04.438786 30053 net.cpp:120] Top shape: 5 256 13 13 (216320)
+I0921 20:46:04.438797 30053 layer_factory.hpp:74] Creating layer relu5_frame
+I0921 20:46:04.438807 30053 net.cpp:84] Creating Layer relu5_frame
+I0921 20:46:04.438810 30053 net.cpp:384] relu5_frame <- conv5_frame
+I0921 20:46:04.438817 30053 net.cpp:331] relu5_frame -> conv5_frame (in-place)
+I0921 20:46:04.438822 30053 net.cpp:113] Setting up relu5_frame
+I0921 20:46:04.438827 30053 net.cpp:120] Top shape: 5 256 13 13 (216320)
+I0921 20:46:04.438832 30053 layer_factory.hpp:74] Creating layer pool5_frame
+I0921 20:46:04.438838 30053 net.cpp:84] Creating Layer pool5_frame
+I0921 20:46:04.438843 30053 net.cpp:384] pool5_frame <- conv5_frame
+I0921 20:46:04.438848 30053 net.cpp:342] pool5_frame -> pool5_frame
+I0921 20:46:04.438855 30053 net.cpp:113] Setting up pool5_frame
+I0921 20:46:04.438863 30053 net.cpp:120] Top shape: 5 256 6 6 (46080)
+I0921 20:46:04.438868 30053 layer_factory.hpp:74] Creating layer fc6_frame
+I0921 20:46:04.438877 30053 net.cpp:84] Creating Layer fc6_frame
+I0921 20:46:04.438881 30053 net.cpp:384] fc6_frame <- pool5_frame
+I0921 20:46:04.438887 30053 net.cpp:342] fc6_frame -> fc6_frame
+I0921 20:46:04.438894 30053 net.cpp:113] Setting up fc6_frame
+I0921 20:46:04.919109 30053 net.cpp:120] Top shape: 5 4096 (20480)
+I0921 20:46:04.919140 30053 layer_factory.hpp:74] Creating layer relu6_frame
+I0921 20:46:04.919152 30053 net.cpp:84] Creating Layer relu6_frame
+I0921 20:46:04.919157 30053 net.cpp:384] relu6_frame <- fc6_frame
+I0921 20:46:04.919164 30053 net.cpp:331] relu6_frame -> fc6_frame (in-place)
+I0921 20:46:04.919173 30053 net.cpp:113] Setting up relu6_frame
+I0921 20:46:04.919179 30053 net.cpp:120] Top shape: 5 4096 (20480)
+I0921 20:46:04.919183 30053 layer_factory.hpp:74] Creating layer drop6_frame
+I0921 20:46:04.919190 30053 net.cpp:84] Creating Layer drop6_frame
+I0921 20:46:04.919194 30053 net.cpp:384] drop6_frame <- fc6_frame
+I0921 20:46:04.919201 30053 net.cpp:331] drop6_frame -> fc6_frame (in-place)
+I0921 20:46:04.919208 30053 net.cpp:113] Setting up drop6_frame
+I0921 20:46:04.919219 30053 net.cpp:120] Top shape: 5 4096 (20480)
+I0921 20:46:04.919245 30053 layer_factory.hpp:74] Creating layer fc7_frame
+I0921 20:46:04.919252 30053 net.cpp:84] Creating Layer fc7_frame
+I0921 20:46:04.919256 30053 net.cpp:384] fc7_frame <- fc6_frame
+I0921 20:46:04.919263 30053 net.cpp:342] fc7_frame -> fc7_frame
+I0921 20:46:04.919272 30053 net.cpp:113] Setting up fc7_frame
+I0921 20:46:05.132747 30053 net.cpp:120] Top shape: 5 4096 (20480)
+I0921 20:46:05.132777 30053 layer_factory.hpp:74] Creating layer relu7_frame
+I0921 20:46:05.132791 30053 net.cpp:84] Creating Layer relu7_frame
+I0921 20:46:05.132797 30053 net.cpp:384] relu7_frame <- fc7_frame
+I0921 20:46:05.132804 30053 net.cpp:331] relu7_frame -> fc7_frame (in-place)
+I0921 20:46:05.132812 30053 net.cpp:113] Setting up relu7_frame
+I0921 20:46:05.132818 30053 net.cpp:120] Top shape: 5 4096 (20480)
+I0921 20:46:05.132822 30053 layer_factory.hpp:74] Creating layer drop7_frame
+I0921 20:46:05.132829 30053 net.cpp:84] Creating Layer drop7_frame
+I0921 20:46:05.132833 30053 net.cpp:384] drop7_frame <- fc7_frame
+I0921 20:46:05.132839 30053 net.cpp:331] drop7_frame -> fc7_frame (in-place)
+I0921 20:46:05.132846 30053 net.cpp:113] Setting up drop7_frame
+I0921 20:46:05.132853 30053 net.cpp:120] Top shape: 5 4096 (20480)
+I0921 20:46:05.132858 30053 layer_factory.hpp:74] Creating layer fc8_CAD_frame
+I0921 20:46:05.132865 30053 net.cpp:84] Creating Layer fc8_CAD_frame
+I0921 20:46:05.132869 30053 net.cpp:384] fc8_CAD_frame <- fc7_frame
+I0921 20:46:05.132875 30053 net.cpp:342] fc8_CAD_frame -> fc8_CAD_frame
+I0921 20:46:05.132884 30053 net.cpp:113] Setting up fc8_CAD_frame
+I0921 20:46:05.133163 30053 net.cpp:120] Top shape: 5 5 (25)
+I0921 20:46:05.133173 30053 layer_factory.hpp:74] Creating layer fc8_CAD_frame_fc8_CAD_frame_0_split
+I0921 20:46:05.133180 30053 net.cpp:84] Creating Layer fc8_CAD_frame_fc8_CAD_frame_0_split
+I0921 20:46:05.133184 30053 net.cpp:384] fc8_CAD_frame_fc8_CAD_frame_0_split <- fc8_CAD_frame
+I0921 20:46:05.133191 30053 net.cpp:342] fc8_CAD_frame_fc8_CAD_frame_0_split -> fc8_CAD_frame_fc8_CAD_frame_0_split_0
+I0921 20:46:05.133199 30053 net.cpp:342] fc8_CAD_frame_fc8_CAD_frame_0_split -> fc8_CAD_frame_fc8_CAD_frame_0_split_1
+I0921 20:46:05.133206 30053 net.cpp:342] fc8_CAD_frame_fc8_CAD_frame_0_split -> fc8_CAD_frame_fc8_CAD_frame_0_split_2
+I0921 20:46:05.133213 30053 net.cpp:113] Setting up fc8_CAD_frame_fc8_CAD_frame_0_split
+I0921 20:46:05.133219 30053 net.cpp:120] Top shape: 5 5 (25)
+I0921 20:46:05.133224 30053 net.cpp:120] Top shape: 5 5 (25)
+I0921 20:46:05.133229 30053 net.cpp:120] Top shape: 5 5 (25)
+I0921 20:46:05.133232 30053 layer_factory.hpp:74] Creating layer prob_frame
+I0921 20:46:05.133239 30053 net.cpp:84] Creating Layer prob_frame
+I0921 20:46:05.133242 30053 net.cpp:384] prob_frame <- fc8_CAD_frame_fc8_CAD_frame_0_split_0
+I0921 20:46:05.133249 30053 net.cpp:342] prob_frame -> fc8_CAD_frame_prob
+I0921 20:46:05.133255 30053 net.cpp:113] Setting up prob_frame
+I0921 20:46:05.133262 30053 net.cpp:120] Top shape: 5 5 (25)
+I0921 20:46:05.133266 30053 layer_factory.hpp:74] Creating layer prob_action
+I0921 20:46:05.133272 30053 net.cpp:84] Creating Layer prob_action
+I0921 20:46:05.133276 30053 net.cpp:384] prob_action <- fc8_CAD_action_prob_action_cad_0_split_0
+I0921 20:46:05.133283 30053 net.cpp:342] prob_action -> fc8_CAD_prob
+I0921 20:46:05.133290 30053 net.cpp:113] Setting up prob_action
+I0921 20:46:05.133296 30053 net.cpp:120] Top shape: 70 7 (490)
+I0921 20:46:05.133299 30053 layer_factory.hpp:74] Creating layer prob_pose
+I0921 20:46:05.133304 30053 net.cpp:84] Creating Layer prob_pose
+I0921 20:46:05.133308 30053 net.cpp:384] prob_pose <- fc8_CAD_pose_fc8_CAD_pose_0_split_0
+I0921 20:46:05.133316 30053 net.cpp:342] prob_pose -> fc8_CAD_pose_prob
+I0921 20:46:05.133322 30053 net.cpp:113] Setting up prob_pose
+I0921 20:46:05.133327 30053 net.cpp:120] Top shape: 70 8 (560)
+I0921 20:46:05.133332 30053 layer_factory.hpp:74] Creating layer concatenation_a_p
+I0921 20:46:05.133344 30053 net.cpp:84] Creating Layer concatenation_a_p
+I0921 20:46:05.133352 30053 net.cpp:384] concatenation_a_p <- fc8_CAD_prob
+I0921 20:46:05.133378 30053 net.cpp:384] concatenation_a_p <- fc8_CAD_pose_prob
+I0921 20:46:05.133385 30053 net.cpp:342] concatenation_a_p -> concat_action_pose
+I0921 20:46:05.133394 30053 net.cpp:113] Setting up concatenation_a_p
+I0921 20:46:05.133401 30053 net.cpp:120] Top shape: 70 15 (1050)
+I0921 20:46:05.133405 30053 layer_factory.hpp:74] Creating layer fc9
+I0921 20:46:05.133412 30053 net.cpp:84] Creating Layer fc9
+I0921 20:46:05.133416 30053 net.cpp:384] fc9 <- concat_action_pose
+I0921 20:46:05.133424 30053 net.cpp:342] fc9 -> fc9_unnorm
+I0921 20:46:05.133438 30053 net.cpp:113] Setting up fc9
+I0921 20:46:05.133460 30053 net.cpp:120] Top shape: 70 40 (2800)
+I0921 20:46:05.133467 30053 layer_factory.hpp:74] Creating layer prob_action_pose
+I0921 20:46:05.133473 30053 net.cpp:84] Creating Layer prob_action_pose
+I0921 20:46:05.133482 30053 net.cpp:384] prob_action_pose <- fc9_unnorm
+I0921 20:46:05.133488 30053 net.cpp:342] prob_action_pose -> fc9
+I0921 20:46:05.133494 30053 net.cpp:113] Setting up prob_action_pose
+I0921 20:46:05.133502 30053 net.cpp:120] Top shape: 70 40 (2800)
+I0921 20:46:05.133505 30053 layer_factory.hpp:74] Creating layer Data_arrange_layer_filter
+I0921 20:46:07.464627 30053 net.cpp:84] Creating Layer Data_arrange_layer_filter
+I0921 20:46:07.464653 30053 net.cpp:384] Data_arrange_layer_filter <- fc8_CAD_action_prob_action_cad_0_split_1
+I0921 20:46:07.464663 30053 net.cpp:384] Data_arrange_layer_filter <- label_action_data_action_1_split_0
+I0921 20:46:07.464668 30053 net.cpp:384] Data_arrange_layer_filter <- fc9
+I0921 20:46:07.464675 30053 net.cpp:342] Data_arrange_layer_filter -> fc9_filtered
+I0921 20:46:07.464684 30053 net.cpp:113] Setting up Data_arrange_layer_filter
+I0921 20:46:07.464741 30053 net.cpp:120] Top shape: 5 98 (490)
+I0921 20:46:07.464751 30053 layer_factory.hpp:74] Creating layer concatenation_s_a_p
+I0921 20:46:07.464759 30053 net.cpp:84] Creating Layer concatenation_s_a_p
+I0921 20:46:07.464764 30053 net.cpp:384] concatenation_s_a_p <- fc8_CAD_frame_prob
+I0921 20:46:07.464769 30053 net.cpp:384] concatenation_s_a_p <- fc9_filtered
+I0921 20:46:07.464776 30053 net.cpp:342] concatenation_s_a_p -> concat_all
+I0921 20:46:07.464784 30053 net.cpp:113] Setting up concatenation_s_a_p
+I0921 20:46:07.464792 30053 net.cpp:120] Top shape: 5 103 (515)
+I0921 20:46:07.464795 30053 layer_factory.hpp:74] Creating layer concat_all_concatenation_s_a_p_0_split
+I0921 20:46:07.464802 30053 net.cpp:84] Creating Layer concat_all_concatenation_s_a_p_0_split
+I0921 20:46:07.464807 30053 net.cpp:384] concat_all_concatenation_s_a_p_0_split <- concat_all
+I0921 20:46:07.464812 30053 net.cpp:342] concat_all_concatenation_s_a_p_0_split -> concat_all_concatenation_s_a_p_0_split_0
+I0921 20:46:07.464819 30053 net.cpp:342] concat_all_concatenation_s_a_p_0_split -> concat_all_concatenation_s_a_p_0_split_1
+I0921 20:46:07.464825 30053 net.cpp:342] concat_all_concatenation_s_a_p_0_split -> concat_all_concatenation_s_a_p_0_split_2
+I0921 20:46:07.464831 30053 net.cpp:113] Setting up concat_all_concatenation_s_a_p_0_split
+I0921 20:46:07.464838 30053 net.cpp:120] Top shape: 5 103 (515)
+I0921 20:46:07.464844 30053 net.cpp:120] Top shape: 5 103 (515)
+I0921 20:46:07.464849 30053 net.cpp:120] Top shape: 5 103 (515)
+I0921 20:46:07.464854 30053 layer_factory.hpp:74] Creating layer Data_arrange_layer_init_message
+I0921 20:46:07.466732 30053 net.cpp:84] Creating Layer Data_arrange_layer_init_message
+I0921 20:46:07.466742 30053 net.cpp:384] Data_arrange_layer_init_message <- concat_all_concatenation_s_a_p_0_split_0
+I0921 20:46:07.466749 30053 net.cpp:384] Data_arrange_layer_init_message <- label_action_data_action_1_split_1
+I0921 20:46:07.466755 30053 net.cpp:342] Data_arrange_layer_init_message -> Initial_Messages
+I0921 20:46:07.466761 30053 net.cpp:113] Setting up Data_arrange_layer_init_message
+I0921 20:46:07.466794 30053 net.cpp:120] Top shape: 5 1545 (7725)
+I0921 20:46:07.466801 30053 layer_factory.hpp:74] Creating layer Belief_Propagation_Recurrent_Neural_Network
+I0921 20:46:07.466819 30053 net.cpp:84] Creating Layer Belief_Propagation_Recurrent_Neural_Network
+I0921 20:46:07.466843 30053 net.cpp:384] Belief_Propagation_Recurrent_Neural_Network <- Initial_Messages
+I0921 20:46:07.466850 30053 net.cpp:384] Belief_Propagation_Recurrent_Neural_Network <- concat_all_concatenation_s_a_p_0_split_1
+I0921 20:46:07.466855 30053 net.cpp:384] Belief_Propagation_Recurrent_Neural_Network <- label_action_data_action_1_split_2
+I0921 20:46:07.466861 30053 net.cpp:384] Belief_Propagation_Recurrent_Neural_Network <- fc8_CAD_frame_fc8_CAD_frame_0_split_1
+I0921 20:46:07.466864 30053 net.cpp:384] Belief_Propagation_Recurrent_Neural_Network <- concat_all_concatenation_s_a_p_0_split_2
+I0921 20:46:07.466871 30053 net.cpp:342] Belief_Propagation_Recurrent_Neural_Network -> action_pred
+I0921 20:46:07.466883 30053 net.cpp:342] Belief_Propagation_Recurrent_Neural_Network -> scene_pred
+I0921 20:46:07.466891 30053 net.cpp:113] Setting up Belief_Propagation_Recurrent_Neural_Network
+I0921 20:46:07.466897 30053 BP_recurrent_layer.cpp:30] Initializing BP_recurrent layer: assuming input messages need 2 iterations for 5 batches
+I0921 20:46:07.467653 30053 net.cpp:42] Initializing net from parameters: 
+input: "MessageIn0"
+input: "UnaryInput"
+input: "label_action"
+input: "fc8_context"
+input: "concat_all"
+force_backward: true
+input_shape {
+  dim: 5
+  dim: 1545
+}
+input_shape {
+  dim: 5
+  dim: 103
+}
+input_shape {
+  dim: 70
+}
+input_shape {
+  dim: 5
+  dim: 5
+}
+input_shape {
+  dim: 5
+  dim: 103
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_slice_action_frame_0"
+  type: "Slice"
+  bottom: "concat_all"
+  top: "scene_score_normalized0"
+  top: "cur_action_score_normalized_reshaped0"
+  slice_param {
+    slice_point: 5
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_ArrangeMessageIn1"
+  type: "Python"
+  bottom: "Initial_Messages"
+  bottom: "label_action"
+  top: "S_A_MessageIn1"
+  top: "A_S_MessageIn1"
+  top: "A_A_MessageIn1"
+  python_param {
+    module: "Message_In"
+    layer: "Message_In"
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_S_A_Message1"
+  type: "InnerProduct"
+  bottom: "S_A_MessageIn1"
+  top: "S_A_MessageOut1"
+  param {
+    name: "W_hh_11"
+    lr_mult: 10
+    decay_mult: 10
+  }
+  param {
+    lr_mult: 20
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 7
+    bias_term: true
+    weight_filler {
+      type: "uniform"
+      min: -0.08
+      max: 0.08
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+    axis: 1
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_A_S_Message1"
+  type: "InnerProduct"
+  bottom: "A_S_MessageIn1"
+  top: "A_S_MessageOut1"
+  param {
+    name: "W_hh_21"
+    lr_mult: 10
+    decay_mult: 10
+  }
+  param {
+    lr_mult: 20
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 5
+    bias_term: true
+    weight_filler {
+      type: "uniform"
+      min: -0.08
+      max: 0.08
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+    axis: 1
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_A_A_Message1"
+  type: "InnerProduct"
+  bottom: "A_A_MessageIn1"
+  top: "A_A_MessageOut1"
+  param {
+    name: "W_hh_31"
+    lr_mult: 10
+    decay_mult: 10
+  }
+  param {
+    lr_mult: 20
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 7
+    bias_term: true
+    weight_filler {
+      type: "uniform"
+      min: -0.08
+      max: 0.08
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+    axis: 1
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_Normalize_Scene_to_ActionM1"
+  type: "Softmax"
+  bottom: "S_A_MessageOut1"
+  top: "S_A_MessageOut_normalized1"
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_Normalize_Action_to_SceneM1"
+  type: "Softmax"
+  bottom: "A_S_MessageOut1"
+  top: "A_S_MessageOut_normalized1"
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_Normalize_Action_to_ActionM1"
+  type: "Softmax"
+  bottom: "A_A_MessageOut1"
+  top: "A_A_MessageOut_normalized1"
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_ArrangeMessageOut1"
+  type: "Python"
+  bottom: "concat_all"
+  bottom: "S_A_MessageOut_normalized1"
+  bottom: "A_S_MessageOut_normalized1"
+  bottom: "A_A_MessageOut_normalized1"
+  bottom: "cur_action_score_normalized_reshaped0"
+  bottom: "scene_score_normalized0"
+  bottom: "label_action"
+  top: "MessageIn1"
+  top: "Message_11"
+  top: "Message_21"
+  python_param {
+    module: "Message_Out"
+    layer: "Message_Out"
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_LB_scene1"
+  type: "InnerProduct"
+  bottom: "Message_11"
+  top: "scene_score1"
+  param {
+    name: "W_ho_1"
+    lr_mult: 10
+    decay_mult: 10
+  }
+  param {
+    lr_mult: 20
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 5
+    bias_term: true
+    weight_filler {
+      type: "uniform"
+      min: -0.08
+      max: 0.08
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+    axis: 1
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_Normalize_Scene_Pred1"
+  type: "Softmax"
+  bottom: "scene_score1"
+  top: "scene_score_normalized1"
+  softmax_param {
+    axis: 1
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_python_scene_block_prop1"
+  type: "Python"
+  bottom: "scene_score_normalized1"
+  top: "scene_score_normalized_blocked1"
+  python_param {
+    module: "block_prop"
+    layer: "block_prop"
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_weight_scene_prev1"
+  type: "EliwiseProduct"
+  bottom: "scene_score_normalized_blocked1"
+  top: "scene_score_normalized_weighted1"
+  param {
+    lr_mult: 10
+    decay_mult: 10
+  }
+  eliwise_product_param {
+    weight_filler {
+      type: "uniform"
+      min: -0.08
+      max: 0.08
+    }
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_LB_action1"
+  type: "InnerProduct"
+  bottom: "Message_21"
+  top: "cur_action_score1"
+  param {
+    name: "W_ho_2"
+    lr_mult: 10
+    decay_mult: 10
+  }
+  param {
+    lr_mult: 20
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 7
+    bias_term: true
+    weight_filler {
+      type: "uniform"
+      min: -0.08
+      max: 0.08
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+    axis: 2
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_python_action_block_prop1"
+  type: "Python"
+  bottom: "cur_action_score1"
+  top: "cur_action_score_blocked1"
+  python_param {
+    module: "block_prop"
+    layer: "block_prop"
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_weight_action_prev11"
+  type: "EliwiseProduct"
+  bottom: "cur_action_score_blocked1"
+  top: "cur_action_score_weighted11"
+  param {
+    lr_mult: 10
+    decay_mult: 10
+  }
+  eliwise_product_param {
+    weight_filler {
+      type: "uniform"
+      min: -0.08
+      max: 0.08
+    }
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_weight_action_prev21"
+  type: "EliwiseProduct"
+  bottom: "cur_action_score_blocked1"
+  top: "cur_action_score_weighted21"
+  param {
+    lr_mult: 10
+    decay_mult: 10
+  }
+  eliwise_product_param {
+    weight_filler {
+      type: "uniform"
+      min: -0.08
+      max: 0.08
+    }
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_Normalize_Action_Pred1"
+  type: "Softmax"
+  bottom: "cur_action_score1"
+  top: "cur_action_score_normalized1"
+  softmax_param {
+    axis: 2
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_python_filter1"
+  type: "Python"
+  bottom: "cur_action_score_normalized1"
+  bottom: "label_action"
+  top: "cur_action_score_normalized_reshaped1"
+  python_param {
+    module: "filter_action"
+    layer: "filter_action"
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_python_reshape11"
+  type: "Python"
+  bottom: "cur_action_score1"
+  top: "cur_action_score_reshaped1"
+  python_param {
+    module: "Message_Reshape1"
+    layer: "Message_Reshape1"
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_python_checkdiff1"
+  type: "Python"
+  bottom: "cur_action_score_reshaped1"
+  top: "cur_action_score_reshaped_checked1"
+  python_param {
+    module: "check_diff"
+    layer: "check_diff"
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_graphical_edge2"
+  type: "Python"
+  bottom: "concat_all"
+  bottom: "MessageIn1"
+  bottom: "label_action"
+  top: "gate_input2"
+  python_param {
+    module: "graphical_edge"
+    layer: "graphical_edge"
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_gate_compute2"
+  type: "InnerProduct"
+  bottom: "gate_input2"
+  top: "gates2"
+  param {
+    name: "W_gh_1"
+    lr_mult: 10
+    decay_mult: 10
+  }
+  param {
+    lr_mult: 20
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 1
+    bias_term: true
+    weight_filler {
+      type: "uniform"
+      min: -0.08
+      max: 0.08
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+    axis: 1
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_structured_gate2"
+  type: "Python"
+  bottom: "gates2"
+  bottom: "MessageIn1"
+  bottom: "label_action"
+  top: "gated_MessageIn1"
+  python_param {
+    module: "structured_gate"
+    layer: "structured_gate"
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_ArrangeMessageIn2"
+  type: "Python"
+  bottom: "MessageIn1"
+  bottom: "label_action"
+  bottom: "scene_score_normalized_blocked1"
+  bottom: "cur_action_score_blocked1"
+  bottom: "cur_action_score_blocked1"
+  top: "S_A_MessageIn2"
+  top: "A_S_MessageIn2"
+  top: "A_A_MessageIn2"
+  python_param {
+    module: "Message_In"
+    layer: "Message_In"
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_S_A_Message2"
+  type: "InnerProduct"
+  bottom: "S_A_MessageIn2"
+  top: "S_A_MessageOut2"
+  param {
+    name: "W_hh_1"
+    lr_mult: 10
+    decay_mult: 10
+  }
+  param {
+    lr_mult: 20
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 7
+    bias_term: true
+    weight_filler {
+      type: "uniform"
+      min: -0.08
+      max: 0.08
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+    axis: 1
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_A_S_Message2"
+  type: "InnerProduct"
+  bottom: "A_S_MessageIn2"
+  top: "A_S_MessageOut2"
+  param {
+    name: "W_hh_2"
+    lr_mult: 10
+    decay_mult: 10
+  }
+  param {
+    lr_mult: 20
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 5
+    bias_term: true
+    weight_filler {
+      type: "uniform"
+      min: -0.08
+      max: 0.08
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+    axis: 1
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_A_A_Message2"
+  type: "InnerProduct"
+  bottom: "A_A_MessageIn2"
+  top: "A_A_MessageOut2"
+  param {
+    name: "W_hh_3"
+    lr_mult: 10
+    decay_mult: 10
+  }
+  param {
+    lr_mult: 20
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 7
+    bias_term: true
+    weight_filler {
+      type: "uniform"
+      min: -0.08
+      max: 0.08
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+    axis: 1
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_Normalize_Scene_to_ActionM2"
+  type: "Softmax"
+  bottom: "S_A_MessageOut2"
+  top: "S_A_MessageOut_normalized2"
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_Normalize_Action_to_SceneM2"
+  type: "Softmax"
+  bottom: "A_S_MessageOut2"
+  top: "A_S_MessageOut_normalized2"
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_Normalize_Action_to_ActionM2"
+  type: "Softmax"
+  bottom: "A_A_MessageOut2"
+  top: "A_A_MessageOut_normalized2"
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_ArrangeMessageOut2"
+  type: "Python"
+  bottom: "concat_all"
+  bottom: "S_A_MessageOut_normalized2"
+  bottom: "A_S_MessageOut_normalized2"
+  bottom: "A_A_MessageOut_normalized2"
+  bottom: "cur_action_score_normalized_reshaped1"
+  bottom: "scene_score_normalized1"
+  bottom: "label_action"
+  top: "MessageIn2"
+  top: "Message_12"
+  top: "Message_22"
+  python_param {
+    module: "Message_Out"
+    layer: "Message_Out"
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_LB_scene2"
+  type: "InnerProduct"
+  bottom: "Message_12"
+  top: "scene_score2"
+  param {
+    name: "W_ho_1"
+    lr_mult: 10
+    decay_mult: 10
+  }
+  param {
+    lr_mult: 20
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 5
+    bias_term: true
+    weight_filler {
+      type: "uniform"
+      min: -0.08
+      max: 0.08
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+    axis: 1
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_Normalize_Scene_Pred2"
+  type: "Softmax"
+  bottom: "scene_score2"
+  top: "scene_score_normalized2"
+  softmax_param {
+    axis: 1
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_LB_action2"
+  type: "InnerProduct"
+  bottom: "Message_22"
+  top: "cur_action_score2"
+  param {
+    name: "W_ho_2"
+    lr_mult: 10
+    decay_mult: 10
+  }
+  param {
+    lr_mult: 20
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 7
+    bias_term: true
+    weight_filler {
+      type: "uniform"
+      min: -0.08
+      max: 0.08
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+    axis: 2
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_Normalize_Action_Pred2"
+  type: "Softmax"
+  bottom: "cur_action_score2"
+  top: "cur_action_score_normalized2"
+  softmax_param {
+    axis: 2
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_python_filter2"
+  type: "Python"
+  bottom: "cur_action_score_normalized2"
+  bottom: "label_action"
+  top: "cur_action_score_normalized_reshaped2"
+  python_param {
+    module: "filter_action"
+    layer: "filter_action"
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_python_reshape12"
+  type: "Python"
+  bottom: "cur_action_score2"
+  top: "cur_action_score_reshaped2"
+  python_param {
+    module: "Message_Reshape1"
+    layer: "Message_Reshape1"
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_python_checkdiff2"
+  type: "Python"
+  bottom: "cur_action_score_reshaped2"
+  top: "cur_action_score_reshaped_checked2"
+  python_param {
+    module: "check_diff"
+    layer: "check_diff"
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_output_python_concat_scene"
+  type: "Python"
+  bottom: "scene_score1"
+  bottom: "scene_score2"
+  top: "scene_pred"
+  python_param {
+    module: "MyConcat"
+    layer: "MyConcat"
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_output_python_concat_action"
+  type: "Python"
+  bottom: "cur_action_score_reshaped_checked1"
+  bottom: "cur_action_score_reshaped_checked2"
+  top: "o_action_forcheck"
+  python_param {
+    module: "MyConcat"
+    layer: "MyConcat"
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_python_checkdiff_o"
+  type: "Python"
+  bottom: "o_action_forcheck"
+  bottom: "o_action_forcheck"
+  top: "action_pred"
+  python_param {
+    module: "check_diff"
+    layer: "check_diff"
+  }
+}
+F0921 20:46:07.467737 30053 insert_splits.cpp:35] Unknown blob input Initial_Messages to layer 0
+*** Check failure stack trace: ***
+    @     0x7ff92ebc6b5d  google::LogMessage::Fail()
+    @     0x7ff92ebcab77  google::LogMessage::SendToLog()
+    @     0x7ff92ebc89f9  google::LogMessage::Flush()
+    @     0x7ff92ebc8cfd  google::LogMessageFatal::~LogMessageFatal()
+    @     0x7ff934ab7ffd  caffe::InsertSplits()
+    @     0x7ff934a9c5ed  caffe::Net<>::Init()
+    @     0x7ff934a9f652  caffe::Net<>::Net()
+    @     0x7ff9349da214  caffe::BP_RecurrentLayer<>::LayerSetUp()
+    @     0x7ff934a9cf07  caffe::Net<>::Init()
+    @     0x7ff934a9f652  caffe::Net<>::Net()
+    @     0x7ff934aa2642  caffe::Solver<>::InitTrainNet()
+    @     0x7ff934aa5c6f  caffe::Solver<>::Init()
+    @     0x7ff934aa60a5  caffe::Solver<>::Solver()
+    @           0x40b18d  caffe::SGDSolver<>::SGDSolver()
+    @           0x40e940  caffe::GetSolver<>()
+    @           0x4096be  train()
+    @           0x406c0e  main
+    @       0x3167a1ed5d  (unknown)
+    @           0x4062d9  (unknown)
+finetunes1_RNN_print.sh: line 1: 30053 Aborted                 ../caffe-master/build/tools/caffe train -weights /media/storage/zhiweid/CollectiveActivityDataset/finetune_RNN/net_surgery_forzhiwei.caffemodel -solver=solver_print.prototxt

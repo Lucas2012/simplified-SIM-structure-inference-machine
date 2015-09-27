@@ -1,0 +1,80 @@
+    Test net output #0: accuracy_action = 0.67578
+
+    Test net output #1: accuracy_scene = 0.687143
+
+    Test net output #2: loss_action = 1.67937
+
+    Test net output #3: loss_scene = 0.972867
+
+    Test net output #0: accuracy_action = 0.67307
+
+    Test net output #1: accuracy_scene = 0.672857
+
+    Test net output #2: loss_action = 1.82424
+
+    Test net output #3: loss_scene = 0.963209
+
+    Test net output #0: accuracy_action = 0.676999
+
+    Test net output #1: accuracy_scene = 0.675714
+
+    Test net output #2: loss_action = 1.60417
+
+    Test net output #3: loss_scene = 0.974156
+
+    Test net output #0: accuracy_action = 0.674081
+
+    Test net output #1: accuracy_scene = 0.671429
+
+    Test net output #2: loss_action = 1.76212
+
+    Test net output #3: loss_scene = 0.968507
+
+    Test net output #0: accuracy_action = 0.669165
+
+    Test net output #1: accuracy_scene = 0.692857
+
+    Test net output #2: loss_action = 1.716
+
+    Test net output #3: loss_scene = 0.958678
+
+    Test net output #0: accuracy_action = 0.6706
+
+    Test net output #1: accuracy_scene = 0.668571
+
+    Test net output #2: loss_action = 1.7114
+
+    Test net output #3: loss_scene = 0.972958
+
+    Test net output #0: accuracy_action = 0.662579
+
+    Test net output #1: accuracy_scene = 0.691429
+
+    Test net output #2: loss_action = 1.74473
+
+    Test net output #3: loss_scene = 0.973001
+
+    Test net output #0: accuracy_action = 0.667594
+
+    Test net output #1: accuracy_scene = 0.684286
+
+    Test net output #2: loss_action = 1.73661
+
+    Test net output #3: loss_scene = 0.935695
+
+    Test net output #0: accuracy_action = 0.674326
+
+    Test net output #1: accuracy_scene = 0.685714
+
+    Test net output #2: loss_action = 1.6038
+
+    Test net output #3: loss_scene = 0.97737
+
+    Test net output #0: accuracy_action = 0.673209
+
+    Test net output #1: accuracy_scene = 0.672857
+
+    Test net output #2: loss_action = 1.5311
+
+    Test net output #3: loss_scene = 0.942743
+
