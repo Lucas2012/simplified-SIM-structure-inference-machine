@@ -2,3 +2,4 @@
 *.caffemodel
 *.mdb
 *.h5
+*.binaryproto
