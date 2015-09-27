@@ -1,0 +1,79 @@
+def test_backward(self):
+# tops: message_in(5,8475), message1(5,15*5), message2(5,14,15*40)
+# bottoms: unary_data(5,565), s2a(5*14,40), a2s(5*14,40), a2a(14*14*5,40), action_pred(5,560), scene_pred(5,5)
+
+# mistake one: fixed unary is also set for "message_in" output, which is incorrect
+# warning one: previous prediction scores not used
+messagein_diff_unit = numpy.reshape(list(xrange(0,8475)),[1,8475])
+message1_diff_unit = numpy.reshape(list(xrange(10000,10075)),[1,75])
+message2_diff_unit = numpy.reshape(list(xrange(-14*15*40,0)),[14,600])
+messagein_diff = []
+message1_diff = []
+message2_diff = []
+
+for i in range(0,5):
+    messagein_diff = numpy.append(messagein_diff,messagein_diff_unit,axis = 0)
+    message1_diff = numpy.append(message1_diff,message1_diff_unit,axis = 0)
+    message2_diff = numpy.append(message2_diff,message2_diff_unit,axis = 0)
+tmp_action_diff = numpy.reshape(message2_diff,[5,8400])
+assert(tmp_action_diff[2,0] == -8400)
+assert(tmp_action_diff[2,-8399] == -1)
+messageall_diff = numpy.append(message1_diff,tmp_action_diff,axis = 1)
+messageall_diff += messagein_diff
+
+# unary scene diff:
+unary_scene_diff = messageall_diff[:,70:75]
+# unary action diff:
+tmp = numpy.reshape(message_all_diff,[5,14,600])
+unary_action_diff = tmp[:,:,0:40]
+unary_action_diff = numpy.reshape(unary_action_diff,[5,560])
+# unary data diff:
+unary_data_diff = numpy.append(unary_scene_diff,unary_action_diff,axis = 1)
+
+# s2a diff:
+tmp = numpy.reshape(messageall_diff[:,75:],[70,600])
+s2a_diff = tmp[:,560:600]
+# a2s diff:
+a2s_diff = numpy.reshape(messageall_diff[:,0:70],[70,5])
+# a2a diff:          
+tmp = numpy.reshape(messageall_diff[:,75:],[5,14,600])
+tmp = tmp[:,:,:560]
+for i in range(0,5):
+    for j in range(0,14):
+        tmp[i,j,0:j*40] = tmp[i,j,40:j*40+40]
+        tmp[i,j,j*40:(j+1)*40] = numpy.zeros(40)
+a2a_diff = numpy.reshape(tmp,[980,40])
+# diff of predictions should all be zeros
+action_unary_diff = numpy.zeros([5,560])
+scene_unary_diff = numpy.zeros([5,5])
+
+self.net.blobs['three'].diff[...] = messagein_diff
+self.net.blobs['message1'].diff[...] = message1_diff
+self.net.blobs['message2'].diff[...] = message2_diff
+self.net.backward()
+
+# check: 'data','s2a,'a2s','a2a','action_unary','scene_unary'
+for batch1,batch2 in zip(self.net.blobs['data'].diff,unary_data_diff):
+    for x,y in zip(batch1,batch2):
+        self.assertEqual(y, x)
+
+for batch1,batch2 in zip(self.net.blobs['s2a'].diff,s2a_diff):
+    for x,y in zip(batch1,batch2):
+        self.assertEqual(y, x)
+
+for batch1,batch2 in zip(self.net.blobs['a2s'].diff,a2s_diff):
+    for x,y in zip(batch1,batch2):
+        self.assertEqual(y, x)
+
+for batch1,batch2 in zip(self.net.blobs['a2a'].diff,a2a_diff):
+    for x,y in zip(batch1,batch2):
+        self.assertEqual(y, x)
+
+for batch1,batch2 in zip(self.net.blobs['action_unary'].diff,action_unary_diff):
+    for x,y in zip(batch1,batch2):
+        self.assertEqual(y, x)
+
+for batch1,batch2 in zip(self.net.blobs['scene_unary'].diff,scene_unary_diff):
+    for x,y in zip(batch1,batch2):
+        self.assertEqual(y, x)
+
