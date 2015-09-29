@@ -131,9 +131,6 @@ class simplified_message_out(caffe.Layer):
                         unit[unit_len*(k-1):unit_len*k] /= num_po[k]
                 if j == 0:
                     unit = numpy.append(unary[i,:self.nScene],unit)
-                    #print top_count[0]
-                    #print len(unit)
-                    #print unary
                     top[0].data[int(top_count[0])] = unit
                     top_count[0] += 1
                 else:
