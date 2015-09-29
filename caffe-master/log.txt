@@ -1,5 +1,2054 @@
 WARNING: Logging before InitGoogleLogging() is written to STDERR
-I0729 22:57:55.704284 32751 net.cpp:42] Initializing net from parameters: 
+I0928 21:59:57.292006 31416 net.cpp:42] Initializing net from parameters: 
+name: "pythonnet"
+input: "data"
+input: "label"
+force_backward: true
+state {
+  phase: TRAIN
+}
+input_shape {
+  dim: 5
+  dim: 565
+}
+input_shape {
+  dim: 70
+}
+layer {
+  name: "one"
+  type: "Python"
+  bottom: "data"
+  bottom: "label"
+  top: "a2a"
+  top: "a2s"
+  top: "s2a"
+  python_param {
+    module: "test_simplified_message_in"
+    layer: "test_message_in"
+  }
+}
+I0928 21:59:57.292084 31416 net.cpp:344] Input 0 -> data
+I0928 21:59:57.292134 31416 net.cpp:344] Input 1 -> label
+I0928 21:59:57.292146 31416 net.cpp:67] Memory required for data: 0
+I0928 21:59:57.292171 31416 layer_factory.hpp:74] Creating layer one
+I0928 21:59:57.292225 31416 net.cpp:84] Creating Layer one
+I0928 21:59:57.292234 31416 net.cpp:384] one <- data
+I0928 21:59:57.292244 31416 net.cpp:384] one <- label
+I0928 21:59:57.292254 31416 net.cpp:342] one -> a2a
+I0928 21:59:57.292268 31416 net.cpp:342] one -> a2s
+I0928 21:59:57.292279 31416 net.cpp:342] one -> s2a
+I0928 21:59:57.292289 31416 net.cpp:113] Setting up one
+I0928 21:59:57.292503 31416 net.cpp:120] Top shape: 202 40 (8080)
+I0928 21:59:57.292512 31416 net.cpp:120] Top shape: 24 40 (960)
+I0928 21:59:57.292516 31416 net.cpp:120] Top shape: 24 5 (120)
+I0928 21:59:57.292518 31416 net.cpp:126] Memory required for data: 36640
+I0928 21:59:57.292526 31416 net.cpp:169] one does not need backward computation.
+I0928 21:59:57.292531 31416 net.cpp:208] This network produces output a2a
+I0928 21:59:57.292536 31416 net.cpp:208] This network produces output a2s
+I0928 21:59:57.292541 31416 net.cpp:208] This network produces output s2a
+I0928 21:59:57.292548 31416 net.cpp:449] Collecting Learning Rate and Weight Decay.
+I0928 21:59:57.292552 31416 net.cpp:221] Network initialization done.
+I0928 21:59:57.292554 31416 net.cpp:222] Memory required for data: 36640
+.I0928 21:59:57.423421 31416 net.cpp:42] Initializing net from parameters: 
+name: "pythonnet"
+input: "data"
+input: "label"
+force_backward: true
+state {
+  phase: TRAIN
+}
+input_shape {
+  dim: 5
+  dim: 565
+}
+input_shape {
+  dim: 70
+}
+layer {
+  name: "one"
+  type: "Python"
+  bottom: "data"
+  bottom: "label"
+  top: "a2a"
+  top: "a2s"
+  top: "s2a"
+  python_param {
+    module: "test_simplified_message_in"
+    layer: "test_message_in"
+  }
+}
+I0928 21:59:57.423485 31416 net.cpp:344] Input 0 -> data
+I0928 21:59:57.423518 31416 net.cpp:344] Input 1 -> label
+I0928 21:59:57.423545 31416 net.cpp:67] Memory required for data: 0
+I0928 21:59:57.423573 31416 layer_factory.hpp:74] Creating layer one
+I0928 21:59:57.423614 31416 net.cpp:84] Creating Layer one
+I0928 21:59:57.423622 31416 net.cpp:384] one <- data
+I0928 21:59:57.423634 31416 net.cpp:384] one <- label
+I0928 21:59:57.423643 31416 net.cpp:342] one -> a2a
+I0928 21:59:57.423657 31416 net.cpp:342] one -> a2s
+I0928 21:59:57.423667 31416 net.cpp:342] one -> s2a
+I0928 21:59:57.423677 31416 net.cpp:113] Setting up one
+I0928 21:59:57.423838 31416 net.cpp:120] Top shape: 202 40 (8080)
+I0928 21:59:57.423847 31416 net.cpp:120] Top shape: 24 40 (960)
+I0928 21:59:57.423851 31416 net.cpp:120] Top shape: 24 5 (120)
+I0928 21:59:57.423853 31416 net.cpp:126] Memory required for data: 36640
+I0928 21:59:57.423861 31416 net.cpp:169] one does not need backward computation.
+I0928 21:59:57.423866 31416 net.cpp:208] This network produces output a2a
+I0928 21:59:57.423871 31416 net.cpp:208] This network produces output a2s
+I0928 21:59:57.423876 31416 net.cpp:208] This network produces output s2a
+I0928 21:59:57.423882 31416 net.cpp:449] Collecting Learning Rate and Weight Decay.
+I0928 21:59:57.423887 31416 net.cpp:221] Network initialization done.
+I0928 21:59:57.423888 31416 net.cpp:222] Memory required for data: 36640
+.I0928 21:59:57.440750 31416 net.cpp:42] Initializing net from parameters: 
+name: "pythonnet"
+input: "data"
+input: "label"
+force_backward: true
+state {
+  phase: TRAIN
+}
+input_shape {
+  dim: 5
+  dim: 565
+}
+input_shape {
+  dim: 70
+}
+layer {
+  name: "one"
+  type: "Python"
+  bottom: "data"
+  bottom: "label"
+  top: "a2a"
+  top: "a2s"
+  top: "s2a"
+  python_param {
+    module: "test_simplified_message_in"
+    layer: "test_message_in"
+  }
+}
+I0928 21:59:57.440786 31416 net.cpp:344] Input 0 -> data
+I0928 21:59:57.440806 31416 net.cpp:344] Input 1 -> label
+I0928 21:59:57.440819 31416 net.cpp:67] Memory required for data: 0
+I0928 21:59:57.440831 31416 layer_factory.hpp:74] Creating layer one
+I0928 21:59:57.440861 31416 net.cpp:84] Creating Layer one
+I0928 21:59:57.440868 31416 net.cpp:384] one <- data
+I0928 21:59:57.440878 31416 net.cpp:384] one <- label
+I0928 21:59:57.440888 31416 net.cpp:342] one -> a2a
+I0928 21:59:57.440901 31416 net.cpp:342] one -> a2s
+I0928 21:59:57.440912 31416 net.cpp:342] one -> s2a
+I0928 21:59:57.440922 31416 net.cpp:113] Setting up one
+I0928 21:59:57.441063 31416 net.cpp:120] Top shape: 202 40 (8080)
+I0928 21:59:57.441072 31416 net.cpp:120] Top shape: 24 40 (960)
+I0928 21:59:57.441076 31416 net.cpp:120] Top shape: 24 5 (120)
+I0928 21:59:57.441078 31416 net.cpp:126] Memory required for data: 36640
+I0928 21:59:57.441086 31416 net.cpp:169] one does not need backward computation.
+I0928 21:59:57.441088 31416 net.cpp:208] This network produces output a2a
+I0928 21:59:57.441095 31416 net.cpp:208] This network produces output a2s
+I0928 21:59:57.441099 31416 net.cpp:208] This network produces output s2a
+I0928 21:59:57.441107 31416 net.cpp:449] Collecting Learning Rate and Weight Decay.
+I0928 21:59:57.441109 31416 net.cpp:221] Network initialization done.
+I0928 21:59:57.441112 31416 net.cpp:222] Memory required for data: 36640
+.I0928 21:59:57.441400 31416 net.cpp:42] Initializing net from parameters: 
+name: "testnet"
+force_backward: true
+state {
+  phase: TRAIN
+}
+layer {
+  name: "data"
+  type: "DummyData"
+  top: "data"
+  top: "label"
+  dummy_data_param {
+    data_filler {
+      type: "gaussian"
+      std: 1
+    }
+    data_filler {
+      type: "constant"
+    }
+    num: 5
+    num: 5
+    channels: 2
+    channels: 1
+    height: 3
+    height: 1
+    width: 4
+    width: 1
+  }
+}
+layer {
+  name: "conv"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv"
+  param {
+    decay_mult: 1
+  }
+  param {
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 11
+    pad: 3
+    kernel_size: 2
+    weight_filler {
+      type: "gaussian"
+      std: 1
+    }
+    bias_filler {
+      type: "constant"
+      value: 2
+    }
+  }
+}
+layer {
+  name: "ip"
+  type: "InnerProduct"
+  bottom: "conv"
+  top: "ip"
+  inner_product_param {
+    num_output: 13
+    weight_filler {
+      type: "gaussian"
+      std: 2.5
+    }
+    bias_filler {
+      type: "constant"
+      value: -3
+    }
+  }
+}
+layer {
+  name: "loss"
+  type: "SoftmaxWithLoss"
+  bottom: "ip"
+  bottom: "label"
+  top: "loss"
+}
+I0928 21:59:57.441453 31416 net.cpp:67] Memory required for data: 0
+I0928 21:59:57.441483 31416 layer_factory.hpp:74] Creating layer data
+I0928 21:59:57.441510 31416 net.cpp:84] Creating Layer data
+I0928 21:59:57.441517 31416 net.cpp:342] data -> data
+I0928 21:59:57.441535 31416 net.cpp:342] data -> label
+I0928 21:59:57.441547 31416 net.cpp:113] Setting up data
+I0928 21:59:57.441596 31416 net.cpp:120] Top shape: 5 2 3 4 (120)
+I0928 21:59:57.441603 31416 net.cpp:120] Top shape: 5 1 1 1 (5)
+I0928 21:59:57.441606 31416 net.cpp:126] Memory required for data: 500
+I0928 21:59:57.441612 31416 layer_factory.hpp:74] Creating layer conv
+I0928 21:59:57.441637 31416 net.cpp:84] Creating Layer conv
+I0928 21:59:57.441643 31416 net.cpp:384] conv <- data
+I0928 21:59:57.441665 31416 net.cpp:342] conv -> conv
+I0928 21:59:57.441689 31416 net.cpp:113] Setting up conv
+I0928 21:59:57.442092 31416 net.cpp:120] Top shape: 5 11 8 9 (3960)
+I0928 21:59:57.442098 31416 net.cpp:126] Memory required for data: 16340
+I0928 21:59:57.442116 31416 layer_factory.hpp:74] Creating layer ip
+I0928 21:59:57.442129 31416 net.cpp:84] Creating Layer ip
+I0928 21:59:57.442134 31416 net.cpp:384] ip <- conv
+I0928 21:59:57.442147 31416 net.cpp:342] ip -> ip
+I0928 21:59:57.442158 31416 net.cpp:113] Setting up ip
+I0928 21:59:57.442873 31416 net.cpp:120] Top shape: 5 13 (65)
+I0928 21:59:57.442878 31416 net.cpp:126] Memory required for data: 16600
+I0928 21:59:57.442893 31416 layer_factory.hpp:74] Creating layer loss
+I0928 21:59:57.442905 31416 net.cpp:84] Creating Layer loss
+I0928 21:59:57.442910 31416 net.cpp:384] loss <- ip
+I0928 21:59:57.442919 31416 net.cpp:384] loss <- label
+I0928 21:59:57.442926 31416 net.cpp:342] loss -> loss
+I0928 21:59:57.442939 31416 net.cpp:113] Setting up loss
+I0928 21:59:57.442945 31416 layer_factory.hpp:74] Creating layer loss
+I0928 21:59:57.442970 31416 net.cpp:120] Top shape: (1)
+I0928 21:59:57.442973 31416 net.cpp:122]     with loss weight 1
+I0928 21:59:57.442981 31416 net.cpp:126] Memory required for data: 16604
+I0928 21:59:57.442986 31416 net.cpp:167] loss needs backward computation.
+I0928 21:59:57.442991 31416 net.cpp:167] ip needs backward computation.
+I0928 21:59:57.442993 31416 net.cpp:167] conv needs backward computation.
+I0928 21:59:57.442996 31416 net.cpp:169] data does not need backward computation.
+I0928 21:59:57.443001 31416 net.cpp:208] This network produces output loss
+I0928 21:59:57.443011 31416 net.cpp:449] Collecting Learning Rate and Weight Decay.
+I0928 21:59:57.443017 31416 net.cpp:221] Network initialization done.
+I0928 21:59:57.443018 31416 net.cpp:222] Memory required for data: 16604
+.I0928 21:59:57.443790 31416 net.cpp:42] Initializing net from parameters: 
+name: "testnet"
+force_backward: true
+state {
+  phase: TRAIN
+}
+layer {
+  name: "data"
+  type: "DummyData"
+  top: "data"
+  top: "label"
+  dummy_data_param {
+    data_filler {
+      type: "gaussian"
+      std: 1
+    }
+    data_filler {
+      type: "constant"
+    }
+    num: 5
+    num: 5
+    channels: 2
+    channels: 1
+    height: 3
+    height: 1
+    width: 4
+    width: 1
+  }
+}
+layer {
+  name: "conv"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv"
+  param {
+    decay_mult: 1
+  }
+  param {
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 11
+    pad: 3
+    kernel_size: 2
+    weight_filler {
+      type: "gaussian"
+      std: 1
+    }
+    bias_filler {
+      type: "constant"
+      value: 2
+    }
+  }
+}
+layer {
+  name: "ip"
+  type: "InnerProduct"
+  bottom: "conv"
+  top: "ip"
+  inner_product_param {
+    num_output: 13
+    weight_filler {
+      type: "gaussian"
+      std: 2.5
+    }
+    bias_filler {
+      type: "constant"
+      value: -3
+    }
+  }
+}
+layer {
+  name: "loss"
+  type: "SoftmaxWithLoss"
+  bottom: "ip"
+  bottom: "label"
+  top: "loss"
+}
+I0928 21:59:57.443835 31416 net.cpp:67] Memory required for data: 0
+I0928 21:59:57.443855 31416 layer_factory.hpp:74] Creating layer data
+I0928 21:59:57.443868 31416 net.cpp:84] Creating Layer data
+I0928 21:59:57.443874 31416 net.cpp:342] data -> data
+I0928 21:59:57.443892 31416 net.cpp:342] data -> label
+I0928 21:59:57.443904 31416 net.cpp:113] Setting up data
+I0928 21:59:57.443925 31416 net.cpp:120] Top shape: 5 2 3 4 (120)
+I0928 21:59:57.443931 31416 net.cpp:120] Top shape: 5 1 1 1 (5)
+I0928 21:59:57.443933 31416 net.cpp:126] Memory required for data: 500
+I0928 21:59:57.443938 31416 layer_factory.hpp:74] Creating layer conv
+I0928 21:59:57.443953 31416 net.cpp:84] Creating Layer conv
+I0928 21:59:57.443958 31416 net.cpp:384] conv <- data
+I0928 21:59:57.443970 31416 net.cpp:342] conv -> conv
+I0928 21:59:57.443984 31416 net.cpp:113] Setting up conv
+I0928 21:59:57.444016 31416 net.cpp:120] Top shape: 5 11 8 9 (3960)
+I0928 21:59:57.444021 31416 net.cpp:126] Memory required for data: 16340
+I0928 21:59:57.444036 31416 layer_factory.hpp:74] Creating layer ip
+I0928 21:59:57.444048 31416 net.cpp:84] Creating Layer ip
+I0928 21:59:57.444053 31416 net.cpp:384] ip <- conv
+I0928 21:59:57.444064 31416 net.cpp:342] ip -> ip
+I0928 21:59:57.444075 31416 net.cpp:113] Setting up ip
+I0928 21:59:57.444792 31416 net.cpp:120] Top shape: 5 13 (65)
+I0928 21:59:57.444797 31416 net.cpp:126] Memory required for data: 16600
+I0928 21:59:57.444809 31416 layer_factory.hpp:74] Creating layer loss
+I0928 21:59:57.444818 31416 net.cpp:84] Creating Layer loss
+I0928 21:59:57.444823 31416 net.cpp:384] loss <- ip
+I0928 21:59:57.444833 31416 net.cpp:384] loss <- label
+I0928 21:59:57.444840 31416 net.cpp:342] loss -> loss
+I0928 21:59:57.444851 31416 net.cpp:113] Setting up loss
+I0928 21:59:57.444860 31416 layer_factory.hpp:74] Creating layer loss
+I0928 21:59:57.444882 31416 net.cpp:120] Top shape: (1)
+I0928 21:59:57.444886 31416 net.cpp:122]     with loss weight 1
+I0928 21:59:57.444891 31416 net.cpp:126] Memory required for data: 16604
+I0928 21:59:57.444895 31416 net.cpp:167] loss needs backward computation.
+I0928 21:59:57.444900 31416 net.cpp:167] ip needs backward computation.
+I0928 21:59:57.444902 31416 net.cpp:167] conv needs backward computation.
+I0928 21:59:57.444905 31416 net.cpp:169] data does not need backward computation.
+I0928 21:59:57.444911 31416 net.cpp:208] This network produces output loss
+I0928 21:59:57.444918 31416 net.cpp:449] Collecting Learning Rate and Weight Decay.
+I0928 21:59:57.444924 31416 net.cpp:221] Network initialization done.
+I0928 21:59:57.444927 31416 net.cpp:222] Memory required for data: 16604
+.I0928 21:59:57.445369 31416 net.cpp:42] Initializing net from parameters: 
+name: "testnet"
+force_backward: true
+state {
+  phase: TRAIN
+}
+layer {
+  name: "data"
+  type: "DummyData"
+  top: "data"
+  top: "label"
+  dummy_data_param {
+    data_filler {
+      type: "gaussian"
+      std: 1
+    }
+    data_filler {
+      type: "constant"
+    }
+    num: 5
+    num: 5
+    channels: 2
+    channels: 1
+    height: 3
+    height: 1
+    width: 4
+    width: 1
+  }
+}
+layer {
+  name: "conv"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv"
+  param {
+    decay_mult: 1
+  }
+  param {
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 11
+    pad: 3
+    kernel_size: 2
+    weight_filler {
+      type: "gaussian"
+      std: 1
+    }
+    bias_filler {
+      type: "constant"
+      value: 2
+    }
+  }
+}
+layer {
+  name: "ip"
+  type: "InnerProduct"
+  bottom: "conv"
+  top: "ip"
+  inner_product_param {
+    num_output: 13
+    weight_filler {
+      type: "gaussian"
+      std: 2.5
+    }
+    bias_filler {
+      type: "constant"
+      value: -3
+    }
+  }
+}
+layer {
+  name: "loss"
+  type: "SoftmaxWithLoss"
+  bottom: "ip"
+  bottom: "label"
+  top: "loss"
+}
+I0928 21:59:57.445413 31416 net.cpp:67] Memory required for data: 0
+I0928 21:59:57.445432 31416 layer_factory.hpp:74] Creating layer data
+I0928 21:59:57.445446 31416 net.cpp:84] Creating Layer data
+I0928 21:59:57.445452 31416 net.cpp:342] data -> data
+I0928 21:59:57.445472 31416 net.cpp:342] data -> label
+I0928 21:59:57.445485 31416 net.cpp:113] Setting up data
+I0928 21:59:57.445505 31416 net.cpp:120] Top shape: 5 2 3 4 (120)
+I0928 21:59:57.445511 31416 net.cpp:120] Top shape: 5 1 1 1 (5)
+I0928 21:59:57.445514 31416 net.cpp:126] Memory required for data: 500
+I0928 21:59:57.445519 31416 layer_factory.hpp:74] Creating layer conv
+I0928 21:59:57.445533 31416 net.cpp:84] Creating Layer conv
+I0928 21:59:57.445538 31416 net.cpp:384] conv <- data
+I0928 21:59:57.445554 31416 net.cpp:342] conv -> conv
+I0928 21:59:57.445566 31416 net.cpp:113] Setting up conv
+I0928 21:59:57.445600 31416 net.cpp:120] Top shape: 5 11 8 9 (3960)
+I0928 21:59:57.445605 31416 net.cpp:126] Memory required for data: 16340
+I0928 21:59:57.445619 31416 layer_factory.hpp:74] Creating layer ip
+I0928 21:59:57.445633 31416 net.cpp:84] Creating Layer ip
+I0928 21:59:57.445638 31416 net.cpp:384] ip <- conv
+I0928 21:59:57.445652 31416 net.cpp:342] ip -> ip
+I0928 21:59:57.445662 31416 net.cpp:113] Setting up ip
+I0928 21:59:57.446395 31416 net.cpp:120] Top shape: 5 13 (65)
+I0928 21:59:57.446401 31416 net.cpp:126] Memory required for data: 16600
+I0928 21:59:57.446414 31416 layer_factory.hpp:74] Creating layer loss
+I0928 21:59:57.446426 31416 net.cpp:84] Creating Layer loss
+I0928 21:59:57.446431 31416 net.cpp:384] loss <- ip
+I0928 21:59:57.446440 31416 net.cpp:384] loss <- label
+I0928 21:59:57.446449 31416 net.cpp:342] loss -> loss
+I0928 21:59:57.446461 31416 net.cpp:113] Setting up loss
+I0928 21:59:57.446467 31416 layer_factory.hpp:74] Creating layer loss
+I0928 21:59:57.446488 31416 net.cpp:120] Top shape: (1)
+I0928 21:59:57.446493 31416 net.cpp:122]     with loss weight 1
+I0928 21:59:57.446497 31416 net.cpp:126] Memory required for data: 16604
+I0928 21:59:57.446501 31416 net.cpp:167] loss needs backward computation.
+I0928 21:59:57.446509 31416 net.cpp:167] ip needs backward computation.
+I0928 21:59:57.446512 31416 net.cpp:167] conv needs backward computation.
+I0928 21:59:57.446516 31416 net.cpp:169] data does not need backward computation.
+I0928 21:59:57.446519 31416 net.cpp:208] This network produces output loss
+I0928 21:59:57.446529 31416 net.cpp:449] Collecting Learning Rate and Weight Decay.
+I0928 21:59:57.446537 31416 net.cpp:221] Network initialization done.
+I0928 21:59:57.446538 31416 net.cpp:222] Memory required for data: 16604
+.I0928 21:59:57.447247 31416 net.cpp:42] Initializing net from parameters: 
+name: "testnet"
+force_backward: true
+state {
+  phase: TRAIN
+}
+layer {
+  name: "data"
+  type: "DummyData"
+  top: "data"
+  top: "label"
+  dummy_data_param {
+    data_filler {
+      type: "gaussian"
+      std: 1
+    }
+    data_filler {
+      type: "constant"
+    }
+    num: 5
+    num: 5
+    channels: 2
+    channels: 1
+    height: 3
+    height: 1
+    width: 4
+    width: 1
+  }
+}
+layer {
+  name: "conv"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv"
+  param {
+    decay_mult: 1
+  }
+  param {
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 11
+    pad: 3
+    kernel_size: 2
+    weight_filler {
+      type: "gaussian"
+      std: 1
+    }
+    bias_filler {
+      type: "constant"
+      value: 2
+    }
+  }
+}
+layer {
+  name: "ip"
+  type: "InnerProduct"
+  bottom: "conv"
+  top: "ip"
+  inner_product_param {
+    num_output: 13
+    weight_filler {
+      type: "gaussian"
+      std: 2.5
+    }
+    bias_filler {
+      type: "constant"
+      value: -3
+    }
+  }
+}
+layer {
+  name: "loss"
+  type: "SoftmaxWithLoss"
+  bottom: "ip"
+  bottom: "label"
+  top: "loss"
+}
+I0928 21:59:57.447289 31416 net.cpp:67] Memory required for data: 0
+I0928 21:59:57.447309 31416 layer_factory.hpp:74] Creating layer data
+I0928 21:59:57.447322 31416 net.cpp:84] Creating Layer data
+I0928 21:59:57.447329 31416 net.cpp:342] data -> data
+I0928 21:59:57.447350 31416 net.cpp:342] data -> label
+I0928 21:59:57.447386 31416 net.cpp:113] Setting up data
+I0928 21:59:57.447417 31416 net.cpp:120] Top shape: 5 2 3 4 (120)
+I0928 21:59:57.447427 31416 net.cpp:120] Top shape: 5 1 1 1 (5)
+I0928 21:59:57.447429 31416 net.cpp:126] Memory required for data: 500
+I0928 21:59:57.447444 31416 layer_factory.hpp:74] Creating layer conv
+I0928 21:59:57.447459 31416 net.cpp:84] Creating Layer conv
+I0928 21:59:57.447465 31416 net.cpp:384] conv <- data
+I0928 21:59:57.447479 31416 net.cpp:342] conv -> conv
+I0928 21:59:57.447492 31416 net.cpp:113] Setting up conv
+I0928 21:59:57.447525 31416 net.cpp:120] Top shape: 5 11 8 9 (3960)
+I0928 21:59:57.447530 31416 net.cpp:126] Memory required for data: 16340
+I0928 21:59:57.447543 31416 layer_factory.hpp:74] Creating layer ip
+I0928 21:59:57.447556 31416 net.cpp:84] Creating Layer ip
+I0928 21:59:57.447561 31416 net.cpp:384] ip <- conv
+I0928 21:59:57.447573 31416 net.cpp:342] ip -> ip
+I0928 21:59:57.447583 31416 net.cpp:113] Setting up ip
+I0928 21:59:57.448285 31416 net.cpp:120] Top shape: 5 13 (65)
+I0928 21:59:57.448290 31416 net.cpp:126] Memory required for data: 16600
+I0928 21:59:57.448302 31416 layer_factory.hpp:74] Creating layer loss
+I0928 21:59:57.448312 31416 net.cpp:84] Creating Layer loss
+I0928 21:59:57.448317 31416 net.cpp:384] loss <- ip
+I0928 21:59:57.448325 31416 net.cpp:384] loss <- label
+I0928 21:59:57.448333 31416 net.cpp:342] loss -> loss
+I0928 21:59:57.448343 31416 net.cpp:113] Setting up loss
+I0928 21:59:57.448348 31416 layer_factory.hpp:74] Creating layer loss
+I0928 21:59:57.448369 31416 net.cpp:120] Top shape: (1)
+I0928 21:59:57.448374 31416 net.cpp:122]     with loss weight 1
+I0928 21:59:57.448379 31416 net.cpp:126] Memory required for data: 16604
+I0928 21:59:57.448382 31416 net.cpp:167] loss needs backward computation.
+I0928 21:59:57.448386 31416 net.cpp:167] ip needs backward computation.
+I0928 21:59:57.448390 31416 net.cpp:167] conv needs backward computation.
+I0928 21:59:57.448392 31416 net.cpp:169] data does not need backward computation.
+I0928 21:59:57.448397 31416 net.cpp:208] This network produces output loss
+I0928 21:59:57.448410 31416 net.cpp:449] Collecting Learning Rate and Weight Decay.
+I0928 21:59:57.448416 31416 net.cpp:221] Network initialization done.
+I0928 21:59:57.448418 31416 net.cpp:222] Memory required for data: 16604
+I0928 21:59:57.448614 31416 net.cpp:731] Serializing 4 layers
+I0928 21:59:57.449182 31416 net.cpp:42] Initializing net from parameters: 
+name: "testnet"
+force_backward: true
+state {
+  phase: TRAIN
+}
+layer {
+  name: "data"
+  type: "DummyData"
+  top: "data"
+  top: "label"
+  dummy_data_param {
+    data_filler {
+      type: "gaussian"
+      std: 1
+    }
+    data_filler {
+      type: "constant"
+    }
+    num: 5
+    num: 5
+    channels: 2
+    channels: 1
+    height: 3
+    height: 1
+    width: 4
+    width: 1
+  }
+}
+layer {
+  name: "conv"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv"
+  param {
+    decay_mult: 1
+  }
+  param {
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 11
+    pad: 3
+    kernel_size: 2
+    weight_filler {
+      type: "gaussian"
+      std: 1
+    }
+    bias_filler {
+      type: "constant"
+      value: 2
+    }
+  }
+}
+layer {
+  name: "ip"
+  type: "InnerProduct"
+  bottom: "conv"
+  top: "ip"
+  inner_product_param {
+    num_output: 13
+    weight_filler {
+      type: "gaussian"
+      std: 2.5
+    }
+    bias_filler {
+      type: "constant"
+      value: -3
+    }
+  }
+}
+layer {
+  name: "loss"
+  type: "SoftmaxWithLoss"
+  bottom: "ip"
+  bottom: "label"
+  top: "loss"
+}
+I0928 21:59:57.449226 31416 net.cpp:67] Memory required for data: 0
+I0928 21:59:57.449245 31416 layer_factory.hpp:74] Creating layer data
+I0928 21:59:57.449259 31416 net.cpp:84] Creating Layer data
+I0928 21:59:57.449265 31416 net.cpp:342] data -> data
+I0928 21:59:57.449282 31416 net.cpp:342] data -> label
+I0928 21:59:57.449295 31416 net.cpp:113] Setting up data
+I0928 21:59:57.449316 31416 net.cpp:120] Top shape: 5 2 3 4 (120)
+I0928 21:59:57.449321 31416 net.cpp:120] Top shape: 5 1 1 1 (5)
+I0928 21:59:57.449324 31416 net.cpp:126] Memory required for data: 500
+I0928 21:59:57.449329 31416 layer_factory.hpp:74] Creating layer conv
+I0928 21:59:57.449342 31416 net.cpp:84] Creating Layer conv
+I0928 21:59:57.449348 31416 net.cpp:384] conv <- data
+I0928 21:59:57.449362 31416 net.cpp:342] conv -> conv
+I0928 21:59:57.449374 31416 net.cpp:113] Setting up conv
+I0928 21:59:57.449406 31416 net.cpp:120] Top shape: 5 11 8 9 (3960)
+I0928 21:59:57.449411 31416 net.cpp:126] Memory required for data: 16340
+I0928 21:59:57.449425 31416 layer_factory.hpp:74] Creating layer ip
+I0928 21:59:57.449439 31416 net.cpp:84] Creating Layer ip
+I0928 21:59:57.449443 31416 net.cpp:384] ip <- conv
+I0928 21:59:57.449455 31416 net.cpp:342] ip -> ip
+I0928 21:59:57.449465 31416 net.cpp:113] Setting up ip
+I0928 21:59:57.450193 31416 net.cpp:120] Top shape: 5 13 (65)
+I0928 21:59:57.450199 31416 net.cpp:126] Memory required for data: 16600
+I0928 21:59:57.450212 31416 layer_factory.hpp:74] Creating layer loss
+I0928 21:59:57.450222 31416 net.cpp:84] Creating Layer loss
+I0928 21:59:57.450227 31416 net.cpp:384] loss <- ip
+I0928 21:59:57.450235 31416 net.cpp:384] loss <- label
+I0928 21:59:57.450242 31416 net.cpp:342] loss -> loss
+I0928 21:59:57.450253 31416 net.cpp:113] Setting up loss
+I0928 21:59:57.450259 31416 layer_factory.hpp:74] Creating layer loss
+I0928 21:59:57.450280 31416 net.cpp:120] Top shape: (1)
+I0928 21:59:57.450284 31416 net.cpp:122]     with loss weight 1
+I0928 21:59:57.450289 31416 net.cpp:126] Memory required for data: 16604
+I0928 21:59:57.450292 31416 net.cpp:167] loss needs backward computation.
+I0928 21:59:57.450297 31416 net.cpp:167] ip needs backward computation.
+I0928 21:59:57.450300 31416 net.cpp:167] conv needs backward computation.
+I0928 21:59:57.450304 31416 net.cpp:169] data does not need backward computation.
+I0928 21:59:57.450307 31416 net.cpp:208] This network produces output loss
+I0928 21:59:57.450316 31416 net.cpp:449] Collecting Learning Rate and Weight Decay.
+I0928 21:59:57.450322 31416 net.cpp:221] Network initialization done.
+I0928 21:59:57.450325 31416 net.cpp:222] Memory required for data: 16604
+I0928 21:59:57.450573 31416 net.cpp:704] Copying source layer data
+I0928 21:59:57.450579 31416 net.cpp:704] Copying source layer conv
+I0928 21:59:57.450587 31416 net.cpp:704] Copying source layer ip
+I0928 21:59:57.450675 31416 net.cpp:704] Copying source layer loss
+.I0928 21:59:57.452142 31416 net.cpp:42] Initializing net from parameters: 
+name: "pythonnet"
+input: "a2a"
+input: "a2s"
+input: "s2a"
+input: "label"
+input: "unaries"
+force_backward: true
+state {
+  phase: TRAIN
+}
+input_shape {
+  dim: 202
+  dim: 40
+}
+input_shape {
+  dim: 24
+  dim: 5
+}
+input_shape {
+  dim: 24
+  dim: 40
+}
+input_shape {
+  dim: 70
+}
+input_shape {
+  dim: 5
+  dim: 565
+}
+layer {
+  name: "one"
+  type: "Python"
+  bottom: "a2a"
+  bottom: "a2s"
+  bottom: "s2a"
+  bottom: "label"
+  bottom: "unaries"
+  top: "scene"
+  top: "action"
+  python_param {
+    module: "test_simplified_message_out"
+    layer: "test_message_out"
+  }
+}
+I0928 21:59:57.452183 31416 net.cpp:344] Input 0 -> a2a
+I0928 21:59:57.452204 31416 net.cpp:344] Input 1 -> a2s
+I0928 21:59:57.452219 31416 net.cpp:344] Input 2 -> s2a
+I0928 21:59:57.452229 31416 net.cpp:344] Input 3 -> label
+I0928 21:59:57.452237 31416 net.cpp:344] Input 4 -> unaries
+I0928 21:59:57.452255 31416 net.cpp:67] Memory required for data: 0
+I0928 21:59:57.452268 31416 layer_factory.hpp:74] Creating layer one
+I0928 21:59:57.452299 31416 net.cpp:84] Creating Layer one
+I0928 21:59:57.452307 31416 net.cpp:384] one <- a2a
+I0928 21:59:57.452317 31416 net.cpp:384] one <- a2s
+I0928 21:59:57.452323 31416 net.cpp:384] one <- s2a
+I0928 21:59:57.452328 31416 net.cpp:384] one <- label
+I0928 21:59:57.452332 31416 net.cpp:384] one <- unaries
+I0928 21:59:57.452340 31416 net.cpp:342] one -> scene
+I0928 21:59:57.452353 31416 net.cpp:342] one -> action
+I0928 21:59:57.452360 31416 net.cpp:113] Setting up one
+I0928 21:59:57.452503 31416 net.cpp:120] Top shape: 5 10 (50)
+I0928 21:59:57.452512 31416 net.cpp:120] Top shape: 70 120 (8400)
+I0928 21:59:57.452514 31416 net.cpp:126] Memory required for data: 33800
+I0928 21:59:57.452522 31416 net.cpp:169] one does not need backward computation.
+I0928 21:59:57.452525 31416 net.cpp:208] This network produces output action
+I0928 21:59:57.452533 31416 net.cpp:208] This network produces output scene
+I0928 21:59:57.452540 31416 net.cpp:449] Collecting Learning Rate and Weight Decay.
+I0928 21:59:57.452543 31416 net.cpp:221] Network initialization done.
+I0928 21:59:57.452546 31416 net.cpp:222] Memory required for data: 33800
+.I0928 21:59:57.475360 31416 net.cpp:42] Initializing net from parameters: 
+name: "pythonnet"
+input: "a2a"
+input: "a2s"
+input: "s2a"
+input: "label"
+input: "unaries"
+force_backward: true
+state {
+  phase: TRAIN
+}
+input_shape {
+  dim: 202
+  dim: 40
+}
+input_shape {
+  dim: 24
+  dim: 5
+}
+input_shape {
+  dim: 24
+  dim: 40
+}
+input_shape {
+  dim: 70
+}
+input_shape {
+  dim: 5
+  dim: 565
+}
+layer {
+  name: "one"
+  type: "Python"
+  bottom: "a2a"
+  bottom: "a2s"
+  bottom: "s2a"
+  bottom: "label"
+  bottom: "unaries"
+  top: "scene"
+  top: "action"
+  python_param {
+    module: "test_simplified_message_out"
+    layer: "test_message_out"
+  }
+}
+I0928 21:59:57.475427 31416 net.cpp:344] Input 0 -> a2a
+I0928 21:59:57.475463 31416 net.cpp:344] Input 1 -> a2s
+I0928 21:59:57.475484 31416 net.cpp:344] Input 2 -> s2a
+I0928 21:59:57.475500 31416 net.cpp:344] Input 3 -> label
+I0928 21:59:57.475512 31416 net.cpp:344] Input 4 -> unaries
+I0928 21:59:57.475527 31416 net.cpp:67] Memory required for data: 0
+I0928 21:59:57.475549 31416 layer_factory.hpp:74] Creating layer one
+I0928 21:59:57.475602 31416 net.cpp:84] Creating Layer one
+I0928 21:59:57.475615 31416 net.cpp:384] one <- a2a
+I0928 21:59:57.475632 31416 net.cpp:384] one <- a2s
+I0928 21:59:57.475642 31416 net.cpp:384] one <- s2a
+I0928 21:59:57.475651 31416 net.cpp:384] one <- label
+I0928 21:59:57.475657 31416 net.cpp:384] one <- unaries
+I0928 21:59:57.475672 31416 net.cpp:342] one -> scene
+I0928 21:59:57.475692 31416 net.cpp:342] one -> action
+I0928 21:59:57.475704 31416 net.cpp:113] Setting up one
+I0928 21:59:57.475963 31416 net.cpp:120] Top shape: 5 10 (50)
+I0928 21:59:57.475977 31416 net.cpp:120] Top shape: 70 120 (8400)
+I0928 21:59:57.475988 31416 net.cpp:126] Memory required for data: 33800
+I0928 21:59:57.476001 31416 net.cpp:169] one does not need backward computation.
+I0928 21:59:57.476007 31416 net.cpp:208] This network produces output action
+I0928 21:59:57.476017 31416 net.cpp:208] This network produces output scene
+I0928 21:59:57.476032 31416 net.cpp:449] Collecting Learning Rate and Weight Decay.
+I0928 21:59:57.476037 31416 net.cpp:221] Network initialization done.
+I0928 21:59:57.476042 31416 net.cpp:222] Memory required for data: 33800
+.I0928 21:59:57.486707 31416 net.cpp:42] Initializing net from parameters: 
+name: "pythonnet"
+input: "a2a"
+input: "a2s"
+input: "s2a"
+input: "label"
+input: "unaries"
+force_backward: true
+state {
+  phase: TRAIN
+}
+input_shape {
+  dim: 202
+  dim: 40
+}
+input_shape {
+  dim: 24
+  dim: 5
+}
+input_shape {
+  dim: 24
+  dim: 40
+}
+input_shape {
+  dim: 70
+}
+input_shape {
+  dim: 5
+  dim: 565
+}
+layer {
+  name: "one"
+  type: "Python"
+  bottom: "a2a"
+  bottom: "a2s"
+  bottom: "s2a"
+  bottom: "label"
+  bottom: "unaries"
+  top: "scene"
+  top: "action"
+  python_param {
+    module: "test_simplified_message_out"
+    layer: "test_message_out"
+  }
+}
+I0928 21:59:57.486747 31416 net.cpp:344] Input 0 -> a2a
+I0928 21:59:57.486768 31416 net.cpp:344] Input 1 -> a2s
+I0928 21:59:57.486780 31416 net.cpp:344] Input 2 -> s2a
+I0928 21:59:57.486790 31416 net.cpp:344] Input 3 -> label
+I0928 21:59:57.486799 31416 net.cpp:344] Input 4 -> unaries
+I0928 21:59:57.486806 31416 net.cpp:67] Memory required for data: 0
+I0928 21:59:57.486820 31416 layer_factory.hpp:74] Creating layer one
+I0928 21:59:57.486853 31416 net.cpp:84] Creating Layer one
+I0928 21:59:57.486861 31416 net.cpp:384] one <- a2a
+I0928 21:59:57.486871 31416 net.cpp:384] one <- a2s
+I0928 21:59:57.486877 31416 net.cpp:384] one <- s2a
+I0928 21:59:57.486882 31416 net.cpp:384] one <- label
+I0928 21:59:57.486886 31416 net.cpp:384] one <- unaries
+I0928 21:59:57.486894 31416 net.cpp:342] one -> scene
+I0928 21:59:57.486907 31416 net.cpp:342] one -> action
+I0928 21:59:57.486914 31416 net.cpp:113] Setting up one
+I0928 21:59:57.487071 31416 net.cpp:120] Top shape: 5 10 (50)
+I0928 21:59:57.487079 31416 net.cpp:120] Top shape: 70 120 (8400)
+I0928 21:59:57.487082 31416 net.cpp:126] Memory required for data: 33800
+I0928 21:59:57.487089 31416 net.cpp:169] one does not need backward computation.
+I0928 21:59:57.487093 31416 net.cpp:208] This network produces output action
+I0928 21:59:57.487099 31416 net.cpp:208] This network produces output scene
+I0928 21:59:57.487107 31416 net.cpp:449] Collecting Learning Rate and Weight Decay.
+I0928 21:59:57.487112 31416 net.cpp:221] Network initialization done.
+I0928 21:59:57.487113 31416 net.cpp:222] Memory required for data: 33800
+.I0928 21:59:57.487318 31416 solver.cpp:32] Initializing solver from parameters: 
+test_iter: 10
+test_interval: 10
+base_lr: 0.01
+display: 100
+max_iter: 100
+lr_policy: "inv"
+gamma: 0.0001
+power: 0.75
+momentum: 0.9
+weight_decay: 0.0005
+net: "/tmp/tmpSnjaLu"
+snapshot_after_train: false
+I0928 21:59:57.487334 31416 solver.cpp:70] Creating training net from net file: /tmp/tmpSnjaLu
+I0928 21:59:57.487465 31416 net.cpp:42] Initializing net from parameters: 
+name: "testnet"
+force_backward: true
+state {
+  phase: TRAIN
+}
+layer {
+  name: "data"
+  type: "DummyData"
+  top: "data"
+  top: "label"
+  dummy_data_param {
+    data_filler {
+      type: "gaussian"
+      std: 1
+    }
+    data_filler {
+      type: "constant"
+    }
+    num: 5
+    num: 5
+    channels: 2
+    channels: 1
+    height: 3
+    height: 1
+    width: 4
+    width: 1
+  }
+}
+layer {
+  name: "conv"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv"
+  param {
+    decay_mult: 1
+  }
+  param {
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 11
+    pad: 3
+    kernel_size: 2
+    weight_filler {
+      type: "gaussian"
+      std: 1
+    }
+    bias_filler {
+      type: "constant"
+      value: 2
+    }
+  }
+}
+layer {
+  name: "ip"
+  type: "InnerProduct"
+  bottom: "conv"
+  top: "ip"
+  inner_product_param {
+    num_output: 13
+    weight_filler {
+      type: "gaussian"
+      std: 2.5
+    }
+    bias_filler {
+      type: "constant"
+      value: -3
+    }
+  }
+}
+layer {
+  name: "loss"
+  type: "SoftmaxWithLoss"
+  bottom: "ip"
+  bottom: "label"
+  top: "loss"
+}
+I0928 21:59:57.487511 31416 net.cpp:67] Memory required for data: 0
+I0928 21:59:57.487530 31416 layer_factory.hpp:74] Creating layer data
+I0928 21:59:57.487545 31416 net.cpp:84] Creating Layer data
+I0928 21:59:57.487551 31416 net.cpp:342] data -> data
+I0928 21:59:57.487570 31416 net.cpp:342] data -> label
+I0928 21:59:57.487582 31416 net.cpp:113] Setting up data
+I0928 21:59:57.487604 31416 net.cpp:120] Top shape: 5 2 3 4 (120)
+I0928 21:59:57.487610 31416 net.cpp:120] Top shape: 5 1 1 1 (5)
+I0928 21:59:57.487613 31416 net.cpp:126] Memory required for data: 500
+I0928 21:59:57.487618 31416 layer_factory.hpp:74] Creating layer conv
+I0928 21:59:57.487633 31416 net.cpp:84] Creating Layer conv
+I0928 21:59:57.487638 31416 net.cpp:384] conv <- data
+I0928 21:59:57.487651 31416 net.cpp:342] conv -> conv
+I0928 21:59:57.487664 31416 net.cpp:113] Setting up conv
+I0928 21:59:57.487700 31416 net.cpp:120] Top shape: 5 11 8 9 (3960)
+I0928 21:59:57.487704 31416 net.cpp:126] Memory required for data: 16340
+I0928 21:59:57.487720 31416 layer_factory.hpp:74] Creating layer ip
+I0928 21:59:57.487732 31416 net.cpp:84] Creating Layer ip
+I0928 21:59:57.487737 31416 net.cpp:384] ip <- conv
+I0928 21:59:57.487750 31416 net.cpp:342] ip -> ip
+I0928 21:59:57.487761 31416 net.cpp:113] Setting up ip
+I0928 21:59:57.488584 31416 net.cpp:120] Top shape: 5 13 (65)
+I0928 21:59:57.488589 31416 net.cpp:126] Memory required for data: 16600
+I0928 21:59:57.488600 31416 layer_factory.hpp:74] Creating layer loss
+I0928 21:59:57.488610 31416 net.cpp:84] Creating Layer loss
+I0928 21:59:57.488615 31416 net.cpp:384] loss <- ip
+I0928 21:59:57.488623 31416 net.cpp:384] loss <- label
+I0928 21:59:57.488631 31416 net.cpp:342] loss -> loss
+I0928 21:59:57.488641 31416 net.cpp:113] Setting up loss
+I0928 21:59:57.488647 31416 layer_factory.hpp:74] Creating layer loss
+I0928 21:59:57.488668 31416 net.cpp:120] Top shape: (1)
+I0928 21:59:57.488673 31416 net.cpp:122]     with loss weight 1
+I0928 21:59:57.488678 31416 net.cpp:126] Memory required for data: 16604
+I0928 21:59:57.488682 31416 net.cpp:167] loss needs backward computation.
+I0928 21:59:57.488687 31416 net.cpp:167] ip needs backward computation.
+I0928 21:59:57.488689 31416 net.cpp:167] conv needs backward computation.
+I0928 21:59:57.488692 31416 net.cpp:169] data does not need backward computation.
+I0928 21:59:57.488698 31416 net.cpp:208] This network produces output loss
+I0928 21:59:57.488706 31416 net.cpp:449] Collecting Learning Rate and Weight Decay.
+I0928 21:59:57.488713 31416 net.cpp:221] Network initialization done.
+I0928 21:59:57.488715 31416 net.cpp:222] Memory required for data: 16604
+I0928 21:59:57.488811 31416 solver.cpp:154] Creating test net (#0) specified by net file: /tmp/tmpSnjaLu
+I0928 21:59:57.488863 31416 net.cpp:42] Initializing net from parameters: 
+name: "testnet"
+force_backward: true
+state {
+  phase: TEST
+}
+layer {
+  name: "data"
+  type: "DummyData"
+  top: "data"
+  top: "label"
+  dummy_data_param {
+    data_filler {
+      type: "gaussian"
+      std: 1
+    }
+    data_filler {
+      type: "constant"
+    }
+    num: 5
+    num: 5
+    channels: 2
+    channels: 1
+    height: 3
+    height: 1
+    width: 4
+    width: 1
+  }
+}
+layer {
+  name: "conv"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv"
+  param {
+    decay_mult: 1
+  }
+  param {
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 11
+    pad: 3
+    kernel_size: 2
+    weight_filler {
+      type: "gaussian"
+      std: 1
+    }
+    bias_filler {
+      type: "constant"
+      value: 2
+    }
+  }
+}
+layer {
+  name: "ip"
+  type: "InnerProduct"
+  bottom: "conv"
+  top: "ip"
+  inner_product_param {
+    num_output: 13
+    weight_filler {
+      type: "gaussian"
+      std: 2.5
+    }
+    bias_filler {
+      type: "constant"
+      value: -3
+    }
+  }
+}
+layer {
+  name: "loss"
+  type: "SoftmaxWithLoss"
+  bottom: "ip"
+  bottom: "label"
+  top: "loss"
+}
+I0928 21:59:57.488909 31416 net.cpp:67] Memory required for data: 0
+I0928 21:59:57.488927 31416 layer_factory.hpp:74] Creating layer data
+I0928 21:59:57.488940 31416 net.cpp:84] Creating Layer data
+I0928 21:59:57.488947 31416 net.cpp:342] data -> data
+I0928 21:59:57.488965 31416 net.cpp:342] data -> label
+I0928 21:59:57.488976 31416 net.cpp:113] Setting up data
+I0928 21:59:57.488996 31416 net.cpp:120] Top shape: 5 2 3 4 (120)
+I0928 21:59:57.489002 31416 net.cpp:120] Top shape: 5 1 1 1 (5)
+I0928 21:59:57.489006 31416 net.cpp:126] Memory required for data: 500
+I0928 21:59:57.489011 31416 layer_factory.hpp:74] Creating layer conv
+I0928 21:59:57.489023 31416 net.cpp:84] Creating Layer conv
+I0928 21:59:57.489029 31416 net.cpp:384] conv <- data
+I0928 21:59:57.489042 31416 net.cpp:342] conv -> conv
+I0928 21:59:57.489055 31416 net.cpp:113] Setting up conv
+I0928 21:59:57.489086 31416 net.cpp:120] Top shape: 5 11 8 9 (3960)
+I0928 21:59:57.489091 31416 net.cpp:126] Memory required for data: 16340
+I0928 21:59:57.489106 31416 layer_factory.hpp:74] Creating layer ip
+I0928 21:59:57.489120 31416 net.cpp:84] Creating Layer ip
+I0928 21:59:57.489125 31416 net.cpp:384] ip <- conv
+I0928 21:59:57.489136 31416 net.cpp:342] ip -> ip
+I0928 21:59:57.489146 31416 net.cpp:113] Setting up ip
+I0928 21:59:57.489850 31416 net.cpp:120] Top shape: 5 13 (65)
+I0928 21:59:57.489855 31416 net.cpp:126] Memory required for data: 16600
+I0928 21:59:57.489866 31416 layer_factory.hpp:74] Creating layer loss
+I0928 21:59:57.489889 31416 net.cpp:84] Creating Layer loss
+I0928 21:59:57.489917 31416 net.cpp:384] loss <- ip
+I0928 21:59:57.489928 31416 net.cpp:384] loss <- label
+I0928 21:59:57.489934 31416 net.cpp:342] loss -> loss
+I0928 21:59:57.489961 31416 net.cpp:113] Setting up loss
+I0928 21:59:57.489967 31416 layer_factory.hpp:74] Creating layer loss
+I0928 21:59:57.489989 31416 net.cpp:120] Top shape: (1)
+I0928 21:59:57.489994 31416 net.cpp:122]     with loss weight 1
+I0928 21:59:57.489998 31416 net.cpp:126] Memory required for data: 16604
+I0928 21:59:57.490002 31416 net.cpp:167] loss needs backward computation.
+I0928 21:59:57.490006 31416 net.cpp:167] ip needs backward computation.
+I0928 21:59:57.490010 31416 net.cpp:167] conv needs backward computation.
+I0928 21:59:57.490012 31416 net.cpp:169] data does not need backward computation.
+I0928 21:59:57.490017 31416 net.cpp:208] This network produces output loss
+I0928 21:59:57.490025 31416 net.cpp:449] Collecting Learning Rate and Weight Decay.
+I0928 21:59:57.490031 31416 net.cpp:221] Network initialization done.
+I0928 21:59:57.490034 31416 net.cpp:222] Memory required for data: 16604
+I0928 21:59:57.490049 31416 solver.cpp:42] Solver scaffolding done.
+I0928 21:59:57.490110 31416 solver.cpp:32] Initializing solver from parameters: 
+test_iter: 10
+test_interval: 10
+base_lr: 0.01
+display: 100
+max_iter: 100
+lr_policy: "inv"
+gamma: 0.0001
+power: 0.75
+momentum: 0.9
+weight_decay: 0.0005
+net: "/tmp/tmpSnjaLu"
+snapshot_after_train: false
+I0928 21:59:57.490120 31416 solver.cpp:70] Creating training net from net file: /tmp/tmpSnjaLu
+I0928 21:59:57.490239 31416 net.cpp:42] Initializing net from parameters: 
+name: "testnet"
+force_backward: true
+state {
+  phase: TRAIN
+}
+layer {
+  name: "data"
+  type: "DummyData"
+  top: "data"
+  top: "label"
+  dummy_data_param {
+    data_filler {
+      type: "gaussian"
+      std: 1
+    }
+    data_filler {
+      type: "constant"
+    }
+    num: 5
+    num: 5
+    channels: 2
+    channels: 1
+    height: 3
+    height: 1
+    width: 4
+    width: 1
+  }
+}
+layer {
+  name: "conv"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv"
+  param {
+    decay_mult: 1
+  }
+  param {
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 11
+    pad: 3
+    kernel_size: 2
+    weight_filler {
+      type: "gaussian"
+      std: 1
+    }
+    bias_filler {
+      type: "constant"
+      value: 2
+    }
+  }
+}
+layer {
+  name: "ip"
+  type: "InnerProduct"
+  bottom: "conv"
+  top: "ip"
+  inner_product_param {
+    num_output: 13
+    weight_filler {
+      type: "gaussian"
+      std: 2.5
+    }
+    bias_filler {
+      type: "constant"
+      value: -3
+    }
+  }
+}
+layer {
+  name: "loss"
+  type: "SoftmaxWithLoss"
+  bottom: "ip"
+  bottom: "label"
+  top: "loss"
+}
+I0928 21:59:57.490285 31416 net.cpp:67] Memory required for data: 0
+I0928 21:59:57.490305 31416 layer_factory.hpp:74] Creating layer data
+I0928 21:59:57.490319 31416 net.cpp:84] Creating Layer data
+I0928 21:59:57.490325 31416 net.cpp:342] data -> data
+I0928 21:59:57.490344 31416 net.cpp:342] data -> label
+I0928 21:59:57.490356 31416 net.cpp:113] Setting up data
+I0928 21:59:57.490376 31416 net.cpp:120] Top shape: 5 2 3 4 (120)
+I0928 21:59:57.490382 31416 net.cpp:120] Top shape: 5 1 1 1 (5)
+I0928 21:59:57.490384 31416 net.cpp:126] Memory required for data: 500
+I0928 21:59:57.490389 31416 layer_factory.hpp:74] Creating layer conv
+I0928 21:59:57.490403 31416 net.cpp:84] Creating Layer conv
+I0928 21:59:57.490409 31416 net.cpp:384] conv <- data
+I0928 21:59:57.490422 31416 net.cpp:342] conv -> conv
+I0928 21:59:57.490435 31416 net.cpp:113] Setting up conv
+I0928 21:59:57.490468 31416 net.cpp:120] Top shape: 5 11 8 9 (3960)
+I0928 21:59:57.490471 31416 net.cpp:126] Memory required for data: 16340
+I0928 21:59:57.490486 31416 layer_factory.hpp:74] Creating layer ip
+I0928 21:59:57.490499 31416 net.cpp:84] Creating Layer ip
+I0928 21:59:57.490504 31416 net.cpp:384] ip <- conv
+I0928 21:59:57.490515 31416 net.cpp:342] ip -> ip
+I0928 21:59:57.490526 31416 net.cpp:113] Setting up ip
+I0928 21:59:57.491253 31416 net.cpp:120] Top shape: 5 13 (65)
+I0928 21:59:57.491258 31416 net.cpp:126] Memory required for data: 16600
+I0928 21:59:57.491271 31416 layer_factory.hpp:74] Creating layer loss
+I0928 21:59:57.491281 31416 net.cpp:84] Creating Layer loss
+I0928 21:59:57.491284 31416 net.cpp:384] loss <- ip
+I0928 21:59:57.491293 31416 net.cpp:384] loss <- label
+I0928 21:59:57.491300 31416 net.cpp:342] loss -> loss
+I0928 21:59:57.491312 31416 net.cpp:113] Setting up loss
+I0928 21:59:57.491317 31416 layer_factory.hpp:74] Creating layer loss
+I0928 21:59:57.491338 31416 net.cpp:120] Top shape: (1)
+I0928 21:59:57.491343 31416 net.cpp:122]     with loss weight 1
+I0928 21:59:57.491346 31416 net.cpp:126] Memory required for data: 16604
+I0928 21:59:57.491350 31416 net.cpp:167] loss needs backward computation.
+I0928 21:59:57.491354 31416 net.cpp:167] ip needs backward computation.
+I0928 21:59:57.491358 31416 net.cpp:167] conv needs backward computation.
+I0928 21:59:57.491360 31416 net.cpp:169] data does not need backward computation.
+I0928 21:59:57.491365 31416 net.cpp:208] This network produces output loss
+I0928 21:59:57.491374 31416 net.cpp:449] Collecting Learning Rate and Weight Decay.
+I0928 21:59:57.491380 31416 net.cpp:221] Network initialization done.
+I0928 21:59:57.491382 31416 net.cpp:222] Memory required for data: 16604
+I0928 21:59:57.491475 31416 solver.cpp:154] Creating test net (#0) specified by net file: /tmp/tmpSnjaLu
+I0928 21:59:57.491528 31416 net.cpp:42] Initializing net from parameters: 
+name: "testnet"
+force_backward: true
+state {
+  phase: TEST
+}
+layer {
+  name: "data"
+  type: "DummyData"
+  top: "data"
+  top: "label"
+  dummy_data_param {
+    data_filler {
+      type: "gaussian"
+      std: 1
+    }
+    data_filler {
+      type: "constant"
+    }
+    num: 5
+    num: 5
+    channels: 2
+    channels: 1
+    height: 3
+    height: 1
+    width: 4
+    width: 1
+  }
+}
+layer {
+  name: "conv"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv"
+  param {
+    decay_mult: 1
+  }
+  param {
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 11
+    pad: 3
+    kernel_size: 2
+    weight_filler {
+      type: "gaussian"
+      std: 1
+    }
+    bias_filler {
+      type: "constant"
+      value: 2
+    }
+  }
+}
+layer {
+  name: "ip"
+  type: "InnerProduct"
+  bottom: "conv"
+  top: "ip"
+  inner_product_param {
+    num_output: 13
+    weight_filler {
+      type: "gaussian"
+      std: 2.5
+    }
+    bias_filler {
+      type: "constant"
+      value: -3
+    }
+  }
+}
+layer {
+  name: "loss"
+  type: "SoftmaxWithLoss"
+  bottom: "ip"
+  bottom: "label"
+  top: "loss"
+}
+I0928 21:59:57.491578 31416 net.cpp:67] Memory required for data: 0
+I0928 21:59:57.491606 31416 layer_factory.hpp:74] Creating layer data
+I0928 21:59:57.491623 31416 net.cpp:84] Creating Layer data
+I0928 21:59:57.491642 31416 net.cpp:342] data -> data
+I0928 21:59:57.491680 31416 net.cpp:342] data -> label
+I0928 21:59:57.491703 31416 net.cpp:113] Setting up data
+I0928 21:59:57.491734 31416 net.cpp:120] Top shape: 5 2 3 4 (120)
+I0928 21:59:57.491739 31416 net.cpp:120] Top shape: 5 1 1 1 (5)
+I0928 21:59:57.491751 31416 net.cpp:126] Memory required for data: 500
+I0928 21:59:57.491756 31416 layer_factory.hpp:74] Creating layer conv
+I0928 21:59:57.491771 31416 net.cpp:84] Creating Layer conv
+I0928 21:59:57.491777 31416 net.cpp:384] conv <- data
+I0928 21:59:57.491791 31416 net.cpp:342] conv -> conv
+I0928 21:59:57.491803 31416 net.cpp:113] Setting up conv
+I0928 21:59:57.491837 31416 net.cpp:120] Top shape: 5 11 8 9 (3960)
+I0928 21:59:57.491842 31416 net.cpp:126] Memory required for data: 16340
+I0928 21:59:57.491857 31416 layer_factory.hpp:74] Creating layer ip
+I0928 21:59:57.491869 31416 net.cpp:84] Creating Layer ip
+I0928 21:59:57.491874 31416 net.cpp:384] ip <- conv
+I0928 21:59:57.491886 31416 net.cpp:342] ip -> ip
+I0928 21:59:57.491896 31416 net.cpp:113] Setting up ip
+I0928 21:59:57.492610 31416 net.cpp:120] Top shape: 5 13 (65)
+I0928 21:59:57.492616 31416 net.cpp:126] Memory required for data: 16600
+I0928 21:59:57.492629 31416 layer_factory.hpp:74] Creating layer loss
+I0928 21:59:57.492640 31416 net.cpp:84] Creating Layer loss
+I0928 21:59:57.492645 31416 net.cpp:384] loss <- ip
+I0928 21:59:57.492652 31416 net.cpp:384] loss <- label
+I0928 21:59:57.492660 31416 net.cpp:342] loss -> loss
+I0928 21:59:57.492671 31416 net.cpp:113] Setting up loss
+I0928 21:59:57.492676 31416 layer_factory.hpp:74] Creating layer loss
+I0928 21:59:57.492698 31416 net.cpp:120] Top shape: (1)
+I0928 21:59:57.492703 31416 net.cpp:122]     with loss weight 1
+I0928 21:59:57.492707 31416 net.cpp:126] Memory required for data: 16604
+I0928 21:59:57.492712 31416 net.cpp:167] loss needs backward computation.
+I0928 21:59:57.492717 31416 net.cpp:167] ip needs backward computation.
+I0928 21:59:57.492719 31416 net.cpp:167] conv needs backward computation.
+I0928 21:59:57.492722 31416 net.cpp:169] data does not need backward computation.
+I0928 21:59:57.492727 31416 net.cpp:208] This network produces output loss
+I0928 21:59:57.492735 31416 net.cpp:449] Collecting Learning Rate and Weight Decay.
+I0928 21:59:57.492741 31416 net.cpp:221] Network initialization done.
+I0928 21:59:57.492743 31416 net.cpp:222] Memory required for data: 16604
+I0928 21:59:57.492758 31416 solver.cpp:42] Solver scaffolding done.
+.I0928 21:59:57.493963 31416 solver.cpp:32] Initializing solver from parameters: 
+test_iter: 10
+test_interval: 10
+base_lr: 0.01
+display: 100
+max_iter: 100
+lr_policy: "inv"
+gamma: 0.0001
+power: 0.75
+momentum: 0.9
+weight_decay: 0.0005
+net: "/tmp/tmpsemI8J"
+snapshot_after_train: false
+I0928 21:59:57.493976 31416 solver.cpp:70] Creating training net from net file: /tmp/tmpsemI8J
+I0928 21:59:57.494099 31416 net.cpp:42] Initializing net from parameters: 
+name: "testnet"
+force_backward: true
+state {
+  phase: TRAIN
+}
+layer {
+  name: "data"
+  type: "DummyData"
+  top: "data"
+  top: "label"
+  dummy_data_param {
+    data_filler {
+      type: "gaussian"
+      std: 1
+    }
+    data_filler {
+      type: "constant"
+    }
+    num: 5
+    num: 5
+    channels: 2
+    channels: 1
+    height: 3
+    height: 1
+    width: 4
+    width: 1
+  }
+}
+layer {
+  name: "conv"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv"
+  param {
+    decay_mult: 1
+  }
+  param {
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 11
+    pad: 3
+    kernel_size: 2
+    weight_filler {
+      type: "gaussian"
+      std: 1
+    }
+    bias_filler {
+      type: "constant"
+      value: 2
+    }
+  }
+}
+layer {
+  name: "ip"
+  type: "InnerProduct"
+  bottom: "conv"
+  top: "ip"
+  inner_product_param {
+    num_output: 13
+    weight_filler {
+      type: "gaussian"
+      std: 2.5
+    }
+    bias_filler {
+      type: "constant"
+      value: -3
+    }
+  }
+}
+layer {
+  name: "loss"
+  type: "SoftmaxWithLoss"
+  bottom: "ip"
+  bottom: "label"
+  top: "loss"
+}
+I0928 21:59:57.494145 31416 net.cpp:67] Memory required for data: 0
+I0928 21:59:57.494164 31416 layer_factory.hpp:74] Creating layer data
+I0928 21:59:57.494179 31416 net.cpp:84] Creating Layer data
+I0928 21:59:57.494185 31416 net.cpp:342] data -> data
+I0928 21:59:57.494204 31416 net.cpp:342] data -> label
+I0928 21:59:57.494216 31416 net.cpp:113] Setting up data
+I0928 21:59:57.494236 31416 net.cpp:120] Top shape: 5 2 3 4 (120)
+I0928 21:59:57.494242 31416 net.cpp:120] Top shape: 5 1 1 1 (5)
+I0928 21:59:57.494246 31416 net.cpp:126] Memory required for data: 500
+I0928 21:59:57.494251 31416 layer_factory.hpp:74] Creating layer conv
+I0928 21:59:57.494264 31416 net.cpp:84] Creating Layer conv
+I0928 21:59:57.494269 31416 net.cpp:384] conv <- data
+I0928 21:59:57.494282 31416 net.cpp:342] conv -> conv
+I0928 21:59:57.494295 31416 net.cpp:113] Setting up conv
+I0928 21:59:57.494330 31416 net.cpp:120] Top shape: 5 11 8 9 (3960)
+I0928 21:59:57.494335 31416 net.cpp:126] Memory required for data: 16340
+I0928 21:59:57.494350 31416 layer_factory.hpp:74] Creating layer ip
+I0928 21:59:57.494364 31416 net.cpp:84] Creating Layer ip
+I0928 21:59:57.494369 31416 net.cpp:384] ip <- conv
+I0928 21:59:57.494380 31416 net.cpp:342] ip -> ip
+I0928 21:59:57.494390 31416 net.cpp:113] Setting up ip
+I0928 21:59:57.495100 31416 net.cpp:120] Top shape: 5 13 (65)
+I0928 21:59:57.495105 31416 net.cpp:126] Memory required for data: 16600
+I0928 21:59:57.495116 31416 layer_factory.hpp:74] Creating layer loss
+I0928 21:59:57.495126 31416 net.cpp:84] Creating Layer loss
+I0928 21:59:57.495131 31416 net.cpp:384] loss <- ip
+I0928 21:59:57.495139 31416 net.cpp:384] loss <- label
+I0928 21:59:57.495147 31416 net.cpp:342] loss -> loss
+I0928 21:59:57.495158 31416 net.cpp:113] Setting up loss
+I0928 21:59:57.495163 31416 layer_factory.hpp:74] Creating layer loss
+I0928 21:59:57.495184 31416 net.cpp:120] Top shape: (1)
+I0928 21:59:57.495188 31416 net.cpp:122]     with loss weight 1
+I0928 21:59:57.495193 31416 net.cpp:126] Memory required for data: 16604
+I0928 21:59:57.495198 31416 net.cpp:167] loss needs backward computation.
+I0928 21:59:57.495201 31416 net.cpp:167] ip needs backward computation.
+I0928 21:59:57.495204 31416 net.cpp:167] conv needs backward computation.
+I0928 21:59:57.495208 31416 net.cpp:169] data does not need backward computation.
+I0928 21:59:57.495213 31416 net.cpp:208] This network produces output loss
+I0928 21:59:57.495221 31416 net.cpp:449] Collecting Learning Rate and Weight Decay.
+I0928 21:59:57.495228 31416 net.cpp:221] Network initialization done.
+I0928 21:59:57.495230 31416 net.cpp:222] Memory required for data: 16604
+I0928 21:59:57.495321 31416 solver.cpp:154] Creating test net (#0) specified by net file: /tmp/tmpsemI8J
+I0928 21:59:57.495373 31416 net.cpp:42] Initializing net from parameters: 
+name: "testnet"
+force_backward: true
+state {
+  phase: TEST
+}
+layer {
+  name: "data"
+  type: "DummyData"
+  top: "data"
+  top: "label"
+  dummy_data_param {
+    data_filler {
+      type: "gaussian"
+      std: 1
+    }
+    data_filler {
+      type: "constant"
+    }
+    num: 5
+    num: 5
+    channels: 2
+    channels: 1
+    height: 3
+    height: 1
+    width: 4
+    width: 1
+  }
+}
+layer {
+  name: "conv"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv"
+  param {
+    decay_mult: 1
+  }
+  param {
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 11
+    pad: 3
+    kernel_size: 2
+    weight_filler {
+      type: "gaussian"
+      std: 1
+    }
+    bias_filler {
+      type: "constant"
+      value: 2
+    }
+  }
+}
+layer {
+  name: "ip"
+  type: "InnerProduct"
+  bottom: "conv"
+  top: "ip"
+  inner_product_param {
+    num_output: 13
+    weight_filler {
+      type: "gaussian"
+      std: 2.5
+    }
+    bias_filler {
+      type: "constant"
+      value: -3
+    }
+  }
+}
+layer {
+  name: "loss"
+  type: "SoftmaxWithLoss"
+  bottom: "ip"
+  bottom: "label"
+  top: "loss"
+}
+I0928 21:59:57.495414 31416 net.cpp:67] Memory required for data: 0
+I0928 21:59:57.495432 31416 layer_factory.hpp:74] Creating layer data
+I0928 21:59:57.495445 31416 net.cpp:84] Creating Layer data
+I0928 21:59:57.495456 31416 net.cpp:342] data -> data
+I0928 21:59:57.495475 31416 net.cpp:342] data -> label
+I0928 21:59:57.495486 31416 net.cpp:113] Setting up data
+I0928 21:59:57.495507 31416 net.cpp:120] Top shape: 5 2 3 4 (120)
+I0928 21:59:57.495513 31416 net.cpp:120] Top shape: 5 1 1 1 (5)
+I0928 21:59:57.495515 31416 net.cpp:126] Memory required for data: 500
+I0928 21:59:57.495520 31416 layer_factory.hpp:74] Creating layer conv
+I0928 21:59:57.495534 31416 net.cpp:84] Creating Layer conv
+I0928 21:59:57.495539 31416 net.cpp:384] conv <- data
+I0928 21:59:57.495553 31416 net.cpp:342] conv -> conv
+I0928 21:59:57.495565 31416 net.cpp:113] Setting up conv
+I0928 21:59:57.495597 31416 net.cpp:120] Top shape: 5 11 8 9 (3960)
+I0928 21:59:57.495602 31416 net.cpp:126] Memory required for data: 16340
+I0928 21:59:57.495616 31416 layer_factory.hpp:74] Creating layer ip
+I0928 21:59:57.495630 31416 net.cpp:84] Creating Layer ip
+I0928 21:59:57.495635 31416 net.cpp:384] ip <- conv
+I0928 21:59:57.495646 31416 net.cpp:342] ip -> ip
+I0928 21:59:57.495656 31416 net.cpp:113] Setting up ip
+I0928 21:59:57.496359 31416 net.cpp:120] Top shape: 5 13 (65)
+I0928 21:59:57.496364 31416 net.cpp:126] Memory required for data: 16600
+I0928 21:59:57.496376 31416 layer_factory.hpp:74] Creating layer loss
+I0928 21:59:57.496397 31416 net.cpp:84] Creating Layer loss
+I0928 21:59:57.496400 31416 net.cpp:384] loss <- ip
+I0928 21:59:57.496409 31416 net.cpp:384] loss <- label
+I0928 21:59:57.496428 31416 net.cpp:342] loss -> loss
+I0928 21:59:57.496438 31416 net.cpp:113] Setting up loss
+I0928 21:59:57.496443 31416 layer_factory.hpp:74] Creating layer loss
+I0928 21:59:57.496464 31416 net.cpp:120] Top shape: (1)
+I0928 21:59:57.496479 31416 net.cpp:122]     with loss weight 1
+I0928 21:59:57.496484 31416 net.cpp:126] Memory required for data: 16604
+I0928 21:59:57.496487 31416 net.cpp:167] loss needs backward computation.
+I0928 21:59:57.496500 31416 net.cpp:167] ip needs backward computation.
+I0928 21:59:57.496503 31416 net.cpp:167] conv needs backward computation.
+I0928 21:59:57.496506 31416 net.cpp:169] data does not need backward computation.
+I0928 21:59:57.496521 31416 net.cpp:208] This network produces output loss
+I0928 21:59:57.496531 31416 net.cpp:449] Collecting Learning Rate and Weight Decay.
+I0928 21:59:57.496547 31416 net.cpp:221] Network initialization done.
+I0928 21:59:57.496549 31416 net.cpp:222] Memory required for data: 16604
+I0928 21:59:57.496564 31416 solver.cpp:42] Solver scaffolding done.
+I0928 21:59:57.496618 31416 solver.cpp:32] Initializing solver from parameters: 
+test_iter: 10
+test_interval: 10
+base_lr: 0.01
+display: 100
+max_iter: 100
+lr_policy: "inv"
+gamma: 0.0001
+power: 0.75
+momentum: 0.9
+weight_decay: 0.0005
+net: "/tmp/tmpsemI8J"
+snapshot_after_train: false
+I0928 21:59:57.496628 31416 solver.cpp:70] Creating training net from net file: /tmp/tmpsemI8J
+I0928 21:59:57.496743 31416 net.cpp:42] Initializing net from parameters: 
+name: "testnet"
+force_backward: true
+state {
+  phase: TRAIN
+}
+layer {
+  name: "data"
+  type: "DummyData"
+  top: "data"
+  top: "label"
+  dummy_data_param {
+    data_filler {
+      type: "gaussian"
+      std: 1
+    }
+    data_filler {
+      type: "constant"
+    }
+    num: 5
+    num: 5
+    channels: 2
+    channels: 1
+    height: 3
+    height: 1
+    width: 4
+    width: 1
+  }
+}
+layer {
+  name: "conv"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv"
+  param {
+    decay_mult: 1
+  }
+  param {
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 11
+    pad: 3
+    kernel_size: 2
+    weight_filler {
+      type: "gaussian"
+      std: 1
+    }
+    bias_filler {
+      type: "constant"
+      value: 2
+    }
+  }
+}
+layer {
+  name: "ip"
+  type: "InnerProduct"
+  bottom: "conv"
+  top: "ip"
+  inner_product_param {
+    num_output: 13
+    weight_filler {
+      type: "gaussian"
+      std: 2.5
+    }
+    bias_filler {
+      type: "constant"
+      value: -3
+    }
+  }
+}
+layer {
+  name: "loss"
+  type: "SoftmaxWithLoss"
+  bottom: "ip"
+  bottom: "label"
+  top: "loss"
+}
+I0928 21:59:57.496785 31416 net.cpp:67] Memory required for data: 0
+I0928 21:59:57.496805 31416 layer_factory.hpp:74] Creating layer data
+I0928 21:59:57.496822 31416 net.cpp:84] Creating Layer data
+I0928 21:59:57.496829 31416 net.cpp:342] data -> data
+I0928 21:59:57.496846 31416 net.cpp:342] data -> label
+I0928 21:59:57.496860 31416 net.cpp:113] Setting up data
+I0928 21:59:57.496878 31416 net.cpp:120] Top shape: 5 2 3 4 (120)
+I0928 21:59:57.496884 31416 net.cpp:120] Top shape: 5 1 1 1 (5)
+I0928 21:59:57.496887 31416 net.cpp:126] Memory required for data: 500
+I0928 21:59:57.496892 31416 layer_factory.hpp:74] Creating layer conv
+I0928 21:59:57.496906 31416 net.cpp:84] Creating Layer conv
+I0928 21:59:57.496912 31416 net.cpp:384] conv <- data
+I0928 21:59:57.496924 31416 net.cpp:342] conv -> conv
+I0928 21:59:57.496937 31416 net.cpp:113] Setting up conv
+I0928 21:59:57.496968 31416 net.cpp:120] Top shape: 5 11 8 9 (3960)
+I0928 21:59:57.496973 31416 net.cpp:126] Memory required for data: 16340
+I0928 21:59:57.496987 31416 layer_factory.hpp:74] Creating layer ip
+I0928 21:59:57.496999 31416 net.cpp:84] Creating Layer ip
+I0928 21:59:57.497004 31416 net.cpp:384] ip <- conv
+I0928 21:59:57.497016 31416 net.cpp:342] ip -> ip
+I0928 21:59:57.497027 31416 net.cpp:113] Setting up ip
+I0928 21:59:57.497732 31416 net.cpp:120] Top shape: 5 13 (65)
+I0928 21:59:57.497737 31416 net.cpp:126] Memory required for data: 16600
+I0928 21:59:57.497750 31416 layer_factory.hpp:74] Creating layer loss
+I0928 21:59:57.497758 31416 net.cpp:84] Creating Layer loss
+I0928 21:59:57.497763 31416 net.cpp:384] loss <- ip
+I0928 21:59:57.497771 31416 net.cpp:384] loss <- label
+I0928 21:59:57.497779 31416 net.cpp:342] loss -> loss
+I0928 21:59:57.497789 31416 net.cpp:113] Setting up loss
+I0928 21:59:57.497795 31416 layer_factory.hpp:74] Creating layer loss
+I0928 21:59:57.497815 31416 net.cpp:120] Top shape: (1)
+I0928 21:59:57.497820 31416 net.cpp:122]     with loss weight 1
+I0928 21:59:57.497824 31416 net.cpp:126] Memory required for data: 16604
+I0928 21:59:57.497828 31416 net.cpp:167] loss needs backward computation.
+I0928 21:59:57.497833 31416 net.cpp:167] ip needs backward computation.
+I0928 21:59:57.497835 31416 net.cpp:167] conv needs backward computation.
+I0928 21:59:57.497838 31416 net.cpp:169] data does not need backward computation.
+I0928 21:59:57.497843 31416 net.cpp:208] This network produces output loss
+I0928 21:59:57.497851 31416 net.cpp:449] Collecting Learning Rate and Weight Decay.
+I0928 21:59:57.497858 31416 net.cpp:221] Network initialization done.
+I0928 21:59:57.497860 31416 net.cpp:222] Memory required for data: 16604
+I0928 21:59:57.497958 31416 solver.cpp:154] Creating test net (#0) specified by net file: /tmp/tmpsemI8J
+I0928 21:59:57.498011 31416 net.cpp:42] Initializing net from parameters: 
+name: "testnet"
+force_backward: true
+state {
+  phase: TEST
+}
+layer {
+  name: "data"
+  type: "DummyData"
+  top: "data"
+  top: "label"
+  dummy_data_param {
+    data_filler {
+      type: "gaussian"
+      std: 1
+    }
+    data_filler {
+      type: "constant"
+    }
+    num: 5
+    num: 5
+    channels: 2
+    channels: 1
+    height: 3
+    height: 1
+    width: 4
+    width: 1
+  }
+}
+layer {
+  name: "conv"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv"
+  param {
+    decay_mult: 1
+  }
+  param {
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 11
+    pad: 3
+    kernel_size: 2
+    weight_filler {
+      type: "gaussian"
+      std: 1
+    }
+    bias_filler {
+      type: "constant"
+      value: 2
+    }
+  }
+}
+layer {
+  name: "ip"
+  type: "InnerProduct"
+  bottom: "conv"
+  top: "ip"
+  inner_product_param {
+    num_output: 13
+    weight_filler {
+      type: "gaussian"
+      std: 2.5
+    }
+    bias_filler {
+      type: "constant"
+      value: -3
+    }
+  }
+}
+layer {
+  name: "loss"
+  type: "SoftmaxWithLoss"
+  bottom: "ip"
+  bottom: "label"
+  top: "loss"
+}
+I0928 21:59:57.498052 31416 net.cpp:67] Memory required for data: 0
+I0928 21:59:57.498070 31416 layer_factory.hpp:74] Creating layer data
+I0928 21:59:57.498083 31416 net.cpp:84] Creating Layer data
+I0928 21:59:57.498090 31416 net.cpp:342] data -> data
+I0928 21:59:57.498107 31416 net.cpp:342] data -> label
+I0928 21:59:57.498123 31416 net.cpp:113] Setting up data
+I0928 21:59:57.498144 31416 net.cpp:120] Top shape: 5 2 3 4 (120)
+I0928 21:59:57.498150 31416 net.cpp:120] Top shape: 5 1 1 1 (5)
+I0928 21:59:57.498153 31416 net.cpp:126] Memory required for data: 500
+I0928 21:59:57.498158 31416 layer_factory.hpp:74] Creating layer conv
+I0928 21:59:57.498172 31416 net.cpp:84] Creating Layer conv
+I0928 21:59:57.498177 31416 net.cpp:384] conv <- data
+I0928 21:59:57.498189 31416 net.cpp:342] conv -> conv
+I0928 21:59:57.498203 31416 net.cpp:113] Setting up conv
+I0928 21:59:57.498236 31416 net.cpp:120] Top shape: 5 11 8 9 (3960)
+I0928 21:59:57.498241 31416 net.cpp:126] Memory required for data: 16340
+I0928 21:59:57.498255 31416 layer_factory.hpp:74] Creating layer ip
+I0928 21:59:57.498268 31416 net.cpp:84] Creating Layer ip
+I0928 21:59:57.498273 31416 net.cpp:384] ip <- conv
+I0928 21:59:57.498284 31416 net.cpp:342] ip -> ip
+I0928 21:59:57.498294 31416 net.cpp:113] Setting up ip
+I0928 21:59:57.499011 31416 net.cpp:120] Top shape: 5 13 (65)
+I0928 21:59:57.499017 31416 net.cpp:126] Memory required for data: 16600
+I0928 21:59:57.499028 31416 layer_factory.hpp:74] Creating layer loss
+I0928 21:59:57.499037 31416 net.cpp:84] Creating Layer loss
+I0928 21:59:57.499042 31416 net.cpp:384] loss <- ip
+I0928 21:59:57.499050 31416 net.cpp:384] loss <- label
+I0928 21:59:57.499058 31416 net.cpp:342] loss -> loss
+I0928 21:59:57.499068 31416 net.cpp:113] Setting up loss
+I0928 21:59:57.499074 31416 layer_factory.hpp:74] Creating layer loss
+I0928 21:59:57.499099 31416 net.cpp:120] Top shape: (1)
+I0928 21:59:57.499104 31416 net.cpp:122]     with loss weight 1
+I0928 21:59:57.499107 31416 net.cpp:126] Memory required for data: 16604
+I0928 21:59:57.499112 31416 net.cpp:167] loss needs backward computation.
+I0928 21:59:57.499116 31416 net.cpp:167] ip needs backward computation.
+I0928 21:59:57.499119 31416 net.cpp:167] conv needs backward computation.
+I0928 21:59:57.499122 31416 net.cpp:169] data does not need backward computation.
+I0928 21:59:57.499126 31416 net.cpp:208] This network produces output loss
+I0928 21:59:57.499135 31416 net.cpp:449] Collecting Learning Rate and Weight Decay.
+I0928 21:59:57.499141 31416 net.cpp:221] Network initialization done.
+I0928 21:59:57.499145 31416 net.cpp:222] Memory required for data: 16604
+I0928 21:59:57.499158 31416 solver.cpp:42] Solver scaffolding done.
+I0928 21:59:57.499488 31416 solver.cpp:247] Solving testnet
+I0928 21:59:57.499495 31416 solver.cpp:248] Learning Rate Policy: inv
+I0928 21:59:57.499506 31416 solver.cpp:291] Iteration 0, Testing net (#0)
+I0928 21:59:57.499511 31416 net.cpp:639] Copying source layer data
+I0928 21:59:57.499514 31416 net.cpp:639] Copying source layer conv
+I0928 21:59:57.499519 31416 net.cpp:639] Copying source layer ip
+I0928 21:59:57.499523 31416 net.cpp:639] Copying source layer loss
+I0928 21:59:57.500375 31416 solver.cpp:340]     Test net output #0: loss = 80.246 (* 1 = 80.246 loss)
+I0928 21:59:57.500672 31416 solver.cpp:214] Iteration 0, loss = 83.9572
+I0928 21:59:57.500684 31416 solver.cpp:229]     Train net output #0: loss = 83.9572 (* 1 = 83.9572 loss)
+I0928 21:59:57.500690 31416 solver.cpp:492] Iteration 0, lr = 0.01
+I0928 21:59:57.504210 31416 solver.cpp:291] Iteration 10, Testing net (#0)
+I0928 21:59:57.504218 31416 net.cpp:639] Copying source layer data
+I0928 21:59:57.504221 31416 net.cpp:639] Copying source layer conv
+I0928 21:59:57.504225 31416 net.cpp:639] Copying source layer ip
+I0928 21:59:57.504228 31416 net.cpp:639] Copying source layer loss
+I0928 21:59:57.505053 31416 solver.cpp:340]     Test net output #0: loss = 80.1163 (* 1 = 80.1163 loss)
+I0928 21:59:57.507647 31416 solver.cpp:291] Iteration 20, Testing net (#0)
+I0928 21:59:57.507657 31416 net.cpp:639] Copying source layer data
+I0928 21:59:57.507660 31416 net.cpp:639] Copying source layer conv
+I0928 21:59:57.507664 31416 net.cpp:639] Copying source layer ip
+I0928 21:59:57.507668 31416 net.cpp:639] Copying source layer loss
+I0928 21:59:57.508487 31416 solver.cpp:340]     Test net output #0: loss = 80.2366 (* 1 = 80.2366 loss)
+I0928 21:59:57.511106 31416 solver.cpp:291] Iteration 30, Testing net (#0)
+I0928 21:59:57.511114 31416 net.cpp:639] Copying source layer data
+I0928 21:59:57.511117 31416 net.cpp:639] Copying source layer conv
+I0928 21:59:57.511121 31416 net.cpp:639] Copying source layer ip
+I0928 21:59:57.511124 31416 net.cpp:639] Copying source layer loss
+I0928 21:59:57.511945 31416 solver.cpp:340]     Test net output #0: loss = 87.0918 (* 1 = 87.0918 loss)
+I0928 21:59:57.515373 31416 solver.cpp:291] Iteration 40, Testing net (#0)
+I0928 21:59:57.515398 31416 net.cpp:639] Copying source layer data
+I0928 21:59:57.515403 31416 net.cpp:639] Copying source layer conv
+I0928 21:59:57.515406 31416 net.cpp:639] Copying source layer ip
+I0928 21:59:57.515409 31416 net.cpp:639] Copying source layer loss
+I0928 21:59:57.516310 31416 solver.cpp:340]     Test net output #0: loss = 78.2672 (* 1 = 78.2672 loss)
+I0928 21:59:57.518975 31416 solver.cpp:291] Iteration 50, Testing net (#0)
+I0928 21:59:57.518985 31416 net.cpp:639] Copying source layer data
+I0928 21:59:57.518988 31416 net.cpp:639] Copying source layer conv
+I0928 21:59:57.518992 31416 net.cpp:639] Copying source layer ip
+I0928 21:59:57.518996 31416 net.cpp:639] Copying source layer loss
+I0928 21:59:57.519829 31416 solver.cpp:340]     Test net output #0: loss = 77.4133 (* 1 = 77.4133 loss)
+I0928 21:59:57.525305 31416 solver.cpp:291] Iteration 60, Testing net (#0)
+I0928 21:59:57.525313 31416 net.cpp:639] Copying source layer data
+I0928 21:59:57.525316 31416 net.cpp:639] Copying source layer conv
+I0928 21:59:57.525321 31416 net.cpp:639] Copying source layer ip
+I0928 21:59:57.525323 31416 net.cpp:639] Copying source layer loss
+I0928 21:59:57.526166 31416 solver.cpp:340]     Test net output #0: loss = 85.1151 (* 1 = 85.1151 loss)
+I0928 21:59:57.530853 31416 solver.cpp:291] Iteration 70, Testing net (#0)
+I0928 21:59:57.530899 31416 net.cpp:639] Copying source layer data
+I0928 21:59:57.530906 31416 net.cpp:639] Copying source layer conv
+I0928 21:59:57.530917 31416 net.cpp:639] Copying source layer ip
+I0928 21:59:57.530922 31416 net.cpp:639] Copying source layer loss
+I0928 21:59:57.532475 31416 solver.cpp:340]     Test net output #0: loss = 83.8431 (* 1 = 83.8431 loss)
+I0928 21:59:57.537236 31416 solver.cpp:291] Iteration 80, Testing net (#0)
+I0928 21:59:57.537271 31416 net.cpp:639] Copying source layer data
+I0928 21:59:57.537277 31416 net.cpp:639] Copying source layer conv
+I0928 21:59:57.537287 31416 net.cpp:639] Copying source layer ip
+I0928 21:59:57.537293 31416 net.cpp:639] Copying source layer loss
+I0928 21:59:57.538851 31416 solver.cpp:340]     Test net output #0: loss = 79.2561 (* 1 = 79.2561 loss)
+I0928 21:59:57.544770 31416 solver.cpp:291] Iteration 90, Testing net (#0)
+I0928 21:59:57.544790 31416 net.cpp:639] Copying source layer data
+I0928 21:59:57.544796 31416 net.cpp:639] Copying source layer conv
+I0928 21:59:57.544805 31416 net.cpp:639] Copying source layer ip
+I0928 21:59:57.544811 31416 net.cpp:639] Copying source layer loss
+I0928 21:59:57.546355 31416 solver.cpp:340]     Test net output #0: loss = 79.4704 (* 1 = 79.4704 loss)
+I0928 21:59:57.550884 31416 solver.cpp:273] Iteration 100, loss = 50.1075
+I0928 21:59:57.550909 31416 solver.cpp:291] Iteration 100, Testing net (#0)
+I0928 21:59:57.550916 31416 net.cpp:639] Copying source layer data
+I0928 21:59:57.550921 31416 net.cpp:639] Copying source layer conv
+I0928 21:59:57.550930 31416 net.cpp:639] Copying source layer ip
+I0928 21:59:57.550935 31416 net.cpp:639] Copying source layer loss
+I0928 21:59:57.552399 31416 solver.cpp:340]     Test net output #0: loss = 79.558 (* 1 = 79.558 loss)
+I0928 21:59:57.552429 31416 solver.cpp:278] Optimization Done.
+.I0928 21:59:57.552922 31416 net.cpp:42] Initializing net from parameters: 
 name: "pythonnet"
 input: "data"
 force_backward: true
@@ -41,37 +2090,37 @@ layer {
     layer: "SimpleLayer"
   }
 }
-I0729 22:57:55.704382 32751 net.cpp:344] Input 0 -> data
-I0729 22:57:55.704437 32751 net.cpp:67] Memory required for data: 0
-I0729 22:57:55.704464 32751 layer_factory.hpp:74] Creating layer one
-I0729 22:57:55.704519 32751 net.cpp:84] Creating Layer one
-I0729 22:57:55.704529 32751 net.cpp:384] one <- data
-I0729 22:57:55.704542 32751 net.cpp:342] one -> one
-I0729 22:57:55.704556 32751 net.cpp:113] Setting up one
-I0729 22:57:55.704632 32751 net.cpp:120] Top shape: 10 9 8 (720)
-I0729 22:57:55.704638 32751 net.cpp:126] Memory required for data: 2880
-I0729 22:57:55.704644 32751 layer_factory.hpp:74] Creating layer two
-I0729 22:57:55.704670 32751 net.cpp:84] Creating Layer two
-I0729 22:57:55.704677 32751 net.cpp:384] two <- one
-I0729 22:57:55.704690 32751 net.cpp:342] two -> two
-I0729 22:57:55.704704 32751 net.cpp:113] Setting up two
-I0729 22:57:55.704737 32751 net.cpp:120] Top shape: 10 9 8 (720)
-I0729 22:57:55.704743 32751 net.cpp:126] Memory required for data: 5760
-I0729 22:57:55.704747 32751 layer_factory.hpp:74] Creating layer three
-I0729 22:57:55.704772 32751 net.cpp:84] Creating Layer three
-I0729 22:57:55.704779 32751 net.cpp:384] three <- two
-I0729 22:57:55.704792 32751 net.cpp:342] three -> three
-I0729 22:57:55.704803 32751 net.cpp:113] Setting up three
-I0729 22:57:55.704835 32751 net.cpp:120] Top shape: 10 9 8 (720)
-I0729 22:57:55.704841 32751 net.cpp:126] Memory required for data: 8640
-I0729 22:57:55.704846 32751 net.cpp:169] three does not need backward computation.
-I0729 22:57:55.704849 32751 net.cpp:169] two does not need backward computation.
-I0729 22:57:55.704852 32751 net.cpp:169] one does not need backward computation.
-I0729 22:57:55.704856 32751 net.cpp:208] This network produces output three
-I0729 22:57:55.704867 32751 net.cpp:449] Collecting Learning Rate and Weight Decay.
-I0729 22:57:55.704871 32751 net.cpp:221] Network initialization done.
-I0729 22:57:55.704874 32751 net.cpp:222] Memory required for data: 8640
-.I0729 22:57:57.629119 32751 net.cpp:42] Initializing net from parameters: 
+I0928 21:59:57.553001 31416 net.cpp:344] Input 0 -> data
+I0928 21:59:57.553048 31416 net.cpp:67] Memory required for data: 0
+I0928 21:59:57.553081 31416 layer_factory.hpp:74] Creating layer one
+I0928 21:59:57.553143 31416 net.cpp:84] Creating Layer one
+I0928 21:59:57.553154 31416 net.cpp:384] one <- data
+I0928 21:59:57.553174 31416 net.cpp:342] one -> one
+I0928 21:59:57.553192 31416 net.cpp:113] Setting up one
+I0928 21:59:57.553268 31416 net.cpp:120] Top shape: 10 9 8 (720)
+I0928 21:59:57.553277 31416 net.cpp:126] Memory required for data: 2880
+I0928 21:59:57.553287 31416 layer_factory.hpp:74] Creating layer two
+I0928 21:59:57.553323 31416 net.cpp:84] Creating Layer two
+I0928 21:59:57.553333 31416 net.cpp:384] two <- one
+I0928 21:59:57.553350 31416 net.cpp:342] two -> two
+I0928 21:59:57.553369 31416 net.cpp:113] Setting up two
+I0928 21:59:57.553416 31416 net.cpp:120] Top shape: 10 9 8 (720)
+I0928 21:59:57.553424 31416 net.cpp:126] Memory required for data: 5760
+I0928 21:59:57.553431 31416 layer_factory.hpp:74] Creating layer three
+I0928 21:59:57.553467 31416 net.cpp:84] Creating Layer three
+I0928 21:59:57.553477 31416 net.cpp:384] three <- two
+I0928 21:59:57.553494 31416 net.cpp:342] three -> three
+I0928 21:59:57.553509 31416 net.cpp:113] Setting up three
+I0928 21:59:57.553555 31416 net.cpp:120] Top shape: 10 9 8 (720)
+I0928 21:59:57.553563 31416 net.cpp:126] Memory required for data: 8640
+I0928 21:59:57.553571 31416 net.cpp:169] three does not need backward computation.
+I0928 21:59:57.553576 31416 net.cpp:169] two does not need backward computation.
+I0928 21:59:57.553580 31416 net.cpp:169] one does not need backward computation.
+I0928 21:59:57.553586 31416 net.cpp:208] This network produces output three
+I0928 21:59:57.553601 31416 net.cpp:449] Collecting Learning Rate and Weight Decay.
+I0928 21:59:57.553606 31416 net.cpp:221] Network initialization done.
+I0928 21:59:57.553611 31416 net.cpp:222] Memory required for data: 8640
+.I0928 21:59:57.556713 31416 net.cpp:42] Initializing net from parameters: 
 name: "pythonnet"
 input: "data"
 force_backward: true
@@ -113,37 +2162,37 @@ layer {
     layer: "SimpleLayer"
   }
 }
-I0729 22:57:57.629180 32751 net.cpp:344] Input 0 -> data
-I0729 22:57:57.629211 32751 net.cpp:67] Memory required for data: 0
-I0729 22:57:57.629232 32751 layer_factory.hpp:74] Creating layer one
-I0729 22:57:57.629276 32751 net.cpp:84] Creating Layer one
-I0729 22:57:57.629284 32751 net.cpp:384] one <- data
-I0729 22:57:57.629298 32751 net.cpp:342] one -> one
-I0729 22:57:57.629312 32751 net.cpp:113] Setting up one
-I0729 22:57:57.629355 32751 net.cpp:120] Top shape: 10 9 8 (720)
-I0729 22:57:57.629361 32751 net.cpp:126] Memory required for data: 2880
-I0729 22:57:57.629369 32751 layer_factory.hpp:74] Creating layer two
-I0729 22:57:57.629395 32751 net.cpp:84] Creating Layer two
-I0729 22:57:57.629403 32751 net.cpp:384] two <- one
-I0729 22:57:57.629417 32751 net.cpp:342] two -> two
-I0729 22:57:57.629434 32751 net.cpp:113] Setting up two
-I0729 22:57:57.629472 32751 net.cpp:120] Top shape: 10 9 8 (720)
-I0729 22:57:57.629477 32751 net.cpp:126] Memory required for data: 5760
-I0729 22:57:57.629482 32751 layer_factory.hpp:74] Creating layer three
-I0729 22:57:57.629508 32751 net.cpp:84] Creating Layer three
-I0729 22:57:57.629515 32751 net.cpp:384] three <- two
-I0729 22:57:57.629528 32751 net.cpp:342] three -> three
-I0729 22:57:57.629539 32751 net.cpp:113] Setting up three
-I0729 22:57:57.629572 32751 net.cpp:120] Top shape: 10 9 8 (720)
-I0729 22:57:57.629578 32751 net.cpp:126] Memory required for data: 8640
-I0729 22:57:57.629583 32751 net.cpp:169] three does not need backward computation.
-I0729 22:57:57.629587 32751 net.cpp:169] two does not need backward computation.
-I0729 22:57:57.629590 32751 net.cpp:169] one does not need backward computation.
-I0729 22:57:57.629593 32751 net.cpp:208] This network produces output three
-I0729 22:57:57.629603 32751 net.cpp:449] Collecting Learning Rate and Weight Decay.
-I0729 22:57:57.629607 32751 net.cpp:221] Network initialization done.
-I0729 22:57:57.629609 32751 net.cpp:222] Memory required for data: 8640
-.I0729 22:57:57.631191 32751 net.cpp:42] Initializing net from parameters: 
+I0928 21:59:57.556799 31416 net.cpp:344] Input 0 -> data
+I0928 21:59:57.556852 31416 net.cpp:67] Memory required for data: 0
+I0928 21:59:57.556886 31416 layer_factory.hpp:74] Creating layer one
+I0928 21:59:57.556953 31416 net.cpp:84] Creating Layer one
+I0928 21:59:57.556965 31416 net.cpp:384] one <- data
+I0928 21:59:57.556985 31416 net.cpp:342] one -> one
+I0928 21:59:57.557004 31416 net.cpp:113] Setting up one
+I0928 21:59:57.557080 31416 net.cpp:120] Top shape: 10 9 8 (720)
+I0928 21:59:57.557088 31416 net.cpp:126] Memory required for data: 2880
+I0928 21:59:57.557097 31416 layer_factory.hpp:74] Creating layer two
+I0928 21:59:57.557137 31416 net.cpp:84] Creating Layer two
+I0928 21:59:57.557147 31416 net.cpp:384] two <- one
+I0928 21:59:57.557164 31416 net.cpp:342] two -> two
+I0928 21:59:57.557183 31416 net.cpp:113] Setting up two
+I0928 21:59:57.557232 31416 net.cpp:120] Top shape: 10 9 8 (720)
+I0928 21:59:57.557240 31416 net.cpp:126] Memory required for data: 5760
+I0928 21:59:57.557247 31416 layer_factory.hpp:74] Creating layer three
+I0928 21:59:57.557283 31416 net.cpp:84] Creating Layer three
+I0928 21:59:57.557293 31416 net.cpp:384] three <- two
+I0928 21:59:57.557312 31416 net.cpp:342] three -> three
+I0928 21:59:57.557327 31416 net.cpp:113] Setting up three
+I0928 21:59:57.557382 31416 net.cpp:120] Top shape: 10 9 8 (720)
+I0928 21:59:57.557390 31416 net.cpp:126] Memory required for data: 8640
+I0928 21:59:57.557397 31416 net.cpp:169] three does not need backward computation.
+I0928 21:59:57.557402 31416 net.cpp:169] two does not need backward computation.
+I0928 21:59:57.557407 31416 net.cpp:169] one does not need backward computation.
+I0928 21:59:57.557413 31416 net.cpp:208] This network produces output three
+I0928 21:59:57.557427 31416 net.cpp:449] Collecting Learning Rate and Weight Decay.
+I0928 21:59:57.557433 31416 net.cpp:221] Network initialization done.
+I0928 21:59:57.557437 31416 net.cpp:222] Memory required for data: 8640
+.I0928 21:59:57.560763 31416 net.cpp:42] Initializing net from parameters: 
 name: "pythonnet"
 input: "data"
 force_backward: true
@@ -185,2372 +2234,38 @@ layer {
     layer: "SimpleLayer"
   }
 }
-I0729 22:57:57.631227 32751 net.cpp:344] Input 0 -> data
-I0729 22:57:57.631247 32751 net.cpp:67] Memory required for data: 0
-I0729 22:57:57.631263 32751 layer_factory.hpp:74] Creating layer one
-I0729 22:57:57.631295 32751 net.cpp:84] Creating Layer one
-I0729 22:57:57.631304 32751 net.cpp:384] one <- data
-I0729 22:57:57.631316 32751 net.cpp:342] one -> one
-I0729 22:57:57.631328 32751 net.cpp:113] Setting up one
-I0729 22:57:57.631366 32751 net.cpp:120] Top shape: 10 9 8 (720)
-I0729 22:57:57.631371 32751 net.cpp:126] Memory required for data: 2880
-I0729 22:57:57.631377 32751 layer_factory.hpp:74] Creating layer two
-I0729 22:57:57.631405 32751 net.cpp:84] Creating Layer two
-I0729 22:57:57.631412 32751 net.cpp:384] two <- one
-I0729 22:57:57.631427 32751 net.cpp:342] two -> two
-I0729 22:57:57.631438 32751 net.cpp:113] Setting up two
-I0729 22:57:57.631474 32751 net.cpp:120] Top shape: 10 9 8 (720)
-I0729 22:57:57.631479 32751 net.cpp:126] Memory required for data: 5760
-I0729 22:57:57.631484 32751 layer_factory.hpp:74] Creating layer three
-I0729 22:57:57.631510 32751 net.cpp:84] Creating Layer three
-I0729 22:57:57.631516 32751 net.cpp:384] three <- two
-I0729 22:57:57.631530 32751 net.cpp:342] three -> three
-I0729 22:57:57.631539 32751 net.cpp:113] Setting up three
-I0729 22:57:57.631573 32751 net.cpp:120] Top shape: 10 9 8 (720)
-I0729 22:57:57.631579 32751 net.cpp:126] Memory required for data: 8640
-I0729 22:57:57.631584 32751 net.cpp:169] three does not need backward computation.
-I0729 22:57:57.631587 32751 net.cpp:169] two does not need backward computation.
-I0729 22:57:57.631590 32751 net.cpp:169] one does not need backward computation.
-I0729 22:57:57.631594 32751 net.cpp:208] This network produces output three
-I0729 22:57:57.631603 32751 net.cpp:449] Collecting Learning Rate and Weight Decay.
-I0729 22:57:57.631608 32751 net.cpp:221] Network initialization done.
-I0729 22:57:57.631609 32751 net.cpp:222] Memory required for data: 8640
-.I0729 22:57:57.632158 32751 net.cpp:42] Initializing net from parameters: 
-name: "pythonnet"
-input: "data"
-input: "label"
-input: "action_unary"
-input: "scene_unary"
-input: "s2a"
-input: "a2s"
-input: "a2a"
-force_backward: true
-state {
-  phase: TRAIN
-}
-input_shape {
-  dim: 5
-  dim: 565
-}
-input_shape {
-  dim: 70
-}
-input_shape {
-  dim: 5
-  dim: 560
-}
-input_shape {
-  dim: 5
-  dim: 5
-}
-input_shape {
-  dim: 70
-  dim: 40
-}
-input_shape {
-  dim: 70
-  dim: 5
-}
-input_shape {
-  dim: 980
-  dim: 40
-}
-layer {
-  name: "one"
-  type: "Python"
-  bottom: "data"
-  bottom: "s2a"
-  bottom: "a2s"
-  bottom: "a2a"
-  bottom: "action_unary"
-  bottom: "scene_unary"
-  bottom: "label"
-  top: "three"
-  top: "message1"
-  top: "message2"
-  python_param {
-    module: "test_Message_Out"
-    layer: "test_Message_Out"
-  }
-}
-I0729 22:57:57.632202 32751 net.cpp:344] Input 0 -> data
-I0729 22:57:57.632223 32751 net.cpp:344] Input 1 -> label
-I0729 22:57:57.632236 32751 net.cpp:344] Input 2 -> action_unary
-I0729 22:57:57.632246 32751 net.cpp:344] Input 3 -> scene_unary
-I0729 22:57:57.632253 32751 net.cpp:344] Input 4 -> s2a
-I0729 22:57:57.632262 32751 net.cpp:344] Input 5 -> a2s
-I0729 22:57:57.632269 32751 net.cpp:344] Input 6 -> a2a
-I0729 22:57:57.632275 32751 net.cpp:67] Memory required for data: 0
-I0729 22:57:57.632288 32751 layer_factory.hpp:74] Creating layer one
-I0729 22:57:57.632331 32751 net.cpp:84] Creating Layer one
-I0729 22:57:57.632349 32751 net.cpp:384] one <- data
-I0729 22:57:57.632360 32751 net.cpp:384] one <- s2a
-I0729 22:57:57.632367 32751 net.cpp:384] one <- a2s
-I0729 22:57:57.632372 32751 net.cpp:384] one <- a2a
-I0729 22:57:57.632377 32751 net.cpp:384] one <- action_unary
-I0729 22:57:57.632382 32751 net.cpp:384] one <- scene_unary
-I0729 22:57:57.632386 32751 net.cpp:384] one <- label
-I0729 22:57:57.632395 32751 net.cpp:342] one -> three
-I0729 22:57:57.632406 32751 net.cpp:342] one -> message1
-I0729 22:57:57.632421 32751 net.cpp:342] one -> message2
-I0729 22:57:57.632429 32751 net.cpp:113] Setting up one
-I0729 22:57:57.632486 32751 net.cpp:120] Top shape: 5 8475 (42375)
-I0729 22:57:57.632494 32751 net.cpp:120] Top shape: 5 75 (375)
-I0729 22:57:57.632498 32751 net.cpp:120] Top shape: 5 14 600 (42000)
-I0729 22:57:57.632501 32751 net.cpp:126] Memory required for data: 339000
-I0729 22:57:57.632508 32751 net.cpp:169] one does not need backward computation.
-I0729 22:57:57.632513 32751 net.cpp:208] This network produces output message1
-I0729 22:57:57.632519 32751 net.cpp:208] This network produces output message2
-I0729 22:57:57.632524 32751 net.cpp:208] This network produces output three
-I0729 22:57:57.632534 32751 net.cpp:449] Collecting Learning Rate and Weight Decay.
-I0729 22:57:57.632537 32751 net.cpp:221] Network initialization done.
-I0729 22:57:57.632539 32751 net.cpp:222] Memory required for data: 339000
-FI0729 22:57:57.654657 32751 net.cpp:42] Initializing net from parameters: 
-name: "pythonnet"
-input: "data"
-input: "label"
-input: "action_unary"
-input: "scene_unary"
-input: "s2a"
-input: "a2s"
-input: "a2a"
-force_backward: true
-state {
-  phase: TRAIN
-}
-input_shape {
-  dim: 5
-  dim: 565
-}
-input_shape {
-  dim: 70
-}
-input_shape {
-  dim: 5
-  dim: 560
-}
-input_shape {
-  dim: 5
-  dim: 5
-}
-input_shape {
-  dim: 70
-  dim: 40
-}
-input_shape {
-  dim: 70
-  dim: 5
-}
-input_shape {
-  dim: 980
-  dim: 40
-}
-layer {
-  name: "one"
-  type: "Python"
-  bottom: "data"
-  bottom: "s2a"
-  bottom: "a2s"
-  bottom: "a2a"
-  bottom: "action_unary"
-  bottom: "scene_unary"
-  bottom: "label"
-  top: "three"
-  top: "message1"
-  top: "message2"
-  python_param {
-    module: "test_Message_Out"
-    layer: "test_Message_Out"
-  }
-}
-I0729 22:57:57.654726 32751 net.cpp:344] Input 0 -> data
-I0729 22:57:57.654762 32751 net.cpp:344] Input 1 -> label
-I0729 22:57:57.654774 32751 net.cpp:344] Input 2 -> action_unary
-I0729 22:57:57.654785 32751 net.cpp:344] Input 3 -> scene_unary
-I0729 22:57:57.654793 32751 net.cpp:344] Input 4 -> s2a
-I0729 22:57:57.654803 32751 net.cpp:344] Input 5 -> a2s
-I0729 22:57:57.654810 32751 net.cpp:344] Input 6 -> a2a
-I0729 22:57:57.654816 32751 net.cpp:67] Memory required for data: 0
-I0729 22:57:57.654835 32751 layer_factory.hpp:74] Creating layer one
-I0729 22:57:57.654876 32751 net.cpp:84] Creating Layer one
-I0729 22:57:57.654886 32751 net.cpp:384] one <- data
-I0729 22:57:57.654896 32751 net.cpp:384] one <- s2a
-I0729 22:57:57.654903 32751 net.cpp:384] one <- a2s
-I0729 22:57:57.654909 32751 net.cpp:384] one <- a2a
-I0729 22:57:57.654917 32751 net.cpp:384] one <- action_unary
-I0729 22:57:57.654923 32751 net.cpp:384] one <- scene_unary
-I0729 22:57:57.654928 32751 net.cpp:384] one <- label
-I0729 22:57:57.654937 32751 net.cpp:342] one -> three
-I0729 22:57:57.654948 32751 net.cpp:342] one -> message1
-I0729 22:57:57.654963 32751 net.cpp:342] one -> message2
-I0729 22:57:57.654971 32751 net.cpp:113] Setting up one
-I0729 22:57:57.655031 32751 net.cpp:120] Top shape: 5 8475 (42375)
-I0729 22:57:57.655040 32751 net.cpp:120] Top shape: 5 75 (375)
-I0729 22:57:57.655043 32751 net.cpp:120] Top shape: 5 14 600 (42000)
-I0729 22:57:57.655046 32751 net.cpp:126] Memory required for data: 339000
-I0729 22:57:57.655055 32751 net.cpp:169] one does not need backward computation.
-I0729 22:57:57.655060 32751 net.cpp:208] This network produces output message1
-I0729 22:57:57.655066 32751 net.cpp:208] This network produces output message2
-I0729 22:57:57.655071 32751 net.cpp:208] This network produces output three
-I0729 22:57:57.655079 32751 net.cpp:449] Collecting Learning Rate and Weight Decay.
-I0729 22:57:57.655083 32751 net.cpp:221] Network initialization done.
-I0729 22:57:57.655086 32751 net.cpp:222] Memory required for data: 339000
-.I0729 22:57:57.795418 32751 net.cpp:42] Initializing net from parameters: 
-name: "pythonnet"
-input: "data"
-input: "label"
-input: "action_unary"
-input: "scene_unary"
-input: "s2a"
-input: "a2s"
-input: "a2a"
-force_backward: true
-state {
-  phase: TRAIN
-}
-input_shape {
-  dim: 5
-  dim: 565
-}
-input_shape {
-  dim: 70
-}
-input_shape {
-  dim: 5
-  dim: 560
-}
-input_shape {
-  dim: 5
-  dim: 5
-}
-input_shape {
-  dim: 70
-  dim: 40
-}
-input_shape {
-  dim: 70
-  dim: 5
-}
-input_shape {
-  dim: 980
-  dim: 40
-}
-layer {
-  name: "one"
-  type: "Python"
-  bottom: "data"
-  bottom: "s2a"
-  bottom: "a2s"
-  bottom: "a2a"
-  bottom: "action_unary"
-  bottom: "scene_unary"
-  bottom: "label"
-  top: "three"
-  top: "message1"
-  top: "message2"
-  python_param {
-    module: "test_Message_Out"
-    layer: "test_Message_Out"
-  }
-}
-I0729 22:57:57.795490 32751 net.cpp:344] Input 0 -> data
-I0729 22:57:57.795527 32751 net.cpp:344] Input 1 -> label
-I0729 22:57:57.795541 32751 net.cpp:344] Input 2 -> action_unary
-I0729 22:57:57.795552 32751 net.cpp:344] Input 3 -> scene_unary
-I0729 22:57:57.795559 32751 net.cpp:344] Input 4 -> s2a
-I0729 22:57:57.795569 32751 net.cpp:344] Input 5 -> a2s
-I0729 22:57:57.795577 32751 net.cpp:344] Input 6 -> a2a
-I0729 22:57:57.795583 32751 net.cpp:67] Memory required for data: 0
-I0729 22:57:57.795603 32751 layer_factory.hpp:74] Creating layer one
-I0729 22:57:57.795645 32751 net.cpp:84] Creating Layer one
-I0729 22:57:57.795655 32751 net.cpp:384] one <- data
-I0729 22:57:57.795665 32751 net.cpp:384] one <- s2a
-I0729 22:57:57.795672 32751 net.cpp:384] one <- a2s
-I0729 22:57:57.795677 32751 net.cpp:384] one <- a2a
-I0729 22:57:57.795682 32751 net.cpp:384] one <- action_unary
-I0729 22:57:57.795687 32751 net.cpp:384] one <- scene_unary
-I0729 22:57:57.795692 32751 net.cpp:384] one <- label
-I0729 22:57:57.795701 32751 net.cpp:342] one -> three
-I0729 22:57:57.795712 32751 net.cpp:342] one -> message1
-I0729 22:57:57.795727 32751 net.cpp:342] one -> message2
-I0729 22:57:57.795737 32751 net.cpp:113] Setting up one
-I0729 22:57:57.795800 32751 net.cpp:120] Top shape: 5 8475 (42375)
-I0729 22:57:57.795809 32751 net.cpp:120] Top shape: 5 75 (375)
-I0729 22:57:57.795814 32751 net.cpp:120] Top shape: 5 14 600 (42000)
-I0729 22:57:57.795815 32751 net.cpp:126] Memory required for data: 339000
-I0729 22:57:57.795824 32751 net.cpp:169] one does not need backward computation.
-I0729 22:57:57.795828 32751 net.cpp:208] This network produces output message1
-I0729 22:57:57.795835 32751 net.cpp:208] This network produces output message2
-I0729 22:57:57.795840 32751 net.cpp:208] This network produces output three
-I0729 22:57:57.795848 32751 net.cpp:449] Collecting Learning Rate and Weight Decay.
-I0729 22:57:57.795852 32751 net.cpp:221] Network initialization done.
-I0729 22:57:57.795855 32751 net.cpp:222] Memory required for data: 339000
-.I0729 22:57:57.796042 32751 net.cpp:42] Initializing net from parameters: 
-name: "pythonnet"
-input: "data"
-input: "label"
-force_backward: true
-state {
-  phase: TRAIN
-}
-input_shape {
-  dim: 5
-  dim: 565
-}
-input_shape {
-  dim: 70
-}
-layer {
-  name: "one"
-  type: "Python"
-  bottom: "data"
-  bottom: "label"
-  top: "one"
-  python_param {
-    module: "test_Initialize_Message"
-    layer: "test_Initial_Message"
-  }
-}
-I0729 22:57:57.796074 32751 net.cpp:344] Input 0 -> data
-I0729 22:57:57.796094 32751 net.cpp:344] Input 1 -> label
-I0729 22:57:57.796107 32751 net.cpp:67] Memory required for data: 0
-I0729 22:57:57.796119 32751 layer_factory.hpp:74] Creating layer one
-I0729 22:57:57.796149 32751 net.cpp:84] Creating Layer one
-I0729 22:57:57.796157 32751 net.cpp:384] one <- data
-I0729 22:57:57.796167 32751 net.cpp:384] one <- label
-I0729 22:57:57.796176 32751 net.cpp:342] one -> one
-I0729 22:57:57.796188 32751 net.cpp:113] Setting up one
-I0729 22:57:57.796232 32751 net.cpp:120] Top shape: 5 8475 (42375)
-I0729 22:57:57.796238 32751 net.cpp:126] Memory required for data: 169500
-I0729 22:57:57.796246 32751 net.cpp:169] one does not need backward computation.
-I0729 22:57:57.796249 32751 net.cpp:208] This network produces output one
-I0729 22:57:57.796258 32751 net.cpp:449] Collecting Learning Rate and Weight Decay.
-I0729 22:57:57.796262 32751 net.cpp:221] Network initialization done.
-I0729 22:57:57.796264 32751 net.cpp:222] Memory required for data: 169500
-.I0729 22:57:57.802510 32751 net.cpp:42] Initializing net from parameters: 
-name: "pythonnet"
-input: "data"
-input: "label"
-force_backward: true
-state {
-  phase: TRAIN
-}
-input_shape {
-  dim: 5
-  dim: 565
-}
-input_shape {
-  dim: 70
-}
-layer {
-  name: "one"
-  type: "Python"
-  bottom: "data"
-  bottom: "label"
-  top: "one"
-  python_param {
-    module: "test_Initialize_Message"
-    layer: "test_Initial_Message"
-  }
-}
-I0729 22:57:57.802539 32751 net.cpp:344] Input 0 -> data
-I0729 22:57:57.802561 32751 net.cpp:344] Input 1 -> label
-I0729 22:57:57.802572 32751 net.cpp:67] Memory required for data: 0
-I0729 22:57:57.802587 32751 layer_factory.hpp:74] Creating layer one
-I0729 22:57:57.802615 32751 net.cpp:84] Creating Layer one
-I0729 22:57:57.802623 32751 net.cpp:384] one <- data
-I0729 22:57:57.802634 32751 net.cpp:384] one <- label
-I0729 22:57:57.802644 32751 net.cpp:342] one -> one
-I0729 22:57:57.802655 32751 net.cpp:113] Setting up one
-I0729 22:57:57.802697 32751 net.cpp:120] Top shape: 5 8475 (42375)
-I0729 22:57:57.802703 32751 net.cpp:126] Memory required for data: 169500
-I0729 22:57:57.802711 32751 net.cpp:169] one does not need backward computation.
-I0729 22:57:57.802714 32751 net.cpp:208] This network produces output one
-I0729 22:57:57.802723 32751 net.cpp:449] Collecting Learning Rate and Weight Decay.
-I0729 22:57:57.802726 32751 net.cpp:221] Network initialization done.
-I0729 22:57:57.802729 32751 net.cpp:222] Memory required for data: 169500
-.I0729 22:57:57.874001 32751 net.cpp:42] Initializing net from parameters: 
-name: "pythonnet"
-input: "data"
-input: "label"
-force_backward: true
-state {
-  phase: TRAIN
-}
-input_shape {
-  dim: 5
-  dim: 565
-}
-input_shape {
-  dim: 70
-}
-layer {
-  name: "one"
-  type: "Python"
-  bottom: "data"
-  bottom: "label"
-  top: "one"
-  python_param {
-    module: "test_Initialize_Message"
-    layer: "test_Initial_Message"
-  }
-}
-I0729 22:57:57.874058 32751 net.cpp:344] Input 0 -> data
-I0729 22:57:57.874104 32751 net.cpp:344] Input 1 -> label
-I0729 22:57:57.874116 32751 net.cpp:67] Memory required for data: 0
-I0729 22:57:57.874140 32751 layer_factory.hpp:74] Creating layer one
-I0729 22:57:57.874188 32751 net.cpp:84] Creating Layer one
-I0729 22:57:57.874197 32751 net.cpp:384] one <- data
-I0729 22:57:57.874218 32751 net.cpp:384] one <- label
-I0729 22:57:57.874238 32751 net.cpp:342] one -> one
-I0729 22:57:57.874260 32751 net.cpp:113] Setting up one
-I0729 22:57:57.874332 32751 net.cpp:120] Top shape: 5 8475 (42375)
-I0729 22:57:57.874339 32751 net.cpp:126] Memory required for data: 169500
-I0729 22:57:57.874346 32751 net.cpp:169] one does not need backward computation.
-I0729 22:57:57.874351 32751 net.cpp:208] This network produces output one
-I0729 22:57:57.874363 32751 net.cpp:449] Collecting Learning Rate and Weight Decay.
-I0729 22:57:57.874368 32751 net.cpp:221] Network initialization done.
-I0729 22:57:57.874371 32751 net.cpp:222] Memory required for data: 169500
-.I0729 22:57:57.874572 32751 net.cpp:42] Initializing net from parameters: 
-name: "pythonnet"
-input: "data"
-input: "label"
-force_backward: true
-state {
-  phase: TRAIN
-}
-input_shape {
-  dim: 5
-  dim: 565
-}
-input_shape {
-  dim: 70
-}
-layer {
-  name: "one"
-  type: "Python"
-  bottom: "data"
-  bottom: "label"
-  top: "one"
-  python_param {
-    module: "test_Initialize_Message"
-    layer: "test_Initial_Message"
-  }
-}
-layer {
-  name: "two"
-  type: "Python"
-  bottom: "one"
-  bottom: "label"
-  top: "s2a"
-  top: "a2s"
-  top: "a2a"
-  python_param {
-    module: "test_Message_In"
-    layer: "test_Message_In"
-  }
-}
-I0729 22:57:57.874615 32751 net.cpp:344] Input 0 -> data
-I0729 22:57:57.874635 32751 net.cpp:344] Input 1 -> label
-I0729 22:57:57.874647 32751 net.cpp:67] Memory required for data: 0
-I0729 22:57:57.874662 32751 layer_factory.hpp:74] Creating layer label_input_1_split
-I0729 22:57:57.874677 32751 net.cpp:84] Creating Layer label_input_1_split
-I0729 22:57:57.874683 32751 net.cpp:384] label_input_1_split <- label
-I0729 22:57:57.874694 32751 net.cpp:342] label_input_1_split -> label_input_1_split_0
-I0729 22:57:57.874708 32751 net.cpp:342] label_input_1_split -> label_input_1_split_1
-I0729 22:57:57.874716 32751 net.cpp:113] Setting up label_input_1_split
-I0729 22:57:57.874727 32751 net.cpp:120] Top shape: 70 (70)
-I0729 22:57:57.874732 32751 net.cpp:120] Top shape: 70 (70)
-I0729 22:57:57.874735 32751 net.cpp:126] Memory required for data: 560
-I0729 22:57:57.874740 32751 layer_factory.hpp:74] Creating layer one
-I0729 22:57:57.874768 32751 net.cpp:84] Creating Layer one
-I0729 22:57:57.874776 32751 net.cpp:384] one <- data
-I0729 22:57:57.874785 32751 net.cpp:384] one <- label_input_1_split_0
-I0729 22:57:57.874795 32751 net.cpp:342] one -> one
-I0729 22:57:57.874807 32751 net.cpp:113] Setting up one
-I0729 22:57:57.874850 32751 net.cpp:120] Top shape: 5 8475 (42375)
-I0729 22:57:57.874855 32751 net.cpp:126] Memory required for data: 170060
-I0729 22:57:57.874861 32751 layer_factory.hpp:74] Creating layer two
-I0729 22:57:57.874886 32751 net.cpp:84] Creating Layer two
-I0729 22:57:57.874894 32751 net.cpp:384] two <- one
-I0729 22:57:57.874904 32751 net.cpp:384] two <- label_input_1_split_1
-I0729 22:57:57.874914 32751 net.cpp:342] two -> s2a
-I0729 22:57:57.874927 32751 net.cpp:342] two -> a2s
-I0729 22:57:57.874936 32751 net.cpp:342] two -> a2a
-I0729 22:57:57.874943 32751 net.cpp:113] Setting up two
-I0729 22:57:57.875000 32751 net.cpp:120] Top shape: 70 5 (350)
-I0729 22:57:57.875008 32751 net.cpp:120] Top shape: 70 40 (2800)
-I0729 22:57:57.875011 32751 net.cpp:120] Top shape: 980 40 (39200)
-I0729 22:57:57.875015 32751 net.cpp:126] Memory required for data: 339460
-I0729 22:57:57.875020 32751 net.cpp:169] two does not need backward computation.
-I0729 22:57:57.875023 32751 net.cpp:169] one does not need backward computation.
-I0729 22:57:57.875026 32751 net.cpp:169] label_input_1_split does not need backward computation.
-I0729 22:57:57.875030 32751 net.cpp:208] This network produces output a2a
-I0729 22:57:57.875036 32751 net.cpp:208] This network produces output a2s
-I0729 22:57:57.875041 32751 net.cpp:208] This network produces output s2a
-I0729 22:57:57.875049 32751 net.cpp:449] Collecting Learning Rate and Weight Decay.
-I0729 22:57:57.875053 32751 net.cpp:221] Network initialization done.
-I0729 22:57:57.875056 32751 net.cpp:222] Memory required for data: 339460
-.I0729 22:57:57.884935 32751 net.cpp:42] Initializing net from parameters: 
-name: "pythonnet"
-input: "data"
-input: "label"
-force_backward: true
-state {
-  phase: TRAIN
-}
-input_shape {
-  dim: 5
-  dim: 565
-}
-input_shape {
-  dim: 70
-}
-layer {
-  name: "one"
-  type: "Python"
-  bottom: "data"
-  bottom: "label"
-  top: "one"
-  python_param {
-    module: "test_Initialize_Message"
-    layer: "test_Initial_Message"
-  }
-}
-layer {
-  name: "two"
-  type: "Python"
-  bottom: "one"
-  bottom: "label"
-  top: "s2a"
-  top: "a2s"
-  top: "a2a"
-  python_param {
-    module: "test_Message_In"
-    layer: "test_Message_In"
-  }
-}
-I0729 22:57:57.884987 32751 net.cpp:344] Input 0 -> data
-I0729 22:57:57.885010 32751 net.cpp:344] Input 1 -> label
-I0729 22:57:57.885023 32751 net.cpp:67] Memory required for data: 0
-I0729 22:57:57.885040 32751 layer_factory.hpp:74] Creating layer label_input_1_split
-I0729 22:57:57.885051 32751 net.cpp:84] Creating Layer label_input_1_split
-I0729 22:57:57.885057 32751 net.cpp:384] label_input_1_split <- label
-I0729 22:57:57.885067 32751 net.cpp:342] label_input_1_split -> label_input_1_split_0
-I0729 22:57:57.885082 32751 net.cpp:342] label_input_1_split -> label_input_1_split_1
-I0729 22:57:57.885089 32751 net.cpp:113] Setting up label_input_1_split
-I0729 22:57:57.885100 32751 net.cpp:120] Top shape: 70 (70)
-I0729 22:57:57.885107 32751 net.cpp:120] Top shape: 70 (70)
-I0729 22:57:57.885108 32751 net.cpp:126] Memory required for data: 560
-I0729 22:57:57.885114 32751 layer_factory.hpp:74] Creating layer one
-I0729 22:57:57.885143 32751 net.cpp:84] Creating Layer one
-I0729 22:57:57.885151 32751 net.cpp:384] one <- data
-I0729 22:57:57.885160 32751 net.cpp:384] one <- label_input_1_split_0
-I0729 22:57:57.885170 32751 net.cpp:342] one -> one
-I0729 22:57:57.885182 32751 net.cpp:113] Setting up one
-I0729 22:57:57.885224 32751 net.cpp:120] Top shape: 5 8475 (42375)
-I0729 22:57:57.885231 32751 net.cpp:126] Memory required for data: 170060
-I0729 22:57:57.885236 32751 layer_factory.hpp:74] Creating layer two
-I0729 22:57:57.885262 32751 net.cpp:84] Creating Layer two
-I0729 22:57:57.885269 32751 net.cpp:384] two <- one
-I0729 22:57:57.885279 32751 net.cpp:384] two <- label_input_1_split_1
-I0729 22:57:57.885289 32751 net.cpp:342] two -> s2a
-I0729 22:57:57.885301 32751 net.cpp:342] two -> a2s
-I0729 22:57:57.885311 32751 net.cpp:342] two -> a2a
-I0729 22:57:57.885319 32751 net.cpp:113] Setting up two
-I0729 22:57:57.885372 32751 net.cpp:120] Top shape: 70 5 (350)
-I0729 22:57:57.885380 32751 net.cpp:120] Top shape: 70 40 (2800)
-I0729 22:57:57.885385 32751 net.cpp:120] Top shape: 980 40 (39200)
-I0729 22:57:57.885387 32751 net.cpp:126] Memory required for data: 339460
-I0729 22:57:57.885392 32751 net.cpp:169] two does not need backward computation.
-I0729 22:57:57.885396 32751 net.cpp:169] one does not need backward computation.
-I0729 22:57:57.885398 32751 net.cpp:169] label_input_1_split does not need backward computation.
-I0729 22:57:57.885403 32751 net.cpp:208] This network produces output a2a
-I0729 22:57:57.885409 32751 net.cpp:208] This network produces output a2s
-I0729 22:57:57.885413 32751 net.cpp:208] This network produces output s2a
-I0729 22:57:57.885422 32751 net.cpp:449] Collecting Learning Rate and Weight Decay.
-I0729 22:57:57.885426 32751 net.cpp:221] Network initialization done.
-I0729 22:57:57.885428 32751 net.cpp:222] Memory required for data: 339460
-.I0729 22:57:57.898202 32751 net.cpp:42] Initializing net from parameters: 
-name: "pythonnet"
-input: "data"
-input: "label"
-force_backward: true
-state {
-  phase: TRAIN
-}
-input_shape {
-  dim: 5
-  dim: 565
-}
-input_shape {
-  dim: 70
-}
-layer {
-  name: "one"
-  type: "Python"
-  bottom: "data"
-  bottom: "label"
-  top: "one"
-  python_param {
-    module: "test_Initialize_Message"
-    layer: "test_Initial_Message"
-  }
-}
-layer {
-  name: "two"
-  type: "Python"
-  bottom: "one"
-  bottom: "label"
-  top: "s2a"
-  top: "a2s"
-  top: "a2a"
-  python_param {
-    module: "test_Message_In"
-    layer: "test_Message_In"
-  }
-}
-I0729 22:57:57.898257 32751 net.cpp:344] Input 0 -> data
-I0729 22:57:57.898282 32751 net.cpp:344] Input 1 -> label
-I0729 22:57:57.898293 32751 net.cpp:67] Memory required for data: 0
-I0729 22:57:57.898311 32751 layer_factory.hpp:74] Creating layer label_input_1_split
-I0729 22:57:57.898324 32751 net.cpp:84] Creating Layer label_input_1_split
-I0729 22:57:57.898329 32751 net.cpp:384] label_input_1_split <- label
-I0729 22:57:57.898340 32751 net.cpp:342] label_input_1_split -> label_input_1_split_0
-I0729 22:57:57.898355 32751 net.cpp:342] label_input_1_split -> label_input_1_split_1
-I0729 22:57:57.898367 32751 net.cpp:113] Setting up label_input_1_split
-I0729 22:57:57.898380 32751 net.cpp:120] Top shape: 70 (70)
-I0729 22:57:57.898385 32751 net.cpp:120] Top shape: 70 (70)
-I0729 22:57:57.898386 32751 net.cpp:126] Memory required for data: 560
-I0729 22:57:57.898392 32751 layer_factory.hpp:74] Creating layer one
-I0729 22:57:57.898422 32751 net.cpp:84] Creating Layer one
-I0729 22:57:57.898430 32751 net.cpp:384] one <- data
-I0729 22:57:57.898440 32751 net.cpp:384] one <- label_input_1_split_0
-I0729 22:57:57.898449 32751 net.cpp:342] one -> one
-I0729 22:57:57.898461 32751 net.cpp:113] Setting up one
-I0729 22:57:57.898505 32751 net.cpp:120] Top shape: 5 8475 (42375)
-I0729 22:57:57.898511 32751 net.cpp:126] Memory required for data: 170060
-I0729 22:57:57.898516 32751 layer_factory.hpp:74] Creating layer two
-I0729 22:57:57.898542 32751 net.cpp:84] Creating Layer two
-I0729 22:57:57.898550 32751 net.cpp:384] two <- one
-I0729 22:57:57.898561 32751 net.cpp:384] two <- label_input_1_split_1
-I0729 22:57:57.898571 32751 net.cpp:342] two -> s2a
-I0729 22:57:57.898582 32751 net.cpp:342] two -> a2s
-I0729 22:57:57.898592 32751 net.cpp:342] two -> a2a
-I0729 22:57:57.898600 32751 net.cpp:113] Setting up two
-I0729 22:57:57.898654 32751 net.cpp:120] Top shape: 70 5 (350)
-I0729 22:57:57.898663 32751 net.cpp:120] Top shape: 70 40 (2800)
-I0729 22:57:57.898666 32751 net.cpp:120] Top shape: 980 40 (39200)
-I0729 22:57:57.898669 32751 net.cpp:126] Memory required for data: 339460
-I0729 22:57:57.898674 32751 net.cpp:169] two does not need backward computation.
-I0729 22:57:57.898677 32751 net.cpp:169] one does not need backward computation.
-I0729 22:57:57.898680 32751 net.cpp:169] label_input_1_split does not need backward computation.
-I0729 22:57:57.898684 32751 net.cpp:208] This network produces output a2a
-I0729 22:57:57.898690 32751 net.cpp:208] This network produces output a2s
-I0729 22:57:57.898695 32751 net.cpp:208] This network produces output s2a
-I0729 22:57:57.898705 32751 net.cpp:449] Collecting Learning Rate and Weight Decay.
-I0729 22:57:57.898707 32751 net.cpp:221] Network initialization done.
-I0729 22:57:57.898710 32751 net.cpp:222] Memory required for data: 339460
-.I0729 22:57:57.898988 32751 net.cpp:42] Initializing net from parameters: 
-name: "testnet"
-force_backward: true
-state {
-  phase: TRAIN
-}
-layer {
-  name: "data"
-  type: "DummyData"
-  top: "data"
-  top: "label"
-  dummy_data_param {
-    data_filler {
-      type: "gaussian"
-      std: 1
-    }
-    data_filler {
-      type: "constant"
-    }
-    num: 5
-    num: 5
-    channels: 2
-    channels: 1
-    height: 3
-    height: 1
-    width: 4
-    width: 1
-  }
-}
-layer {
-  name: "conv"
-  type: "Convolution"
-  bottom: "data"
-  top: "conv"
-  param {
-    decay_mult: 1
-  }
-  param {
-    decay_mult: 0
-  }
-  convolution_param {
-    num_output: 11
-    pad: 3
-    kernel_size: 2
-    weight_filler {
-      type: "gaussian"
-      std: 1
-    }
-    bias_filler {
-      type: "constant"
-      value: 2
-    }
-  }
-}
-layer {
-  name: "ip"
-  type: "InnerProduct"
-  bottom: "conv"
-  top: "ip"
-  inner_product_param {
-    num_output: 13
-    weight_filler {
-      type: "gaussian"
-      std: 2.5
-    }
-    bias_filler {
-      type: "constant"
-      value: -3
-    }
-  }
-}
-layer {
-  name: "loss"
-  type: "SoftmaxWithLoss"
-  bottom: "ip"
-  bottom: "label"
-  top: "loss"
-}
-I0729 22:57:57.899030 32751 net.cpp:67] Memory required for data: 0
-I0729 22:57:57.899050 32751 layer_factory.hpp:74] Creating layer data
-I0729 22:57:57.899067 32751 net.cpp:84] Creating Layer data
-I0729 22:57:57.899075 32751 net.cpp:342] data -> data
-I0729 22:57:57.899092 32751 net.cpp:342] data -> label
-I0729 22:57:57.899106 32751 net.cpp:113] Setting up data
-I0729 22:57:57.899133 32751 net.cpp:120] Top shape: 5 2 3 4 (120)
-I0729 22:57:57.899139 32751 net.cpp:120] Top shape: 5 1 1 1 (5)
-I0729 22:57:57.899142 32751 net.cpp:126] Memory required for data: 500
-I0729 22:57:57.899147 32751 layer_factory.hpp:74] Creating layer conv
-I0729 22:57:57.899171 32751 net.cpp:84] Creating Layer conv
-I0729 22:57:57.899185 32751 net.cpp:384] conv <- data
-I0729 22:57:57.899201 32751 net.cpp:342] conv -> conv
-I0729 22:57:57.899215 32751 net.cpp:113] Setting up conv
-I0729 22:57:57.899582 32751 net.cpp:120] Top shape: 5 11 8 9 (3960)
-I0729 22:57:57.899588 32751 net.cpp:126] Memory required for data: 16340
-I0729 22:57:57.899606 32751 layer_factory.hpp:74] Creating layer ip
-I0729 22:57:57.899621 32751 net.cpp:84] Creating Layer ip
-I0729 22:57:57.899626 32751 net.cpp:384] ip <- conv
-I0729 22:57:57.899638 32751 net.cpp:342] ip -> ip
-I0729 22:57:57.899649 32751 net.cpp:113] Setting up ip
-I0729 22:57:57.900369 32751 net.cpp:120] Top shape: 5 13 (65)
-I0729 22:57:57.900374 32751 net.cpp:126] Memory required for data: 16600
-I0729 22:57:57.900387 32751 layer_factory.hpp:74] Creating layer loss
-I0729 22:57:57.900395 32751 net.cpp:84] Creating Layer loss
-I0729 22:57:57.900400 32751 net.cpp:384] loss <- ip
-I0729 22:57:57.900409 32751 net.cpp:384] loss <- label
-I0729 22:57:57.900418 32751 net.cpp:342] loss -> loss
-I0729 22:57:57.900429 32751 net.cpp:113] Setting up loss
-I0729 22:57:57.900435 32751 layer_factory.hpp:74] Creating layer loss
-I0729 22:57:57.900460 32751 net.cpp:120] Top shape: (1)
-I0729 22:57:57.900465 32751 net.cpp:122]     with loss weight 1
-I0729 22:57:57.900472 32751 net.cpp:126] Memory required for data: 16604
-I0729 22:57:57.900476 32751 net.cpp:167] loss needs backward computation.
-I0729 22:57:57.900481 32751 net.cpp:167] ip needs backward computation.
-I0729 22:57:57.900485 32751 net.cpp:167] conv needs backward computation.
-I0729 22:57:57.900488 32751 net.cpp:169] data does not need backward computation.
-I0729 22:57:57.900493 32751 net.cpp:208] This network produces output loss
-I0729 22:57:57.900502 32751 net.cpp:449] Collecting Learning Rate and Weight Decay.
-I0729 22:57:57.900509 32751 net.cpp:221] Network initialization done.
-I0729 22:57:57.900511 32751 net.cpp:222] Memory required for data: 16604
-.I0729 22:57:57.901469 32751 net.cpp:42] Initializing net from parameters: 
-name: "testnet"
-force_backward: true
-state {
-  phase: TRAIN
-}
-layer {
-  name: "data"
-  type: "DummyData"
-  top: "data"
-  top: "label"
-  dummy_data_param {
-    data_filler {
-      type: "gaussian"
-      std: 1
-    }
-    data_filler {
-      type: "constant"
-    }
-    num: 5
-    num: 5
-    channels: 2
-    channels: 1
-    height: 3
-    height: 1
-    width: 4
-    width: 1
-  }
-}
-layer {
-  name: "conv"
-  type: "Convolution"
-  bottom: "data"
-  top: "conv"
-  param {
-    decay_mult: 1
-  }
-  param {
-    decay_mult: 0
-  }
-  convolution_param {
-    num_output: 11
-    pad: 3
-    kernel_size: 2
-    weight_filler {
-      type: "gaussian"
-      std: 1
-    }
-    bias_filler {
-      type: "constant"
-      value: 2
-    }
-  }
-}
-layer {
-  name: "ip"
-  type: "InnerProduct"
-  bottom: "conv"
-  top: "ip"
-  inner_product_param {
-    num_output: 13
-    weight_filler {
-      type: "gaussian"
-      std: 2.5
-    }
-    bias_filler {
-      type: "constant"
-      value: -3
-    }
-  }
-}
-layer {
-  name: "loss"
-  type: "SoftmaxWithLoss"
-  bottom: "ip"
-  bottom: "label"
-  top: "loss"
-}
-I0729 22:57:57.901512 32751 net.cpp:67] Memory required for data: 0
-I0729 22:57:57.901532 32751 layer_factory.hpp:74] Creating layer data
-I0729 22:57:57.901546 32751 net.cpp:84] Creating Layer data
-I0729 22:57:57.901553 32751 net.cpp:342] data -> data
-I0729 22:57:57.901571 32751 net.cpp:342] data -> label
-I0729 22:57:57.901584 32751 net.cpp:113] Setting up data
-I0729 22:57:57.901605 32751 net.cpp:120] Top shape: 5 2 3 4 (120)
-I0729 22:57:57.901612 32751 net.cpp:120] Top shape: 5 1 1 1 (5)
-I0729 22:57:57.901614 32751 net.cpp:126] Memory required for data: 500
-I0729 22:57:57.901619 32751 layer_factory.hpp:74] Creating layer conv
-I0729 22:57:57.901633 32751 net.cpp:84] Creating Layer conv
-I0729 22:57:57.901639 32751 net.cpp:384] conv <- data
-I0729 22:57:57.901653 32751 net.cpp:342] conv -> conv
-I0729 22:57:57.901665 32751 net.cpp:113] Setting up conv
-I0729 22:57:57.901698 32751 net.cpp:120] Top shape: 5 11 8 9 (3960)
-I0729 22:57:57.901703 32751 net.cpp:126] Memory required for data: 16340
-I0729 22:57:57.901718 32751 layer_factory.hpp:74] Creating layer ip
-I0729 22:57:57.901734 32751 net.cpp:84] Creating Layer ip
-I0729 22:57:57.901741 32751 net.cpp:384] ip <- conv
-I0729 22:57:57.901753 32751 net.cpp:342] ip -> ip
-I0729 22:57:57.901764 32751 net.cpp:113] Setting up ip
-I0729 22:57:57.902478 32751 net.cpp:120] Top shape: 5 13 (65)
-I0729 22:57:57.902483 32751 net.cpp:126] Memory required for data: 16600
-I0729 22:57:57.902495 32751 layer_factory.hpp:74] Creating layer loss
-I0729 22:57:57.902504 32751 net.cpp:84] Creating Layer loss
-I0729 22:57:57.902509 32751 net.cpp:384] loss <- ip
-I0729 22:57:57.902518 32751 net.cpp:384] loss <- label
-I0729 22:57:57.902526 32751 net.cpp:342] loss -> loss
-I0729 22:57:57.902537 32751 net.cpp:113] Setting up loss
-I0729 22:57:57.902544 32751 layer_factory.hpp:74] Creating layer loss
-I0729 22:57:57.902565 32751 net.cpp:120] Top shape: (1)
-I0729 22:57:57.902570 32751 net.cpp:122]     with loss weight 1
-I0729 22:57:57.902573 32751 net.cpp:126] Memory required for data: 16604
-I0729 22:57:57.902578 32751 net.cpp:167] loss needs backward computation.
-I0729 22:57:57.902582 32751 net.cpp:167] ip needs backward computation.
-I0729 22:57:57.902586 32751 net.cpp:167] conv needs backward computation.
-I0729 22:57:57.902590 32751 net.cpp:169] data does not need backward computation.
-I0729 22:57:57.902595 32751 net.cpp:208] This network produces output loss
-I0729 22:57:57.902603 32751 net.cpp:449] Collecting Learning Rate and Weight Decay.
-I0729 22:57:57.902611 32751 net.cpp:221] Network initialization done.
-I0729 22:57:57.902612 32751 net.cpp:222] Memory required for data: 16604
-.I0729 22:57:57.903043 32751 net.cpp:42] Initializing net from parameters: 
-name: "testnet"
-force_backward: true
-state {
-  phase: TRAIN
-}
-layer {
-  name: "data"
-  type: "DummyData"
-  top: "data"
-  top: "label"
-  dummy_data_param {
-    data_filler {
-      type: "gaussian"
-      std: 1
-    }
-    data_filler {
-      type: "constant"
-    }
-    num: 5
-    num: 5
-    channels: 2
-    channels: 1
-    height: 3
-    height: 1
-    width: 4
-    width: 1
-  }
-}
-layer {
-  name: "conv"
-  type: "Convolution"
-  bottom: "data"
-  top: "conv"
-  param {
-    decay_mult: 1
-  }
-  param {
-    decay_mult: 0
-  }
-  convolution_param {
-    num_output: 11
-    pad: 3
-    kernel_size: 2
-    weight_filler {
-      type: "gaussian"
-      std: 1
-    }
-    bias_filler {
-      type: "constant"
-      value: 2
-    }
-  }
-}
-layer {
-  name: "ip"
-  type: "InnerProduct"
-  bottom: "conv"
-  top: "ip"
-  inner_product_param {
-    num_output: 13
-    weight_filler {
-      type: "gaussian"
-      std: 2.5
-    }
-    bias_filler {
-      type: "constant"
-      value: -3
-    }
-  }
-}
-layer {
-  name: "loss"
-  type: "SoftmaxWithLoss"
-  bottom: "ip"
-  bottom: "label"
-  top: "loss"
-}
-I0729 22:57:57.903084 32751 net.cpp:67] Memory required for data: 0
-I0729 22:57:57.903105 32751 layer_factory.hpp:74] Creating layer data
-I0729 22:57:57.903118 32751 net.cpp:84] Creating Layer data
-I0729 22:57:57.903126 32751 net.cpp:342] data -> data
-I0729 22:57:57.903142 32751 net.cpp:342] data -> label
-I0729 22:57:57.903165 32751 net.cpp:113] Setting up data
-I0729 22:57:57.903188 32751 net.cpp:120] Top shape: 5 2 3 4 (120)
-I0729 22:57:57.903194 32751 net.cpp:120] Top shape: 5 1 1 1 (5)
-I0729 22:57:57.903198 32751 net.cpp:126] Memory required for data: 500
-I0729 22:57:57.903203 32751 layer_factory.hpp:74] Creating layer conv
-I0729 22:57:57.903218 32751 net.cpp:84] Creating Layer conv
-I0729 22:57:57.903223 32751 net.cpp:384] conv <- data
-I0729 22:57:57.903236 32751 net.cpp:342] conv -> conv
-I0729 22:57:57.903250 32751 net.cpp:113] Setting up conv
-I0729 22:57:57.903282 32751 net.cpp:120] Top shape: 5 11 8 9 (3960)
-I0729 22:57:57.903288 32751 net.cpp:126] Memory required for data: 16340
-I0729 22:57:57.903303 32751 layer_factory.hpp:74] Creating layer ip
-I0729 22:57:57.903316 32751 net.cpp:84] Creating Layer ip
-I0729 22:57:57.903321 32751 net.cpp:384] ip <- conv
-I0729 22:57:57.903333 32751 net.cpp:342] ip -> ip
-I0729 22:57:57.903344 32751 net.cpp:113] Setting up ip
-I0729 22:57:57.904060 32751 net.cpp:120] Top shape: 5 13 (65)
-I0729 22:57:57.904068 32751 net.cpp:126] Memory required for data: 16600
-I0729 22:57:57.904080 32751 layer_factory.hpp:74] Creating layer loss
-I0729 22:57:57.904090 32751 net.cpp:84] Creating Layer loss
-I0729 22:57:57.904095 32751 net.cpp:384] loss <- ip
-I0729 22:57:57.904104 32751 net.cpp:384] loss <- label
-I0729 22:57:57.904114 32751 net.cpp:342] loss -> loss
-I0729 22:57:57.904124 32751 net.cpp:113] Setting up loss
-I0729 22:57:57.904130 32751 layer_factory.hpp:74] Creating layer loss
-I0729 22:57:57.904151 32751 net.cpp:120] Top shape: (1)
-I0729 22:57:57.904156 32751 net.cpp:122]     with loss weight 1
-I0729 22:57:57.904160 32751 net.cpp:126] Memory required for data: 16604
-I0729 22:57:57.904165 32751 net.cpp:167] loss needs backward computation.
-I0729 22:57:57.904170 32751 net.cpp:167] ip needs backward computation.
-I0729 22:57:57.904173 32751 net.cpp:167] conv needs backward computation.
-I0729 22:57:57.904176 32751 net.cpp:169] data does not need backward computation.
-I0729 22:57:57.904181 32751 net.cpp:208] This network produces output loss
-I0729 22:57:57.904191 32751 net.cpp:449] Collecting Learning Rate and Weight Decay.
-I0729 22:57:57.904197 32751 net.cpp:221] Network initialization done.
-I0729 22:57:57.904199 32751 net.cpp:222] Memory required for data: 16604
-.I0729 22:57:57.904860 32751 net.cpp:42] Initializing net from parameters: 
-name: "testnet"
-force_backward: true
-state {
-  phase: TRAIN
-}
-layer {
-  name: "data"
-  type: "DummyData"
-  top: "data"
-  top: "label"
-  dummy_data_param {
-    data_filler {
-      type: "gaussian"
-      std: 1
-    }
-    data_filler {
-      type: "constant"
-    }
-    num: 5
-    num: 5
-    channels: 2
-    channels: 1
-    height: 3
-    height: 1
-    width: 4
-    width: 1
-  }
-}
-layer {
-  name: "conv"
-  type: "Convolution"
-  bottom: "data"
-  top: "conv"
-  param {
-    decay_mult: 1
-  }
-  param {
-    decay_mult: 0
-  }
-  convolution_param {
-    num_output: 11
-    pad: 3
-    kernel_size: 2
-    weight_filler {
-      type: "gaussian"
-      std: 1
-    }
-    bias_filler {
-      type: "constant"
-      value: 2
-    }
-  }
-}
-layer {
-  name: "ip"
-  type: "InnerProduct"
-  bottom: "conv"
-  top: "ip"
-  inner_product_param {
-    num_output: 13
-    weight_filler {
-      type: "gaussian"
-      std: 2.5
-    }
-    bias_filler {
-      type: "constant"
-      value: -3
-    }
-  }
-}
-layer {
-  name: "loss"
-  type: "SoftmaxWithLoss"
-  bottom: "ip"
-  bottom: "label"
-  top: "loss"
-}
-I0729 22:57:57.904903 32751 net.cpp:67] Memory required for data: 0
-I0729 22:57:57.904923 32751 layer_factory.hpp:74] Creating layer data
-I0729 22:57:57.904937 32751 net.cpp:84] Creating Layer data
-I0729 22:57:57.904944 32751 net.cpp:342] data -> data
-I0729 22:57:57.904961 32751 net.cpp:342] data -> label
-I0729 22:57:57.904974 32751 net.cpp:113] Setting up data
-I0729 22:57:57.904995 32751 net.cpp:120] Top shape: 5 2 3 4 (120)
-I0729 22:57:57.905002 32751 net.cpp:120] Top shape: 5 1 1 1 (5)
-I0729 22:57:57.905004 32751 net.cpp:126] Memory required for data: 500
-I0729 22:57:57.905010 32751 layer_factory.hpp:74] Creating layer conv
-I0729 22:57:57.905025 32751 net.cpp:84] Creating Layer conv
-I0729 22:57:57.905030 32751 net.cpp:384] conv <- data
-I0729 22:57:57.905043 32751 net.cpp:342] conv -> conv
-I0729 22:57:57.905056 32751 net.cpp:113] Setting up conv
-I0729 22:57:57.905089 32751 net.cpp:120] Top shape: 5 11 8 9 (3960)
-I0729 22:57:57.905094 32751 net.cpp:126] Memory required for data: 16340
-I0729 22:57:57.905109 32751 layer_factory.hpp:74] Creating layer ip
-I0729 22:57:57.905122 32751 net.cpp:84] Creating Layer ip
-I0729 22:57:57.905128 32751 net.cpp:384] ip <- conv
-I0729 22:57:57.905139 32751 net.cpp:342] ip -> ip
-I0729 22:57:57.905150 32751 net.cpp:113] Setting up ip
-I0729 22:57:57.905866 32751 net.cpp:120] Top shape: 5 13 (65)
-I0729 22:57:57.905871 32751 net.cpp:126] Memory required for data: 16600
-I0729 22:57:57.905882 32751 layer_factory.hpp:74] Creating layer loss
-I0729 22:57:57.905891 32751 net.cpp:84] Creating Layer loss
-I0729 22:57:57.905896 32751 net.cpp:384] loss <- ip
-I0729 22:57:57.905905 32751 net.cpp:384] loss <- label
-I0729 22:57:57.905917 32751 net.cpp:342] loss -> loss
-I0729 22:57:57.905930 32751 net.cpp:113] Setting up loss
-I0729 22:57:57.905936 32751 layer_factory.hpp:74] Creating layer loss
-I0729 22:57:57.905957 32751 net.cpp:120] Top shape: (1)
-I0729 22:57:57.905961 32751 net.cpp:122]     with loss weight 1
-I0729 22:57:57.905966 32751 net.cpp:126] Memory required for data: 16604
-I0729 22:57:57.905971 32751 net.cpp:167] loss needs backward computation.
-I0729 22:57:57.905975 32751 net.cpp:167] ip needs backward computation.
-I0729 22:57:57.905978 32751 net.cpp:167] conv needs backward computation.
-I0729 22:57:57.905982 32751 net.cpp:169] data does not need backward computation.
-I0729 22:57:57.905987 32751 net.cpp:208] This network produces output loss
-I0729 22:57:57.905995 32751 net.cpp:449] Collecting Learning Rate and Weight Decay.
-I0729 22:57:57.906002 32751 net.cpp:221] Network initialization done.
-I0729 22:57:57.906005 32751 net.cpp:222] Memory required for data: 16604
-I0729 22:57:57.906196 32751 net.cpp:731] Serializing 4 layers
-I0729 22:57:57.906780 32751 net.cpp:42] Initializing net from parameters: 
-name: "testnet"
-force_backward: true
-state {
-  phase: TRAIN
-}
-layer {
-  name: "data"
-  type: "DummyData"
-  top: "data"
-  top: "label"
-  dummy_data_param {
-    data_filler {
-      type: "gaussian"
-      std: 1
-    }
-    data_filler {
-      type: "constant"
-    }
-    num: 5
-    num: 5
-    channels: 2
-    channels: 1
-    height: 3
-    height: 1
-    width: 4
-    width: 1
-  }
-}
-layer {
-  name: "conv"
-  type: "Convolution"
-  bottom: "data"
-  top: "conv"
-  param {
-    decay_mult: 1
-  }
-  param {
-    decay_mult: 0
-  }
-  convolution_param {
-    num_output: 11
-    pad: 3
-    kernel_size: 2
-    weight_filler {
-      type: "gaussian"
-      std: 1
-    }
-    bias_filler {
-      type: "constant"
-      value: 2
-    }
-  }
-}
-layer {
-  name: "ip"
-  type: "InnerProduct"
-  bottom: "conv"
-  top: "ip"
-  inner_product_param {
-    num_output: 13
-    weight_filler {
-      type: "gaussian"
-      std: 2.5
-    }
-    bias_filler {
-      type: "constant"
-      value: -3
-    }
-  }
-}
-layer {
-  name: "loss"
-  type: "SoftmaxWithLoss"
-  bottom: "ip"
-  bottom: "label"
-  top: "loss"
-}
-I0729 22:57:57.906822 32751 net.cpp:67] Memory required for data: 0
-I0729 22:57:57.906841 32751 layer_factory.hpp:74] Creating layer data
-I0729 22:57:57.906855 32751 net.cpp:84] Creating Layer data
-I0729 22:57:57.906862 32751 net.cpp:342] data -> data
-I0729 22:57:57.906880 32751 net.cpp:342] data -> label
-I0729 22:57:57.906893 32751 net.cpp:113] Setting up data
-I0729 22:57:57.906913 32751 net.cpp:120] Top shape: 5 2 3 4 (120)
-I0729 22:57:57.906919 32751 net.cpp:120] Top shape: 5 1 1 1 (5)
-I0729 22:57:57.906922 32751 net.cpp:126] Memory required for data: 500
-I0729 22:57:57.906927 32751 layer_factory.hpp:74] Creating layer conv
-I0729 22:57:57.906941 32751 net.cpp:84] Creating Layer conv
-I0729 22:57:57.906947 32751 net.cpp:384] conv <- data
-I0729 22:57:57.906961 32751 net.cpp:342] conv -> conv
-I0729 22:57:57.906975 32751 net.cpp:113] Setting up conv
-I0729 22:57:57.907006 32751 net.cpp:120] Top shape: 5 11 8 9 (3960)
-I0729 22:57:57.907011 32751 net.cpp:126] Memory required for data: 16340
-I0729 22:57:57.907027 32751 layer_factory.hpp:74] Creating layer ip
-I0729 22:57:57.907039 32751 net.cpp:84] Creating Layer ip
-I0729 22:57:57.907044 32751 net.cpp:384] ip <- conv
-I0729 22:57:57.907057 32751 net.cpp:342] ip -> ip
-I0729 22:57:57.907068 32751 net.cpp:113] Setting up ip
-I0729 22:57:57.907821 32751 net.cpp:120] Top shape: 5 13 (65)
-I0729 22:57:57.907829 32751 net.cpp:126] Memory required for data: 16600
-I0729 22:57:57.907841 32751 layer_factory.hpp:74] Creating layer loss
-I0729 22:57:57.907851 32751 net.cpp:84] Creating Layer loss
-I0729 22:57:57.907856 32751 net.cpp:384] loss <- ip
-I0729 22:57:57.907866 32751 net.cpp:384] loss <- label
-I0729 22:57:57.907874 32751 net.cpp:342] loss -> loss
-I0729 22:57:57.907886 32751 net.cpp:113] Setting up loss
-I0729 22:57:57.907891 32751 layer_factory.hpp:74] Creating layer loss
-I0729 22:57:57.907913 32751 net.cpp:120] Top shape: (1)
-I0729 22:57:57.907917 32751 net.cpp:122]     with loss weight 1
-I0729 22:57:57.907925 32751 net.cpp:126] Memory required for data: 16604
-I0729 22:57:57.907929 32751 net.cpp:167] loss needs backward computation.
-I0729 22:57:57.907934 32751 net.cpp:167] ip needs backward computation.
-I0729 22:57:57.907938 32751 net.cpp:167] conv needs backward computation.
-I0729 22:57:57.907941 32751 net.cpp:169] data does not need backward computation.
-I0729 22:57:57.907946 32751 net.cpp:208] This network produces output loss
-I0729 22:57:57.907956 32751 net.cpp:449] Collecting Learning Rate and Weight Decay.
-I0729 22:57:57.907963 32751 net.cpp:221] Network initialization done.
-I0729 22:57:57.907965 32751 net.cpp:222] Memory required for data: 16604
-I0729 22:57:57.908221 32751 net.cpp:704] Copying source layer data
-I0729 22:57:57.908231 32751 net.cpp:704] Copying source layer conv
-I0729 22:57:57.908256 32751 net.cpp:704] Copying source layer ip
-I0729 22:57:57.908351 32751 net.cpp:704] Copying source layer loss
-.I0729 22:57:57.909235 32751 solver.cpp:32] Initializing solver from parameters: 
-test_iter: 10
-test_interval: 10
-base_lr: 0.01
-display: 100
-max_iter: 100
-lr_policy: "inv"
-gamma: 0.0001
-power: 0.75
-momentum: 0.9
-weight_decay: 0.0005
-net: "/tmp/tmpS4hCZE"
-snapshot_after_train: false
-I0729 22:57:57.909251 32751 solver.cpp:70] Creating training net from net file: /tmp/tmpS4hCZE
-I0729 22:57:57.909371 32751 net.cpp:42] Initializing net from parameters: 
-name: "testnet"
-force_backward: true
-state {
-  phase: TRAIN
-}
-layer {
-  name: "data"
-  type: "DummyData"
-  top: "data"
-  top: "label"
-  dummy_data_param {
-    data_filler {
-      type: "gaussian"
-      std: 1
-    }
-    data_filler {
-      type: "constant"
-    }
-    num: 5
-    num: 5
-    channels: 2
-    channels: 1
-    height: 3
-    height: 1
-    width: 4
-    width: 1
-  }
-}
-layer {
-  name: "conv"
-  type: "Convolution"
-  bottom: "data"
-  top: "conv"
-  param {
-    decay_mult: 1
-  }
-  param {
-    decay_mult: 0
-  }
-  convolution_param {
-    num_output: 11
-    pad: 3
-    kernel_size: 2
-    weight_filler {
-      type: "gaussian"
-      std: 1
-    }
-    bias_filler {
-      type: "constant"
-      value: 2
-    }
-  }
-}
-layer {
-  name: "ip"
-  type: "InnerProduct"
-  bottom: "conv"
-  top: "ip"
-  inner_product_param {
-    num_output: 13
-    weight_filler {
-      type: "gaussian"
-      std: 2.5
-    }
-    bias_filler {
-      type: "constant"
-      value: -3
-    }
-  }
-}
-layer {
-  name: "loss"
-  type: "SoftmaxWithLoss"
-  bottom: "ip"
-  bottom: "label"
-  top: "loss"
-}
-I0729 22:57:57.909412 32751 net.cpp:67] Memory required for data: 0
-I0729 22:57:57.909432 32751 layer_factory.hpp:74] Creating layer data
-I0729 22:57:57.909446 32751 net.cpp:84] Creating Layer data
-I0729 22:57:57.909453 32751 net.cpp:342] data -> data
-I0729 22:57:57.909471 32751 net.cpp:342] data -> label
-I0729 22:57:57.909483 32751 net.cpp:113] Setting up data
-I0729 22:57:57.909504 32751 net.cpp:120] Top shape: 5 2 3 4 (120)
-I0729 22:57:57.909510 32751 net.cpp:120] Top shape: 5 1 1 1 (5)
-I0729 22:57:57.909513 32751 net.cpp:126] Memory required for data: 500
-I0729 22:57:57.909519 32751 layer_factory.hpp:74] Creating layer conv
-I0729 22:57:57.909533 32751 net.cpp:84] Creating Layer conv
-I0729 22:57:57.909538 32751 net.cpp:384] conv <- data
-I0729 22:57:57.909553 32751 net.cpp:342] conv -> conv
-I0729 22:57:57.909565 32751 net.cpp:113] Setting up conv
-I0729 22:57:57.909598 32751 net.cpp:120] Top shape: 5 11 8 9 (3960)
-I0729 22:57:57.909603 32751 net.cpp:126] Memory required for data: 16340
-I0729 22:57:57.909618 32751 layer_factory.hpp:74] Creating layer ip
-I0729 22:57:57.909631 32751 net.cpp:84] Creating Layer ip
-I0729 22:57:57.909636 32751 net.cpp:384] ip <- conv
-I0729 22:57:57.909648 32751 net.cpp:342] ip -> ip
-I0729 22:57:57.909659 32751 net.cpp:113] Setting up ip
-I0729 22:57:57.910398 32751 net.cpp:120] Top shape: 5 13 (65)
-I0729 22:57:57.910403 32751 net.cpp:126] Memory required for data: 16600
-I0729 22:57:57.910426 32751 layer_factory.hpp:74] Creating layer loss
-I0729 22:57:57.910444 32751 net.cpp:84] Creating Layer loss
-I0729 22:57:57.910449 32751 net.cpp:384] loss <- ip
-I0729 22:57:57.910472 32751 net.cpp:384] loss <- label
-I0729 22:57:57.910481 32751 net.cpp:342] loss -> loss
-I0729 22:57:57.910502 32751 net.cpp:113] Setting up loss
-I0729 22:57:57.910519 32751 layer_factory.hpp:74] Creating layer loss
-I0729 22:57:57.910549 32751 net.cpp:120] Top shape: (1)
-I0729 22:57:57.910564 32751 net.cpp:122]     with loss weight 1
-I0729 22:57:57.910569 32751 net.cpp:126] Memory required for data: 16604
-I0729 22:57:57.910573 32751 net.cpp:167] loss needs backward computation.
-I0729 22:57:57.910578 32751 net.cpp:167] ip needs backward computation.
-I0729 22:57:57.910591 32751 net.cpp:167] conv needs backward computation.
-I0729 22:57:57.910594 32751 net.cpp:169] data does not need backward computation.
-I0729 22:57:57.910599 32751 net.cpp:208] This network produces output loss
-I0729 22:57:57.910609 32751 net.cpp:449] Collecting Learning Rate and Weight Decay.
-I0729 22:57:57.910615 32751 net.cpp:221] Network initialization done.
-I0729 22:57:57.910619 32751 net.cpp:222] Memory required for data: 16604
-I0729 22:57:57.910714 32751 solver.cpp:154] Creating test net (#0) specified by net file: /tmp/tmpS4hCZE
-I0729 22:57:57.910766 32751 net.cpp:42] Initializing net from parameters: 
-name: "testnet"
-force_backward: true
-state {
-  phase: TEST
-}
-layer {
-  name: "data"
-  type: "DummyData"
-  top: "data"
-  top: "label"
-  dummy_data_param {
-    data_filler {
-      type: "gaussian"
-      std: 1
-    }
-    data_filler {
-      type: "constant"
-    }
-    num: 5
-    num: 5
-    channels: 2
-    channels: 1
-    height: 3
-    height: 1
-    width: 4
-    width: 1
-  }
-}
-layer {
-  name: "conv"
-  type: "Convolution"
-  bottom: "data"
-  top: "conv"
-  param {
-    decay_mult: 1
-  }
-  param {
-    decay_mult: 0
-  }
-  convolution_param {
-    num_output: 11
-    pad: 3
-    kernel_size: 2
-    weight_filler {
-      type: "gaussian"
-      std: 1
-    }
-    bias_filler {
-      type: "constant"
-      value: 2
-    }
-  }
-}
-layer {
-  name: "ip"
-  type: "InnerProduct"
-  bottom: "conv"
-  top: "ip"
-  inner_product_param {
-    num_output: 13
-    weight_filler {
-      type: "gaussian"
-      std: 2.5
-    }
-    bias_filler {
-      type: "constant"
-      value: -3
-    }
-  }
-}
-layer {
-  name: "loss"
-  type: "SoftmaxWithLoss"
-  bottom: "ip"
-  bottom: "label"
-  top: "loss"
-}
-I0729 22:57:57.910805 32751 net.cpp:67] Memory required for data: 0
-I0729 22:57:57.910825 32751 layer_factory.hpp:74] Creating layer data
-I0729 22:57:57.910838 32751 net.cpp:84] Creating Layer data
-I0729 22:57:57.910845 32751 net.cpp:342] data -> data
-I0729 22:57:57.910863 32751 net.cpp:342] data -> label
-I0729 22:57:57.910876 32751 net.cpp:113] Setting up data
-I0729 22:57:57.910895 32751 net.cpp:120] Top shape: 5 2 3 4 (120)
-I0729 22:57:57.910902 32751 net.cpp:120] Top shape: 5 1 1 1 (5)
-I0729 22:57:57.910904 32751 net.cpp:126] Memory required for data: 500
-I0729 22:57:57.910909 32751 layer_factory.hpp:74] Creating layer conv
-I0729 22:57:57.910923 32751 net.cpp:84] Creating Layer conv
-I0729 22:57:57.910929 32751 net.cpp:384] conv <- data
-I0729 22:57:57.910943 32751 net.cpp:342] conv -> conv
-I0729 22:57:57.910955 32751 net.cpp:113] Setting up conv
-I0729 22:57:57.910987 32751 net.cpp:120] Top shape: 5 11 8 9 (3960)
-I0729 22:57:57.910992 32751 net.cpp:126] Memory required for data: 16340
-I0729 22:57:57.911007 32751 layer_factory.hpp:74] Creating layer ip
-I0729 22:57:57.911020 32751 net.cpp:84] Creating Layer ip
-I0729 22:57:57.911026 32751 net.cpp:384] ip <- conv
-I0729 22:57:57.911037 32751 net.cpp:342] ip -> ip
-I0729 22:57:57.911048 32751 net.cpp:113] Setting up ip
-I0729 22:57:57.911808 32751 net.cpp:120] Top shape: 5 13 (65)
-I0729 22:57:57.911814 32751 net.cpp:126] Memory required for data: 16600
-I0729 22:57:57.911826 32751 layer_factory.hpp:74] Creating layer loss
-I0729 22:57:57.911836 32751 net.cpp:84] Creating Layer loss
-I0729 22:57:57.911841 32751 net.cpp:384] loss <- ip
-I0729 22:57:57.911851 32751 net.cpp:384] loss <- label
-I0729 22:57:57.911859 32751 net.cpp:342] loss -> loss
-I0729 22:57:57.911870 32751 net.cpp:113] Setting up loss
-I0729 22:57:57.911877 32751 layer_factory.hpp:74] Creating layer loss
-I0729 22:57:57.911902 32751 net.cpp:120] Top shape: (1)
-I0729 22:57:57.911907 32751 net.cpp:122]     with loss weight 1
-I0729 22:57:57.911912 32751 net.cpp:126] Memory required for data: 16604
-I0729 22:57:57.911916 32751 net.cpp:167] loss needs backward computation.
-I0729 22:57:57.911921 32751 net.cpp:167] ip needs backward computation.
-I0729 22:57:57.911924 32751 net.cpp:167] conv needs backward computation.
-I0729 22:57:57.911927 32751 net.cpp:169] data does not need backward computation.
-I0729 22:57:57.911932 32751 net.cpp:208] This network produces output loss
-I0729 22:57:57.911942 32751 net.cpp:449] Collecting Learning Rate and Weight Decay.
-I0729 22:57:57.911948 32751 net.cpp:221] Network initialization done.
-I0729 22:57:57.911950 32751 net.cpp:222] Memory required for data: 16604
-I0729 22:57:57.911964 32751 solver.cpp:42] Solver scaffolding done.
-I0729 22:57:57.912021 32751 solver.cpp:32] Initializing solver from parameters: 
-test_iter: 10
-test_interval: 10
-base_lr: 0.01
-display: 100
-max_iter: 100
-lr_policy: "inv"
-gamma: 0.0001
-power: 0.75
-momentum: 0.9
-weight_decay: 0.0005
-net: "/tmp/tmpS4hCZE"
-snapshot_after_train: false
-I0729 22:57:57.912031 32751 solver.cpp:70] Creating training net from net file: /tmp/tmpS4hCZE
-I0729 22:57:57.912149 32751 net.cpp:42] Initializing net from parameters: 
-name: "testnet"
-force_backward: true
-state {
-  phase: TRAIN
-}
-layer {
-  name: "data"
-  type: "DummyData"
-  top: "data"
-  top: "label"
-  dummy_data_param {
-    data_filler {
-      type: "gaussian"
-      std: 1
-    }
-    data_filler {
-      type: "constant"
-    }
-    num: 5
-    num: 5
-    channels: 2
-    channels: 1
-    height: 3
-    height: 1
-    width: 4
-    width: 1
-  }
-}
-layer {
-  name: "conv"
-  type: "Convolution"
-  bottom: "data"
-  top: "conv"
-  param {
-    decay_mult: 1
-  }
-  param {
-    decay_mult: 0
-  }
-  convolution_param {
-    num_output: 11
-    pad: 3
-    kernel_size: 2
-    weight_filler {
-      type: "gaussian"
-      std: 1
-    }
-    bias_filler {
-      type: "constant"
-      value: 2
-    }
-  }
-}
-layer {
-  name: "ip"
-  type: "InnerProduct"
-  bottom: "conv"
-  top: "ip"
-  inner_product_param {
-    num_output: 13
-    weight_filler {
-      type: "gaussian"
-      std: 2.5
-    }
-    bias_filler {
-      type: "constant"
-      value: -3
-    }
-  }
-}
-layer {
-  name: "loss"
-  type: "SoftmaxWithLoss"
-  bottom: "ip"
-  bottom: "label"
-  top: "loss"
-}
-I0729 22:57:57.912189 32751 net.cpp:67] Memory required for data: 0
-I0729 22:57:57.912209 32751 layer_factory.hpp:74] Creating layer data
-I0729 22:57:57.912221 32751 net.cpp:84] Creating Layer data
-I0729 22:57:57.912228 32751 net.cpp:342] data -> data
-I0729 22:57:57.912245 32751 net.cpp:342] data -> label
-I0729 22:57:57.912258 32751 net.cpp:113] Setting up data
-I0729 22:57:57.912278 32751 net.cpp:120] Top shape: 5 2 3 4 (120)
-I0729 22:57:57.912284 32751 net.cpp:120] Top shape: 5 1 1 1 (5)
-I0729 22:57:57.912287 32751 net.cpp:126] Memory required for data: 500
-I0729 22:57:57.912292 32751 layer_factory.hpp:74] Creating layer conv
-I0729 22:57:57.912307 32751 net.cpp:84] Creating Layer conv
-I0729 22:57:57.912312 32751 net.cpp:384] conv <- data
-I0729 22:57:57.912325 32751 net.cpp:342] conv -> conv
-I0729 22:57:57.912338 32751 net.cpp:113] Setting up conv
-I0729 22:57:57.912369 32751 net.cpp:120] Top shape: 5 11 8 9 (3960)
-I0729 22:57:57.912374 32751 net.cpp:126] Memory required for data: 16340
-I0729 22:57:57.912389 32751 layer_factory.hpp:74] Creating layer ip
-I0729 22:57:57.912402 32751 net.cpp:84] Creating Layer ip
-I0729 22:57:57.912407 32751 net.cpp:384] ip <- conv
-I0729 22:57:57.912420 32751 net.cpp:342] ip -> ip
-I0729 22:57:57.912430 32751 net.cpp:113] Setting up ip
-I0729 22:57:57.913146 32751 net.cpp:120] Top shape: 5 13 (65)
-I0729 22:57:57.913151 32751 net.cpp:126] Memory required for data: 16600
-I0729 22:57:57.913162 32751 layer_factory.hpp:74] Creating layer loss
-I0729 22:57:57.913172 32751 net.cpp:84] Creating Layer loss
-I0729 22:57:57.913177 32751 net.cpp:384] loss <- ip
-I0729 22:57:57.913185 32751 net.cpp:384] loss <- label
-I0729 22:57:57.913193 32751 net.cpp:342] loss -> loss
-I0729 22:57:57.913209 32751 net.cpp:113] Setting up loss
-I0729 22:57:57.913216 32751 layer_factory.hpp:74] Creating layer loss
-I0729 22:57:57.913238 32751 net.cpp:120] Top shape: (1)
-I0729 22:57:57.913242 32751 net.cpp:122]     with loss weight 1
-I0729 22:57:57.913246 32751 net.cpp:126] Memory required for data: 16604
-I0729 22:57:57.913251 32751 net.cpp:167] loss needs backward computation.
-I0729 22:57:57.913255 32751 net.cpp:167] ip needs backward computation.
-I0729 22:57:57.913259 32751 net.cpp:167] conv needs backward computation.
-I0729 22:57:57.913262 32751 net.cpp:169] data does not need backward computation.
-I0729 22:57:57.913267 32751 net.cpp:208] This network produces output loss
-I0729 22:57:57.913276 32751 net.cpp:449] Collecting Learning Rate and Weight Decay.
-I0729 22:57:57.913283 32751 net.cpp:221] Network initialization done.
-I0729 22:57:57.913285 32751 net.cpp:222] Memory required for data: 16604
-I0729 22:57:57.913375 32751 solver.cpp:154] Creating test net (#0) specified by net file: /tmp/tmpS4hCZE
-I0729 22:57:57.913427 32751 net.cpp:42] Initializing net from parameters: 
-name: "testnet"
-force_backward: true
-state {
-  phase: TEST
-}
-layer {
-  name: "data"
-  type: "DummyData"
-  top: "data"
-  top: "label"
-  dummy_data_param {
-    data_filler {
-      type: "gaussian"
-      std: 1
-    }
-    data_filler {
-      type: "constant"
-    }
-    num: 5
-    num: 5
-    channels: 2
-    channels: 1
-    height: 3
-    height: 1
-    width: 4
-    width: 1
-  }
-}
-layer {
-  name: "conv"
-  type: "Convolution"
-  bottom: "data"
-  top: "conv"
-  param {
-    decay_mult: 1
-  }
-  param {
-    decay_mult: 0
-  }
-  convolution_param {
-    num_output: 11
-    pad: 3
-    kernel_size: 2
-    weight_filler {
-      type: "gaussian"
-      std: 1
-    }
-    bias_filler {
-      type: "constant"
-      value: 2
-    }
-  }
-}
-layer {
-  name: "ip"
-  type: "InnerProduct"
-  bottom: "conv"
-  top: "ip"
-  inner_product_param {
-    num_output: 13
-    weight_filler {
-      type: "gaussian"
-      std: 2.5
-    }
-    bias_filler {
-      type: "constant"
-      value: -3
-    }
-  }
-}
-layer {
-  name: "loss"
-  type: "SoftmaxWithLoss"
-  bottom: "ip"
-  bottom: "label"
-  top: "loss"
-}
-I0729 22:57:57.913465 32751 net.cpp:67] Memory required for data: 0
-I0729 22:57:57.913485 32751 layer_factory.hpp:74] Creating layer data
-I0729 22:57:57.913498 32751 net.cpp:84] Creating Layer data
-I0729 22:57:57.913506 32751 net.cpp:342] data -> data
-I0729 22:57:57.913522 32751 net.cpp:342] data -> label
-I0729 22:57:57.913534 32751 net.cpp:113] Setting up data
-I0729 22:57:57.913554 32751 net.cpp:120] Top shape: 5 2 3 4 (120)
-I0729 22:57:57.913561 32751 net.cpp:120] Top shape: 5 1 1 1 (5)
-I0729 22:57:57.913564 32751 net.cpp:126] Memory required for data: 500
-I0729 22:57:57.913569 32751 layer_factory.hpp:74] Creating layer conv
-I0729 22:57:57.913583 32751 net.cpp:84] Creating Layer conv
-I0729 22:57:57.913589 32751 net.cpp:384] conv <- data
-I0729 22:57:57.913602 32751 net.cpp:342] conv -> conv
-I0729 22:57:57.913615 32751 net.cpp:113] Setting up conv
-I0729 22:57:57.913667 32751 net.cpp:120] Top shape: 5 11 8 9 (3960)
-I0729 22:57:57.913672 32751 net.cpp:126] Memory required for data: 16340
-I0729 22:57:57.913687 32751 layer_factory.hpp:74] Creating layer ip
-I0729 22:57:57.913699 32751 net.cpp:84] Creating Layer ip
-I0729 22:57:57.913705 32751 net.cpp:384] ip <- conv
-I0729 22:57:57.913717 32751 net.cpp:342] ip -> ip
-I0729 22:57:57.913728 32751 net.cpp:113] Setting up ip
-I0729 22:57:57.914460 32751 net.cpp:120] Top shape: 5 13 (65)
-I0729 22:57:57.914465 32751 net.cpp:126] Memory required for data: 16600
-I0729 22:57:57.914476 32751 layer_factory.hpp:74] Creating layer loss
-I0729 22:57:57.914485 32751 net.cpp:84] Creating Layer loss
-I0729 22:57:57.914490 32751 net.cpp:384] loss <- ip
-I0729 22:57:57.914499 32751 net.cpp:384] loss <- label
-I0729 22:57:57.914507 32751 net.cpp:342] loss -> loss
-I0729 22:57:57.914518 32751 net.cpp:113] Setting up loss
-I0729 22:57:57.914525 32751 layer_factory.hpp:74] Creating layer loss
-I0729 22:57:57.914546 32751 net.cpp:120] Top shape: (1)
-I0729 22:57:57.914551 32751 net.cpp:122]     with loss weight 1
-I0729 22:57:57.914558 32751 net.cpp:126] Memory required for data: 16604
-I0729 22:57:57.914562 32751 net.cpp:167] loss needs backward computation.
-I0729 22:57:57.914567 32751 net.cpp:167] ip needs backward computation.
-I0729 22:57:57.914571 32751 net.cpp:167] conv needs backward computation.
-I0729 22:57:57.914573 32751 net.cpp:169] data does not need backward computation.
-I0729 22:57:57.914578 32751 net.cpp:208] This network produces output loss
-I0729 22:57:57.914588 32751 net.cpp:449] Collecting Learning Rate and Weight Decay.
-I0729 22:57:57.914594 32751 net.cpp:221] Network initialization done.
-I0729 22:57:57.914597 32751 net.cpp:222] Memory required for data: 16604
-I0729 22:57:57.914611 32751 solver.cpp:42] Solver scaffolding done.
-.I0729 22:57:57.915709 32751 solver.cpp:32] Initializing solver from parameters: 
-test_iter: 10
-test_interval: 10
-base_lr: 0.01
-display: 100
-max_iter: 100
-lr_policy: "inv"
-gamma: 0.0001
-power: 0.75
-momentum: 0.9
-weight_decay: 0.0005
-net: "/tmp/tmp_QEvve"
-snapshot_after_train: false
-I0729 22:57:57.915721 32751 solver.cpp:70] Creating training net from net file: /tmp/tmp_QEvve
-I0729 22:57:57.915839 32751 net.cpp:42] Initializing net from parameters: 
-name: "testnet"
-force_backward: true
-state {
-  phase: TRAIN
-}
-layer {
-  name: "data"
-  type: "DummyData"
-  top: "data"
-  top: "label"
-  dummy_data_param {
-    data_filler {
-      type: "gaussian"
-      std: 1
-    }
-    data_filler {
-      type: "constant"
-    }
-    num: 5
-    num: 5
-    channels: 2
-    channels: 1
-    height: 3
-    height: 1
-    width: 4
-    width: 1
-  }
-}
-layer {
-  name: "conv"
-  type: "Convolution"
-  bottom: "data"
-  top: "conv"
-  param {
-    decay_mult: 1
-  }
-  param {
-    decay_mult: 0
-  }
-  convolution_param {
-    num_output: 11
-    pad: 3
-    kernel_size: 2
-    weight_filler {
-      type: "gaussian"
-      std: 1
-    }
-    bias_filler {
-      type: "constant"
-      value: 2
-    }
-  }
-}
-layer {
-  name: "ip"
-  type: "InnerProduct"
-  bottom: "conv"
-  top: "ip"
-  inner_product_param {
-    num_output: 13
-    weight_filler {
-      type: "gaussian"
-      std: 2.5
-    }
-    bias_filler {
-      type: "constant"
-      value: -3
-    }
-  }
-}
-layer {
-  name: "loss"
-  type: "SoftmaxWithLoss"
-  bottom: "ip"
-  bottom: "label"
-  top: "loss"
-}
-I0729 22:57:57.915881 32751 net.cpp:67] Memory required for data: 0
-I0729 22:57:57.915900 32751 layer_factory.hpp:74] Creating layer data
-I0729 22:57:57.915915 32751 net.cpp:84] Creating Layer data
-I0729 22:57:57.915921 32751 net.cpp:342] data -> data
-I0729 22:57:57.915940 32751 net.cpp:342] data -> label
-I0729 22:57:57.915951 32751 net.cpp:113] Setting up data
-I0729 22:57:57.915972 32751 net.cpp:120] Top shape: 5 2 3 4 (120)
-I0729 22:57:57.915979 32751 net.cpp:120] Top shape: 5 1 1 1 (5)
-I0729 22:57:57.915982 32751 net.cpp:126] Memory required for data: 500
-I0729 22:57:57.915987 32751 layer_factory.hpp:74] Creating layer conv
-I0729 22:57:57.916000 32751 net.cpp:84] Creating Layer conv
-I0729 22:57:57.916007 32751 net.cpp:384] conv <- data
-I0729 22:57:57.916020 32751 net.cpp:342] conv -> conv
-I0729 22:57:57.916033 32751 net.cpp:113] Setting up conv
-I0729 22:57:57.916069 32751 net.cpp:120] Top shape: 5 11 8 9 (3960)
-I0729 22:57:57.916074 32751 net.cpp:126] Memory required for data: 16340
-I0729 22:57:57.916088 32751 layer_factory.hpp:74] Creating layer ip
-I0729 22:57:57.916101 32751 net.cpp:84] Creating Layer ip
-I0729 22:57:57.916106 32751 net.cpp:384] ip <- conv
-I0729 22:57:57.916120 32751 net.cpp:342] ip -> ip
-I0729 22:57:57.916129 32751 net.cpp:113] Setting up ip
-I0729 22:57:57.916847 32751 net.cpp:120] Top shape: 5 13 (65)
-I0729 22:57:57.916852 32751 net.cpp:126] Memory required for data: 16600
-I0729 22:57:57.916864 32751 layer_factory.hpp:74] Creating layer loss
-I0729 22:57:57.916873 32751 net.cpp:84] Creating Layer loss
-I0729 22:57:57.916878 32751 net.cpp:384] loss <- ip
-I0729 22:57:57.916887 32751 net.cpp:384] loss <- label
-I0729 22:57:57.916895 32751 net.cpp:342] loss -> loss
-I0729 22:57:57.916906 32751 net.cpp:113] Setting up loss
-I0729 22:57:57.916913 32751 layer_factory.hpp:74] Creating layer loss
-I0729 22:57:57.916937 32751 net.cpp:120] Top shape: (1)
-I0729 22:57:57.916942 32751 net.cpp:122]     with loss weight 1
-I0729 22:57:57.916947 32751 net.cpp:126] Memory required for data: 16604
-I0729 22:57:57.916951 32751 net.cpp:167] loss needs backward computation.
-I0729 22:57:57.916956 32751 net.cpp:167] ip needs backward computation.
-I0729 22:57:57.916960 32751 net.cpp:167] conv needs backward computation.
-I0729 22:57:57.916964 32751 net.cpp:169] data does not need backward computation.
-I0729 22:57:57.916968 32751 net.cpp:208] This network produces output loss
-I0729 22:57:57.916977 32751 net.cpp:449] Collecting Learning Rate and Weight Decay.
-I0729 22:57:57.916985 32751 net.cpp:221] Network initialization done.
-I0729 22:57:57.916987 32751 net.cpp:222] Memory required for data: 16604
-I0729 22:57:57.917076 32751 solver.cpp:154] Creating test net (#0) specified by net file: /tmp/tmp_QEvve
-I0729 22:57:57.917129 32751 net.cpp:42] Initializing net from parameters: 
-name: "testnet"
-force_backward: true
-state {
-  phase: TEST
-}
-layer {
-  name: "data"
-  type: "DummyData"
-  top: "data"
-  top: "label"
-  dummy_data_param {
-    data_filler {
-      type: "gaussian"
-      std: 1
-    }
-    data_filler {
-      type: "constant"
-    }
-    num: 5
-    num: 5
-    channels: 2
-    channels: 1
-    height: 3
-    height: 1
-    width: 4
-    width: 1
-  }
-}
-layer {
-  name: "conv"
-  type: "Convolution"
-  bottom: "data"
-  top: "conv"
-  param {
-    decay_mult: 1
-  }
-  param {
-    decay_mult: 0
-  }
-  convolution_param {
-    num_output: 11
-    pad: 3
-    kernel_size: 2
-    weight_filler {
-      type: "gaussian"
-      std: 1
-    }
-    bias_filler {
-      type: "constant"
-      value: 2
-    }
-  }
-}
-layer {
-  name: "ip"
-  type: "InnerProduct"
-  bottom: "conv"
-  top: "ip"
-  inner_product_param {
-    num_output: 13
-    weight_filler {
-      type: "gaussian"
-      std: 2.5
-    }
-    bias_filler {
-      type: "constant"
-      value: -3
-    }
-  }
-}
-layer {
-  name: "loss"
-  type: "SoftmaxWithLoss"
-  bottom: "ip"
-  bottom: "label"
-  top: "loss"
-}
-I0729 22:57:57.917168 32751 net.cpp:67] Memory required for data: 0
-I0729 22:57:57.917186 32751 layer_factory.hpp:74] Creating layer data
-I0729 22:57:57.917201 32751 net.cpp:84] Creating Layer data
-I0729 22:57:57.917207 32751 net.cpp:342] data -> data
-I0729 22:57:57.917225 32751 net.cpp:342] data -> label
-I0729 22:57:57.917237 32751 net.cpp:113] Setting up data
-I0729 22:57:57.917258 32751 net.cpp:120] Top shape: 5 2 3 4 (120)
-I0729 22:57:57.917264 32751 net.cpp:120] Top shape: 5 1 1 1 (5)
-I0729 22:57:57.917266 32751 net.cpp:126] Memory required for data: 500
-I0729 22:57:57.917273 32751 layer_factory.hpp:74] Creating layer conv
-I0729 22:57:57.917285 32751 net.cpp:84] Creating Layer conv
-I0729 22:57:57.917291 32751 net.cpp:384] conv <- data
-I0729 22:57:57.917304 32751 net.cpp:342] conv -> conv
-I0729 22:57:57.917317 32751 net.cpp:113] Setting up conv
-I0729 22:57:57.917348 32751 net.cpp:120] Top shape: 5 11 8 9 (3960)
-I0729 22:57:57.917353 32751 net.cpp:126] Memory required for data: 16340
-I0729 22:57:57.917368 32751 layer_factory.hpp:74] Creating layer ip
-I0729 22:57:57.917382 32751 net.cpp:84] Creating Layer ip
-I0729 22:57:57.917387 32751 net.cpp:384] ip <- conv
-I0729 22:57:57.917398 32751 net.cpp:342] ip -> ip
-I0729 22:57:57.917409 32751 net.cpp:113] Setting up ip
-I0729 22:57:57.918122 32751 net.cpp:120] Top shape: 5 13 (65)
-I0729 22:57:57.918126 32751 net.cpp:126] Memory required for data: 16600
-I0729 22:57:57.918138 32751 layer_factory.hpp:74] Creating layer loss
-I0729 22:57:57.918148 32751 net.cpp:84] Creating Layer loss
-I0729 22:57:57.918153 32751 net.cpp:384] loss <- ip
-I0729 22:57:57.918161 32751 net.cpp:384] loss <- label
-I0729 22:57:57.918169 32751 net.cpp:342] loss -> loss
-I0729 22:57:57.918180 32751 net.cpp:113] Setting up loss
-I0729 22:57:57.918186 32751 layer_factory.hpp:74] Creating layer loss
-I0729 22:57:57.918207 32751 net.cpp:120] Top shape: (1)
-I0729 22:57:57.918222 32751 net.cpp:122]     with loss weight 1
-I0729 22:57:57.918226 32751 net.cpp:126] Memory required for data: 16604
-I0729 22:57:57.918234 32751 net.cpp:167] loss needs backward computation.
-I0729 22:57:57.918239 32751 net.cpp:167] ip needs backward computation.
-I0729 22:57:57.918243 32751 net.cpp:167] conv needs backward computation.
-I0729 22:57:57.918256 32751 net.cpp:169] data does not need backward computation.
-I0729 22:57:57.918261 32751 net.cpp:208] This network produces output loss
-I0729 22:57:57.918269 32751 net.cpp:449] Collecting Learning Rate and Weight Decay.
-I0729 22:57:57.918277 32751 net.cpp:221] Network initialization done.
-I0729 22:57:57.918279 32751 net.cpp:222] Memory required for data: 16604
-I0729 22:57:57.918293 32751 solver.cpp:42] Solver scaffolding done.
-I0729 22:57:57.918356 32751 solver.cpp:32] Initializing solver from parameters: 
-test_iter: 10
-test_interval: 10
-base_lr: 0.01
-display: 100
-max_iter: 100
-lr_policy: "inv"
-gamma: 0.0001
-power: 0.75
-momentum: 0.9
-weight_decay: 0.0005
-net: "/tmp/tmp_QEvve"
-snapshot_after_train: false
-I0729 22:57:57.918366 32751 solver.cpp:70] Creating training net from net file: /tmp/tmp_QEvve
-I0729 22:57:57.918493 32751 net.cpp:42] Initializing net from parameters: 
-name: "testnet"
-force_backward: true
-state {
-  phase: TRAIN
-}
-layer {
-  name: "data"
-  type: "DummyData"
-  top: "data"
-  top: "label"
-  dummy_data_param {
-    data_filler {
-      type: "gaussian"
-      std: 1
-    }
-    data_filler {
-      type: "constant"
-    }
-    num: 5
-    num: 5
-    channels: 2
-    channels: 1
-    height: 3
-    height: 1
-    width: 4
-    width: 1
-  }
-}
-layer {
-  name: "conv"
-  type: "Convolution"
-  bottom: "data"
-  top: "conv"
-  param {
-    decay_mult: 1
-  }
-  param {
-    decay_mult: 0
-  }
-  convolution_param {
-    num_output: 11
-    pad: 3
-    kernel_size: 2
-    weight_filler {
-      type: "gaussian"
-      std: 1
-    }
-    bias_filler {
-      type: "constant"
-      value: 2
-    }
-  }
-}
-layer {
-  name: "ip"
-  type: "InnerProduct"
-  bottom: "conv"
-  top: "ip"
-  inner_product_param {
-    num_output: 13
-    weight_filler {
-      type: "gaussian"
-      std: 2.5
-    }
-    bias_filler {
-      type: "constant"
-      value: -3
-    }
-  }
-}
-layer {
-  name: "loss"
-  type: "SoftmaxWithLoss"
-  bottom: "ip"
-  bottom: "label"
-  top: "loss"
-}
-I0729 22:57:57.918536 32751 net.cpp:67] Memory required for data: 0
-I0729 22:57:57.918555 32751 layer_factory.hpp:74] Creating layer data
-I0729 22:57:57.918568 32751 net.cpp:84] Creating Layer data
-I0729 22:57:57.918576 32751 net.cpp:342] data -> data
-I0729 22:57:57.918593 32751 net.cpp:342] data -> label
-I0729 22:57:57.918606 32751 net.cpp:113] Setting up data
-I0729 22:57:57.918625 32751 net.cpp:120] Top shape: 5 2 3 4 (120)
-I0729 22:57:57.918632 32751 net.cpp:120] Top shape: 5 1 1 1 (5)
-I0729 22:57:57.918634 32751 net.cpp:126] Memory required for data: 500
-I0729 22:57:57.918639 32751 layer_factory.hpp:74] Creating layer conv
-I0729 22:57:57.918653 32751 net.cpp:84] Creating Layer conv
-I0729 22:57:57.918658 32751 net.cpp:384] conv <- data
-I0729 22:57:57.918673 32751 net.cpp:342] conv -> conv
-I0729 22:57:57.918685 32751 net.cpp:113] Setting up conv
-I0729 22:57:57.918717 32751 net.cpp:120] Top shape: 5 11 8 9 (3960)
-I0729 22:57:57.918721 32751 net.cpp:126] Memory required for data: 16340
-I0729 22:57:57.918736 32751 layer_factory.hpp:74] Creating layer ip
-I0729 22:57:57.918750 32751 net.cpp:84] Creating Layer ip
-I0729 22:57:57.918754 32751 net.cpp:384] ip <- conv
-I0729 22:57:57.918766 32751 net.cpp:342] ip -> ip
-I0729 22:57:57.918777 32751 net.cpp:113] Setting up ip
-I0729 22:57:57.919503 32751 net.cpp:120] Top shape: 5 13 (65)
-I0729 22:57:57.919510 32751 net.cpp:126] Memory required for data: 16600
-I0729 22:57:57.919523 32751 layer_factory.hpp:74] Creating layer loss
-I0729 22:57:57.919533 32751 net.cpp:84] Creating Layer loss
-I0729 22:57:57.919538 32751 net.cpp:384] loss <- ip
-I0729 22:57:57.919548 32751 net.cpp:384] loss <- label
-I0729 22:57:57.919555 32751 net.cpp:342] loss -> loss
-I0729 22:57:57.919566 32751 net.cpp:113] Setting up loss
-I0729 22:57:57.919574 32751 layer_factory.hpp:74] Creating layer loss
-I0729 22:57:57.919595 32751 net.cpp:120] Top shape: (1)
-I0729 22:57:57.919602 32751 net.cpp:122]     with loss weight 1
-I0729 22:57:57.919607 32751 net.cpp:126] Memory required for data: 16604
-I0729 22:57:57.919611 32751 net.cpp:167] loss needs backward computation.
-I0729 22:57:57.919616 32751 net.cpp:167] ip needs backward computation.
-I0729 22:57:57.919620 32751 net.cpp:167] conv needs backward computation.
-I0729 22:57:57.919622 32751 net.cpp:169] data does not need backward computation.
-I0729 22:57:57.919627 32751 net.cpp:208] This network produces output loss
-I0729 22:57:57.919637 32751 net.cpp:449] Collecting Learning Rate and Weight Decay.
-I0729 22:57:57.919644 32751 net.cpp:221] Network initialization done.
-I0729 22:57:57.919646 32751 net.cpp:222] Memory required for data: 16604
-I0729 22:57:57.919737 32751 solver.cpp:154] Creating test net (#0) specified by net file: /tmp/tmp_QEvve
-I0729 22:57:57.919790 32751 net.cpp:42] Initializing net from parameters: 
-name: "testnet"
-force_backward: true
-state {
-  phase: TEST
-}
-layer {
-  name: "data"
-  type: "DummyData"
-  top: "data"
-  top: "label"
-  dummy_data_param {
-    data_filler {
-      type: "gaussian"
-      std: 1
-    }
-    data_filler {
-      type: "constant"
-    }
-    num: 5
-    num: 5
-    channels: 2
-    channels: 1
-    height: 3
-    height: 1
-    width: 4
-    width: 1
-  }
-}
-layer {
-  name: "conv"
-  type: "Convolution"
-  bottom: "data"
-  top: "conv"
-  param {
-    decay_mult: 1
-  }
-  param {
-    decay_mult: 0
-  }
-  convolution_param {
-    num_output: 11
-    pad: 3
-    kernel_size: 2
-    weight_filler {
-      type: "gaussian"
-      std: 1
-    }
-    bias_filler {
-      type: "constant"
-      value: 2
-    }
-  }
-}
-layer {
-  name: "ip"
-  type: "InnerProduct"
-  bottom: "conv"
-  top: "ip"
-  inner_product_param {
-    num_output: 13
-    weight_filler {
-      type: "gaussian"
-      std: 2.5
-    }
-    bias_filler {
-      type: "constant"
-      value: -3
-    }
-  }
-}
-layer {
-  name: "loss"
-  type: "SoftmaxWithLoss"
-  bottom: "ip"
-  bottom: "label"
-  top: "loss"
-}
-I0729 22:57:57.919828 32751 net.cpp:67] Memory required for data: 0
-I0729 22:57:57.919847 32751 layer_factory.hpp:74] Creating layer data
-I0729 22:57:57.919860 32751 net.cpp:84] Creating Layer data
-I0729 22:57:57.919867 32751 net.cpp:342] data -> data
-I0729 22:57:57.919884 32751 net.cpp:342] data -> label
-I0729 22:57:57.919896 32751 net.cpp:113] Setting up data
-I0729 22:57:57.919916 32751 net.cpp:120] Top shape: 5 2 3 4 (120)
-I0729 22:57:57.919924 32751 net.cpp:120] Top shape: 5 1 1 1 (5)
-I0729 22:57:57.919925 32751 net.cpp:126] Memory required for data: 500
-I0729 22:57:57.919930 32751 layer_factory.hpp:74] Creating layer conv
-I0729 22:57:57.919945 32751 net.cpp:84] Creating Layer conv
-I0729 22:57:57.919950 32751 net.cpp:384] conv <- data
-I0729 22:57:57.919963 32751 net.cpp:342] conv -> conv
-I0729 22:57:57.919976 32751 net.cpp:113] Setting up conv
-I0729 22:57:57.920011 32751 net.cpp:120] Top shape: 5 11 8 9 (3960)
-I0729 22:57:57.920016 32751 net.cpp:126] Memory required for data: 16340
-I0729 22:57:57.920029 32751 layer_factory.hpp:74] Creating layer ip
-I0729 22:57:57.920042 32751 net.cpp:84] Creating Layer ip
-I0729 22:57:57.920047 32751 net.cpp:384] ip <- conv
-I0729 22:57:57.920059 32751 net.cpp:342] ip -> ip
-I0729 22:57:57.920070 32751 net.cpp:113] Setting up ip
-I0729 22:57:57.920783 32751 net.cpp:120] Top shape: 5 13 (65)
-I0729 22:57:57.920789 32751 net.cpp:126] Memory required for data: 16600
-I0729 22:57:57.920800 32751 layer_factory.hpp:74] Creating layer loss
-I0729 22:57:57.920809 32751 net.cpp:84] Creating Layer loss
-I0729 22:57:57.920814 32751 net.cpp:384] loss <- ip
-I0729 22:57:57.920824 32751 net.cpp:384] loss <- label
-I0729 22:57:57.920831 32751 net.cpp:342] loss -> loss
-I0729 22:57:57.920842 32751 net.cpp:113] Setting up loss
-I0729 22:57:57.920848 32751 layer_factory.hpp:74] Creating layer loss
-I0729 22:57:57.920868 32751 net.cpp:120] Top shape: (1)
-I0729 22:57:57.920873 32751 net.cpp:122]     with loss weight 1
-I0729 22:57:57.920877 32751 net.cpp:126] Memory required for data: 16604
-I0729 22:57:57.920882 32751 net.cpp:167] loss needs backward computation.
-I0729 22:57:57.920891 32751 net.cpp:167] ip needs backward computation.
-I0729 22:57:57.920893 32751 net.cpp:167] conv needs backward computation.
-I0729 22:57:57.920897 32751 net.cpp:169] data does not need backward computation.
-I0729 22:57:57.920902 32751 net.cpp:208] This network produces output loss
-I0729 22:57:57.920912 32751 net.cpp:449] Collecting Learning Rate and Weight Decay.
-I0729 22:57:57.920918 32751 net.cpp:221] Network initialization done.
-I0729 22:57:57.920920 32751 net.cpp:222] Memory required for data: 16604
-I0729 22:57:57.920934 32751 solver.cpp:42] Solver scaffolding done.
-I0729 22:57:57.921252 32751 solver.cpp:247] Solving testnet
-I0729 22:57:57.921260 32751 solver.cpp:248] Learning Rate Policy: inv
-I0729 22:57:57.921269 32751 solver.cpp:291] Iteration 0, Testing net (#0)
-I0729 22:57:57.921274 32751 net.cpp:639] Copying source layer data
-I0729 22:57:57.921277 32751 net.cpp:639] Copying source layer conv
-I0729 22:57:57.921283 32751 net.cpp:639] Copying source layer ip
-I0729 22:57:57.921286 32751 net.cpp:639] Copying source layer loss
-I0729 22:57:57.922140 32751 solver.cpp:340]     Test net output #0: loss = 72.1941 (* 1 = 72.1941 loss)
-I0729 22:57:57.922384 32751 solver.cpp:214] Iteration 0, loss = 76.9581
-I0729 22:57:57.922394 32751 solver.cpp:229]     Train net output #0: loss = 76.9581 (* 1 = 76.9581 loss)
-I0729 22:57:57.922399 32751 solver.cpp:489] Iteration 0, lr = 0.01
-I0729 22:57:57.925056 32751 solver.cpp:291] Iteration 10, Testing net (#0)
-I0729 22:57:57.925065 32751 net.cpp:639] Copying source layer data
-I0729 22:57:57.925068 32751 net.cpp:639] Copying source layer conv
-I0729 22:57:57.925072 32751 net.cpp:639] Copying source layer ip
-I0729 22:57:57.925076 32751 net.cpp:639] Copying source layer loss
-I0729 22:57:57.925895 32751 solver.cpp:340]     Test net output #0: loss = 68.9455 (* 1 = 68.9455 loss)
-I0729 22:57:57.929913 32751 solver.cpp:291] Iteration 20, Testing net (#0)
-I0729 22:57:57.929924 32751 net.cpp:639] Copying source layer data
-I0729 22:57:57.929927 32751 net.cpp:639] Copying source layer conv
-I0729 22:57:57.929949 32751 net.cpp:639] Copying source layer ip
-I0729 22:57:57.929952 32751 net.cpp:639] Copying source layer loss
-I0729 22:57:57.930799 32751 solver.cpp:340]     Test net output #0: loss = 77.6515 (* 1 = 77.6515 loss)
-I0729 22:57:57.933987 32751 solver.cpp:291] Iteration 30, Testing net (#0)
-I0729 22:57:57.933995 32751 net.cpp:639] Copying source layer data
-I0729 22:57:57.933997 32751 net.cpp:639] Copying source layer conv
-I0729 22:57:57.934001 32751 net.cpp:639] Copying source layer ip
-I0729 22:57:57.934005 32751 net.cpp:639] Copying source layer loss
-I0729 22:57:57.934823 32751 solver.cpp:340]     Test net output #0: loss = 58.9059 (* 1 = 58.9059 loss)
-I0729 22:57:57.937729 32751 solver.cpp:291] Iteration 40, Testing net (#0)
-I0729 22:57:57.937736 32751 net.cpp:639] Copying source layer data
-I0729 22:57:57.937739 32751 net.cpp:639] Copying source layer conv
-I0729 22:57:57.937743 32751 net.cpp:639] Copying source layer ip
-I0729 22:57:57.937747 32751 net.cpp:639] Copying source layer loss
-I0729 22:57:57.938601 32751 solver.cpp:340]     Test net output #0: loss = 78.0777 (* 1 = 78.0777 loss)
-I0729 22:57:57.944993 32751 solver.cpp:291] Iteration 50, Testing net (#0)
-I0729 22:57:57.945004 32751 net.cpp:639] Copying source layer data
-I0729 22:57:57.945008 32751 net.cpp:639] Copying source layer conv
-I0729 22:57:57.945029 32751 net.cpp:639] Copying source layer ip
-I0729 22:57:57.945034 32751 net.cpp:639] Copying source layer loss
-I0729 22:57:57.945894 32751 solver.cpp:340]     Test net output #0: loss = 68.4795 (* 1 = 68.4795 loss)
-I0729 22:57:57.949959 32751 solver.cpp:291] Iteration 60, Testing net (#0)
-I0729 22:57:57.949967 32751 net.cpp:639] Copying source layer data
-I0729 22:57:57.949971 32751 net.cpp:639] Copying source layer conv
-I0729 22:57:57.949975 32751 net.cpp:639] Copying source layer ip
-I0729 22:57:57.949978 32751 net.cpp:639] Copying source layer loss
-I0729 22:57:57.950804 32751 solver.cpp:340]     Test net output #0: loss = 82.1061 (* 1 = 82.1061 loss)
-I0729 22:57:57.955667 32751 solver.cpp:291] Iteration 70, Testing net (#0)
-I0729 22:57:57.955680 32751 net.cpp:639] Copying source layer data
-I0729 22:57:57.955684 32751 net.cpp:639] Copying source layer conv
-I0729 22:57:57.955706 32751 net.cpp:639] Copying source layer ip
-I0729 22:57:57.955709 32751 net.cpp:639] Copying source layer loss
-I0729 22:57:57.956570 32751 solver.cpp:340]     Test net output #0: loss = 83.921 (* 1 = 83.921 loss)
-I0729 22:57:57.962291 32751 solver.cpp:291] Iteration 80, Testing net (#0)
-I0729 22:57:57.962299 32751 net.cpp:639] Copying source layer data
-I0729 22:57:57.962302 32751 net.cpp:639] Copying source layer conv
-I0729 22:57:57.962306 32751 net.cpp:639] Copying source layer ip
-I0729 22:57:57.962311 32751 net.cpp:639] Copying source layer loss
-I0729 22:57:57.963129 32751 solver.cpp:340]     Test net output #0: loss = 71.7902 (* 1 = 71.7902 loss)
-I0729 22:57:57.966596 32751 solver.cpp:291] Iteration 90, Testing net (#0)
-I0729 22:57:57.966606 32751 net.cpp:639] Copying source layer data
-I0729 22:57:57.966610 32751 net.cpp:639] Copying source layer conv
-I0729 22:57:57.966632 32751 net.cpp:639] Copying source layer ip
-I0729 22:57:57.966635 32751 net.cpp:639] Copying source layer loss
-I0729 22:57:57.967519 32751 solver.cpp:340]     Test net output #0: loss = 72.6843 (* 1 = 72.6843 loss)
-I0729 22:57:57.970867 32751 solver.cpp:273] Iteration 100, loss = 35.137
-I0729 22:57:57.970875 32751 solver.cpp:291] Iteration 100, Testing net (#0)
-I0729 22:57:57.970880 32751 net.cpp:639] Copying source layer data
-I0729 22:57:57.970882 32751 net.cpp:639] Copying source layer conv
-I0729 22:57:57.970886 32751 net.cpp:639] Copying source layer ip
-I0729 22:57:57.970890 32751 net.cpp:639] Copying source layer loss
-I0729 22:57:57.971783 32751 solver.cpp:340]     Test net output #0: loss = 63.8714 (* 1 = 63.8714 loss)
-I0729 22:57:57.971791 32751 solver.cpp:278] Optimization Done.
+I0928 21:59:57.560852 31416 net.cpp:344] Input 0 -> data
+I0928 21:59:57.560900 31416 net.cpp:67] Memory required for data: 0
+I0928 21:59:57.560935 31416 layer_factory.hpp:74] Creating layer one
+I0928 21:59:57.560994 31416 net.cpp:84] Creating Layer one
+I0928 21:59:57.561005 31416 net.cpp:384] one <- data
+I0928 21:59:57.561024 31416 net.cpp:342] one -> one
+I0928 21:59:57.561041 31416 net.cpp:113] Setting up one
+I0928 21:59:57.561110 31416 net.cpp:120] Top shape: 10 9 8 (720)
+I0928 21:59:57.561117 31416 net.cpp:126] Memory required for data: 2880
+I0928 21:59:57.561126 31416 layer_factory.hpp:74] Creating layer two
+I0928 21:59:57.561161 31416 net.cpp:84] Creating Layer two
+I0928 21:59:57.561170 31416 net.cpp:384] two <- one
+I0928 21:59:57.561188 31416 net.cpp:342] two -> two
+I0928 21:59:57.561205 31416 net.cpp:113] Setting up two
+I0928 21:59:57.561266 31416 net.cpp:120] Top shape: 10 9 8 (720)
+I0928 21:59:57.561275 31416 net.cpp:126] Memory required for data: 5760
+I0928 21:59:57.561293 31416 layer_factory.hpp:74] Creating layer three
+I0928 21:59:57.561327 31416 net.cpp:84] Creating Layer three
+I0928 21:59:57.561336 31416 net.cpp:384] three <- two
+I0928 21:59:57.561352 31416 net.cpp:342] three -> three
+I0928 21:59:57.561367 31416 net.cpp:113] Setting up three
+I0928 21:59:57.561409 31416 net.cpp:120] Top shape: 10 9 8 (720)
+I0928 21:59:57.561416 31416 net.cpp:126] Memory required for data: 8640
+I0928 21:59:57.561437 31416 net.cpp:169] three does not need backward computation.
+I0928 21:59:57.561442 31416 net.cpp:169] two does not need backward computation.
+I0928 21:59:57.561446 31416 net.cpp:169] one does not need backward computation.
+I0928 21:59:57.561453 31416 net.cpp:208] This network produces output three
+I0928 21:59:57.561466 31416 net.cpp:449] Collecting Learning Rate and Weight Decay.
+I0928 21:59:57.561472 31416 net.cpp:221] Network initialization done.
+I0928 21:59:57.561476 31416 net.cpp:222] Memory required for data: 8640
 .
-======================================================================
-FAIL: test_backward (test_Message_Out.TestMessageOut)
 ----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "/home/vmlgpu/Downloads/caffe-master/python/caffe/test/test_Message_Out.py", line 792, in test_backward
-    self.assertEqual(y, x)
-AssertionError: -8245.0 != 0.0
+Ran 15 tests in 0.272s
 
-----------------------------------------------------------------------
-Ran 18 tests in 2.269s
-
-FAILED (failures=1)
-make: *** [pytest] Error 1
+OK

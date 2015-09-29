@@ -11,7 +11,7 @@
 net: "prototxts/test_print_1.prototxt"
 #net: "prototxts/try_2.prototxt"
 #net: "prototxts/test_print_4_ensemble_orderless.prototxt"
-test_iter: 140
+test_iter: 1
 test_interval: 1000
 base_lr: 0.00281
 #solver_type: ADAGRAD
