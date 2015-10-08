@@ -10,7 +10,7 @@ class Data_Arrange_Layer(caffe.Layer):
 
     def setup(self, bottom, top):
         self.nScene = 5
-        self.nAction = 7
+        self.nAction = 40
         self.nPeople = 14
         self.K_ = 0;
         self.bottom_batchsize = 0
@@ -31,7 +31,6 @@ class Data_Arrange_Layer(caffe.Layer):
         if self.bottom_output_num == self.nAction:
             self.top_batchsize = self.bottom_batchsize/self.nPeople
             self.top_output_num = self.bottom_output_num*self.nPeople
-        print self.top_shape
         self.top_shape = [self.top_batchsize, self.top_output_num] 
         top[0].reshape(self.top_batchsize, self.top_output_num)
 

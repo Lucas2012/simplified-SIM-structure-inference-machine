@@ -10,7 +10,7 @@ class structured_gate(caffe.Layer):
 
     def setup(self, bottom, top):
         self.nScene = 5
-        self.nAction = 7
+        self.nAction = 40
         self.nPeople = 14
         self.K_ = 0;
         self.bottom_batchsize = 0

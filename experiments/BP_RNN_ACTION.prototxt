@@ -1206,7 +1206,7 @@ layer {
   type: "Concat"
   bottom: "fc8_CAD_frame_prob"
   bottom: "fc9_filtered"
-  top: "concat_all"
+  top: "concat_all0"
   concat_param {
     concat_dim: 1
   }
@@ -1214,7 +1214,7 @@ layer {
 layer {
   name: "Data_arrange_layer_init_message"
   type: "Python"
-  bottom: "concat_all"
+  bottom: "concat_all0"
   bottom: "label_action"
   top: "Initial_Messages"
   python_param{
@@ -1225,13 +1225,13 @@ layer {
 layer {
   name: "Belief_Propagation_Recurrent_Neural_Network"
   type: "BP_RNN"
+  bottom: "concat_all0"
   bottom: "Initial_Messages"
-  bottom: "concat_all"
   bottom: "label_action"
   #bottom: "fc8_context"
   bottom: "fc8_CAD_frame"
   #bottom: "fc8_CAD_action"
-  bottom: "concat_all"
+  bottom: "concat_all0"
   top: "action_pred"
   top: "scene_pred"  
   param {
@@ -1245,7 +1245,7 @@ layer {
   bp_recurrent_param {
     num_output: 1000  # doesnt need anymore?
     num_frame: 0
-    num_iteration: 5
+    num_iteration: 3
     num_people:14
     scene_class: 5
     action_class: 7

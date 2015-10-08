@@ -12,14 +12,14 @@ namespace caffe {
 
 template <typename Dtype>
 void BP_RNNLayer<Dtype>::BP_RecurrentInputBlobNames(vector<string>* names) const {
-  names->resize(1);
-  (*names)[0] = "MessageIn0";
+  names->resize(0);
+  ;//(*names)[0] = "concat_all0";
 }
 
 template <typename Dtype>
 void BP_RNNLayer<Dtype>::BP_RecurrentOutputBlobNames(vector<string>* names) const {
-  names->resize(1);
-  (*names)[0] = "MessageIn" + this->int_to_str(this->T_);
+  names->resize(0);
+  ;//(*names)[0] = "MessageIn" + this->int_to_str(this->T_);
 }
 
 template <typename Dtype>
@@ -164,7 +164,7 @@ void BP_RNNLayer<Dtype>::BP_FillUnrolledNet(NetParameter* net_param) const {
   spatial1_lb.set_type("InnerProduct");
   spatial1_lb.mutable_inner_product_param()->set_num_output(bp_num_output);
   spatial1_lb.mutable_inner_product_param()->set_bias_term(true);
-  spatial1_lb.mutable_inner_product_param()->set_axis(2);     // batchsize*num_related_messages_all*inputsize
+  spatial1_lb.mutable_inner_product_param()->set_axis(1);     // batchsize*num_related_messages_all*inputsize
   spatial1_lb.mutable_inner_product_param()->
       mutable_weight_filler()->CopyFrom(weight_filler);
   spatial1_lb.mutable_inner_product_param()->
@@ -205,7 +205,7 @@ void BP_RNNLayer<Dtype>::BP_FillUnrolledNet(NetParameter* net_param) const {
   action_output_concat_layer.mutable_concat_param()->set_axis(0);
 
   LayerParameter tanh_param;
-  tanh_param.set_type("ReLU");
+  tanh_param.set_type("TanH");
 
 
   LayerParameter sum_param;
@@ -219,16 +219,18 @@ void BP_RNNLayer<Dtype>::BP_FillUnrolledNet(NetParameter* net_param) const {
   //bool separate_initial_weight = true;
   float w_lr_mult = 10,b_lr_mult = 20; 
   float w_decay_mult = 10,b_decay_mult = 0;
-  bool ifgate = false;
+  //bool ifgate = false;
   bool ifforprint = true;
-  bool ifneuron = false;
-  bool if_ensemble_message = false;
-  bool if_ensemble_previous = false;
+  bool ifneuron = true;
+  bool ifjoint = false;
+  bool ifuntie = true;
+  //bool if_ensemble_message = false;
+  //bool if_ensemble_previous = false;
   
 
   // BP recurrent steps start
   // split frame scores and action scores
-  {
+  /*{
 	  LayerParameter* split_action_frame = net_param->add_layer();
       split_action_frame->set_name("slice_action_frame_0");
 	  split_action_frame->set_type("Slice");
@@ -236,7 +238,7 @@ void BP_RNNLayer<Dtype>::BP_FillUnrolledNet(NetParameter* net_param) const {
       split_action_frame->add_top("scene_score_normalized0");
       split_action_frame->add_top("cur_action_score_normalized_reshaped0");
       split_action_frame->mutable_slice_param()->add_slice_point(5);
-  }
+  }*/
   
 
   LayerParameter action_output_python;
@@ -275,7 +277,7 @@ void BP_RNNLayer<Dtype>::BP_FillUnrolledNet(NetParameter* net_param) const {
 		  python_message_in->mutable_python_param()->set_module("simplified_message_in");
 		  python_message_in->mutable_python_param()->set_layer("simplified_message_in");
           if (ifforprint){
-		      python_message_in->add_bottom("concat_all" + ts);
+		      python_message_in->add_bottom("concat_all" + tm1s);
           }else{
               python_message_in->add_bottom("MessageIn" + tm1s);
           }
@@ -292,11 +294,33 @@ void BP_RNNLayer<Dtype>::BP_FillUnrolledNet(NetParameter* net_param) const {
           action_message_pred->set_name("A_A_Message" + ts);
           caffe::ParamSpec* weight = action_message_pred->add_param();
           caffe::ParamSpec* weight_bias = action_message_pred->add_param();
-          weight->set_name("W_hh_1");
-          weight->set_lr_mult(w_lr_mult);
-          weight->set_decay_mult(w_decay_mult);
-          weight_bias->set_lr_mult(b_lr_mult);
-          weight_bias->set_decay_mult(b_decay_mult);
+          if (ifuntie){
+              weight->set_name("W_hh_1" + ts);
+          }
+          else{
+              weight->set_name("W_hh_1");
+          }
+          if (!ifjoint) {
+               if (t ==this->T_){
+                   weight->set_lr_mult(w_lr_mult);
+                   weight->set_decay_mult(w_decay_mult);
+                   weight_bias->set_lr_mult(b_lr_mult);
+                   weight_bias->set_decay_mult(b_decay_mult);
+               }
+               else
+               {
+                   weight->set_lr_mult(0);
+                   weight->set_decay_mult(0);
+                   weight_bias->set_lr_mult(0);
+                   weight_bias->set_decay_mult(0);
+               }
+          }
+          else{
+               weight->set_lr_mult(w_lr_mult);
+               weight->set_decay_mult(w_decay_mult);
+               weight_bias->set_lr_mult(b_lr_mult);
+               weight_bias->set_decay_mult(b_decay_mult);
+          }
 
           action_message_pred->add_bottom("A_A_MessageIn" + ts);
           if (ifneuron){
@@ -314,11 +338,33 @@ void BP_RNNLayer<Dtype>::BP_FillUnrolledNet(NetParameter* net_param) const {
           scene_message_pred_as->set_name("A_S_Message" + ts); 
           caffe::ParamSpec* weight = scene_message_pred_as->add_param();
           caffe::ParamSpec* weight_bias = scene_message_pred_as->add_param();
-          weight->set_name("W_hh_2");
-          weight->set_lr_mult(w_lr_mult);
-          weight->set_decay_mult(w_decay_mult);
-          weight_bias->set_lr_mult(b_lr_mult);
-          weight_bias->set_decay_mult(b_decay_mult);
+          if (ifuntie){
+              weight->set_name("W_hh_2_" + ts);
+          }
+          else{
+              weight->set_name("W_hh_2");
+          }
+          if (!ifjoint) {
+               if (t ==this->T_){
+                   weight->set_lr_mult(w_lr_mult);
+                   weight->set_decay_mult(w_decay_mult);
+                   weight_bias->set_lr_mult(b_lr_mult);
+                   weight_bias->set_decay_mult(b_decay_mult);
+               }
+               else
+               {
+                   weight->set_lr_mult(0);
+                   weight->set_decay_mult(0);
+                   weight_bias->set_lr_mult(0);
+                   weight_bias->set_decay_mult(0);
+               }
+          }
+          else{
+               weight->set_lr_mult(w_lr_mult);
+               weight->set_decay_mult(w_decay_mult);
+               weight_bias->set_lr_mult(b_lr_mult);
+               weight_bias->set_decay_mult(b_decay_mult);
+          }
           scene_message_pred_as->add_bottom("A_S_MessageIn" + ts);
           if (ifneuron){
               scene_message_pred_as->add_top("A_S_MessageOut_neuron_input_" + ts);  
@@ -335,11 +381,33 @@ void BP_RNNLayer<Dtype>::BP_FillUnrolledNet(NetParameter* net_param) const {
           scene_message_pred->set_name("S_A_Message" + ts);
           caffe::ParamSpec* weight = scene_message_pred->add_param();
           caffe::ParamSpec* weight_bias = scene_message_pred->add_param();
-          weight->set_name("W_hh_3");
-          weight->set_lr_mult(w_lr_mult);
-          weight->set_decay_mult(w_decay_mult);
-          weight_bias->set_lr_mult(b_lr_mult);
-          weight_bias->set_decay_mult(b_decay_mult);
+          if (ifuntie){
+              weight->set_name("W_hh_3_" + ts);
+          }
+          else{
+              weight->set_name("W_hh_3");
+          }
+          if (!ifjoint) {
+               if (t ==this->T_){
+                   weight->set_lr_mult(w_lr_mult);
+                   weight->set_decay_mult(w_decay_mult);
+                   weight_bias->set_lr_mult(b_lr_mult);
+                   weight_bias->set_decay_mult(b_decay_mult);
+               }
+               else
+               {
+                   weight->set_lr_mult(0);
+                   weight->set_decay_mult(0);
+                   weight_bias->set_lr_mult(0);
+                   weight_bias->set_decay_mult(0);
+               }
+          }
+          else{
+               weight->set_lr_mult(w_lr_mult);
+               weight->set_decay_mult(w_decay_mult);
+               weight_bias->set_lr_mult(b_lr_mult);
+               weight_bias->set_decay_mult(b_decay_mult);
+          }
           scene_message_pred->add_bottom("S_A_MessageIn" + ts);
           if (ifneuron){
               scene_message_pred->add_top("S_A_MessageOut_neuron_input_" + ts); 
@@ -381,19 +449,108 @@ void BP_RNNLayer<Dtype>::BP_FillUnrolledNet(NetParameter* net_param) const {
           LayerParameter* python_message_out = net_param->add_layer();
           python_message_out->set_name("ArrangeMessageOut" + ts);
           python_message_out->set_type("Python");
-          python_message_out->mutable_python_param()->set_module("Message_Out");
-          python_message_out->mutable_python_param()->set_layer("Message_Out");
+          python_message_out->mutable_python_param()->set_module("simplified_message_out");
+          python_message_out->mutable_python_param()->set_layer("simplified_message_out");
           python_message_out->add_bottom("A_A_MessageOut" + ts);
           python_message_out->add_bottom("A_S_MessageOut" + ts);
           python_message_out->add_bottom("S_A_MessageOut" + ts);
+          python_message_out->add_bottom("label_action");
           if (ifforprint){
-              python_message_out->add_bottom("concat_all");
+              python_message_out->add_bottom("concat_all0");
           }else{
               python_message_out->add_bottom("UnaryInput");
           }
-          python_message_out->add_bottom("label_action" + ts);
           python_message_out->add_top("scene_" + ts);
           python_message_out->add_top("action_" + ts);
+      }
+
+      // Add layer to predict scene
+      {
+          LayerParameter* scene_message_pred = net_param->add_layer();
+          scene_message_pred->CopyFrom(scene_lb);
+          scene_message_pred->set_name("Scene" + ts);
+          caffe::ParamSpec* weight = scene_message_pred->add_param();
+          caffe::ParamSpec* weight_bias = scene_message_pred->add_param();
+          if (ifuntie){
+              weight->set_name("W_ho_1_" + ts);
+          }
+          else{
+              weight->set_name("W_ho_1");
+          }
+          if (!ifjoint) {
+               if (t ==this->T_){
+                   weight->set_lr_mult(w_lr_mult);
+                   weight->set_decay_mult(w_decay_mult);
+                   weight_bias->set_lr_mult(b_lr_mult);
+                   weight_bias->set_decay_mult(b_decay_mult);
+               }
+               else
+               {
+                   weight->set_lr_mult(0);
+                   weight->set_decay_mult(0);
+                   weight_bias->set_lr_mult(0);
+                   weight_bias->set_decay_mult(0);
+               }
+          }
+          else{
+               weight->set_lr_mult(w_lr_mult);
+               weight->set_decay_mult(w_decay_mult);
+               weight_bias->set_lr_mult(b_lr_mult);
+               weight_bias->set_decay_mult(b_decay_mult);
+          }
+          scene_message_pred->add_bottom("scene_" + ts);
+          scene_message_pred->add_top("scene_out" + ts);          
+          scene_message_pred->mutable_inner_product_param()->set_axis(1);  // batchsize*num_people
+      }
+
+      // Add layer to predict action
+      {
+          LayerParameter* scene_message_pred = net_param->add_layer();
+          scene_message_pred->CopyFrom(spatial1_lb);
+          scene_message_pred->set_name("Action" + ts);
+          caffe::ParamSpec* weight = scene_message_pred->add_param();
+          caffe::ParamSpec* weight_bias = scene_message_pred->add_param();
+          if (ifuntie){
+              weight->set_name("W_ho_2_" + ts);
+          }
+          else{
+              weight->set_name("W_ho_2");
+          }
+          if (!ifjoint) {
+               if (t ==this->T_){
+                   weight->set_lr_mult(w_lr_mult);
+                   weight->set_decay_mult(w_decay_mult);
+                   weight_bias->set_lr_mult(b_lr_mult);
+                   weight_bias->set_decay_mult(b_decay_mult);
+               }
+               else
+               {
+                   weight->set_lr_mult(0);
+                   weight->set_decay_mult(0);
+                   weight_bias->set_lr_mult(0);
+                   weight_bias->set_decay_mult(0);
+               }
+          }
+          else{
+               weight->set_lr_mult(w_lr_mult);
+               weight->set_decay_mult(w_decay_mult);
+               weight_bias->set_lr_mult(b_lr_mult);
+               weight_bias->set_decay_mult(b_decay_mult);
+          }
+          scene_message_pred->add_bottom("action_" + ts);
+          scene_message_pred->add_top("action_out" + ts); 
+          scene_message_pred->mutable_inner_product_param()->set_axis(1);  // batchsize*num_people
+      }
+
+      // Add layer to re-arrange messages from each component
+      {
+          LayerParameter* python_message_reshape = net_param->add_layer();
+          python_message_reshape->set_name("message_reshape" + ts);
+          python_message_reshape->set_type("Python");
+          python_message_reshape->mutable_python_param()->set_module("Message_Reshape1");
+          python_message_reshape->mutable_python_param()->set_layer("Message_Reshape1");
+          python_message_reshape->add_bottom("action_out" + ts);
+          python_message_reshape->add_top("action_out_reshaped" + ts);
       }
 
       // Add layer to normalize message
@@ -401,7 +558,7 @@ void BP_RNNLayer<Dtype>::BP_FillUnrolledNet(NetParameter* net_param) const {
           LayerParameter* softmax_layer_normalize1 = net_param->add_layer();
           softmax_layer_normalize1->set_type("Softmax");
           softmax_layer_normalize1->set_name("Normalize_Scene_" + ts);
-          softmax_layer_normalize1->add_bottom("scene_" + ts);
+          softmax_layer_normalize1->add_bottom("scene_out" + ts);
           softmax_layer_normalize1->add_top("scene_normalized_" + ts);
       }
 
@@ -410,7 +567,7 @@ void BP_RNNLayer<Dtype>::BP_FillUnrolledNet(NetParameter* net_param) const {
           LayerParameter* softmax_layer_normalize2 = net_param->add_layer();
           softmax_layer_normalize2->set_type("Softmax");
           softmax_layer_normalize2->set_name("Normalize_Action_" + ts);
-          softmax_layer_normalize2->add_bottom("action_" + ts);
+          softmax_layer_normalize2->add_bottom("action_out" + ts);
           softmax_layer_normalize2->add_top("action_normalized_" + ts);
       }
 
@@ -436,9 +593,13 @@ void BP_RNNLayer<Dtype>::BP_FillUnrolledNet(NetParameter* net_param) const {
          concat_layer_all->mutable_concat_param()->set_concat_dim(1);
       }
 
-      scene_output_python.add_bottom("scene_"+ts); 
-      action_output_python.add_bottom("action_" + ts);
+      scene_output_python.add_bottom("scene_out"+ts); 
+      action_output_python.add_bottom("action_out_reshaped" + ts);
   }
+    //net_param->add_layer()->CopyFrom(scene_output_concat_layer);  //  T_*N_*5
+    net_param->add_layer()->CopyFrom(scene_output_python);
+    //net_param->add_layer()->CopyFrom(action_output_concat_layer);  // T_*N_*[(2k+1)*num_people]*40 
+    net_param->add_layer()->CopyFrom(action_output_python);
 }
 
 INSTANTIATE_CLASS(BP_RNNLayer);

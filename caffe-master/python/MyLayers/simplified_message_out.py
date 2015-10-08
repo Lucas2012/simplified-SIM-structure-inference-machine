@@ -11,7 +11,7 @@ class simplified_message_out(caffe.Layer):
         self.nScene = 5
         self.nAction = 7
         self.nPeople = 14
-        self.K_ = 0	;
+        self.K_ = 0	
         self.slen = 0
         self.alen = 0
         self.tlen_leaf = 0
@@ -90,6 +90,7 @@ class simplified_message_out(caffe.Layer):
         # bottom2: scene2action prediction 
         # bottom3: labels
         # bottom4: unaries
+
         label_stop = self.nPeople*numpy.ones([self.bottom_batchsize[0]])
         labels = bottom[3].data
         count = 0
@@ -134,10 +135,9 @@ class simplified_message_out(caffe.Layer):
                     top[0].data[int(top_count[0])] = unit
                     top_count[0] += 1
                 else:
-                    unit = numpy.append(unary[i,self.nScene+(j-1)*self.nAction:self.nScene+j*self.nAction],unit)
+                    unit = numpy.append(unary[i,self.nScene+(j-1)*self.nAction:self.nScene+j*self.nAction],unit).copy()
                     top[1].data[top_count[1]] = unit.copy()
                     top_count[1] += 1
-
 
     def backward(self, top, propagate_down, bottom):
         label_stop = self.nPeople*numpy.ones([self.bottom_batchsize[0]])
@@ -164,7 +164,10 @@ class simplified_message_out(caffe.Layer):
                     top_count[1] += 1
                     unit_len = self.nAction
                     unary_diff = unit[:unit_len].copy()
-                    bottom[4].diff[i,self.nScene+(j-1)*self.nAction:self.nScene+j*self.nAction] = unary_diff.copy()
+                    if numpy.sum(self.graph_structure[:,j,i] == -1) != 0:
+                        bottom[4].diff[i,self.nScene+(j-1)*self.nAction:self.nScene+j*self.nAction] = unary_diff.copy()
+                if numpy.sum(self.graph_structure[:,j,i] == -1) == 0:
+                    continue;
                 potentials = numpy.unique(self.graph_structure[:,j,i])
                 if j != 0 and numpy.any(potentials==0) == False:
                     potentials = numpy.append(potentials,0)
@@ -180,7 +183,6 @@ class simplified_message_out(caffe.Layer):
                     pos = pos[0][0]
                     bottom[potential_type].diff[count[potential_type]] = unit[pos*unit_len:(pos+1)*unit_len]/num_po[pos].copy()
                     count[potential_type] += 1
-
 
 def python_net_file():
     with tempfile.NamedTemporaryFile(delete=False) as f:

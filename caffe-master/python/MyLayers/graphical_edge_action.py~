@@ -30,22 +30,29 @@ class graphical_edge(caffe.Layer):
         self.minus_s = False
     
     def reshape(self, bottom, top):
-        # have one input one output, initialize messages for each node in the graphical model       
+        # have 3(4) inputs: unary actions, a2a messages, labels, and (optional) distance between people      
         bottom_batchsize = bottom[0].data.shape[0]
         edge_num = self.nPeople
         self.bottom_batchsize = bottom_batchsize
-        self.top_batchsize = bottom_batchsize*edge_num
+        self.top_batchsize = bottom[1].data.shape[0]
         if self.minus_s:
-            top[0].reshape(self.top_batchsize, self.nAction)
+            if len(bottom) > 3:
+                top[0].reshape(self.top_batchsize, self.nAction+1)
+            else:
+                top[0].reshape(self.top_batchsize, self.nAction)
         else:
-            top[0].reshape(self.top_batchsize, self.nAction*2)
+            if len(bottom) > 3:
+                top[0].reshape(self.top_batchsize, self.nAction*2+1)
+            else:
+                top[0].reshape(self.top_batchsize, self.nAction*2)
 
     def forward(self, bottom, top):
         unary_input = bottom[0].data.copy()
-        tms1_message = bottom[1].data.copy()
-        edge_num = self.nPeople*(self.nPeople-1)/2
+        a2a_message = bottom[1].data.copy()
         label_stop = self.nPeople*numpy.ones([self.bottom_batchsize])
         labels = bottom[2].data
+        if len(bottom) > 3:
+            distance = bottom[3].data.copy()
         count = 0
         for i in range(0,self.bottom_batchsize):
             for j in range(0,self.nPeople):
@@ -53,28 +60,26 @@ class graphical_edge(caffe.Layer):
                     label_stop[i] = j
                     break
         self.label_stop = label_stop
-        # the paired up inputs should be:
-        # [(1,2),(2,1)]   [(1,3),(3,1)]   [(1,4),(4,1)]   [(1,5),(5,1)]   [(1,6),(6,1)]
-        # [(2,3),(3,2)]   [(2,4),(4,2)]   [(2,5),(5,2)]   [(2,6),(6,2)]
-        # [(3,4),(4,3)]   [(3,5),(5,3)]   [(3,6),(6,3)]
-        # [(4,5),(5,4)]   [(4,6),(6,4)]
-        # [(5,6),(6,5)]
+
         tmpdata = top[0].data
         output_c = 0
         count = 0
-        self.id = self.id%3 + 1
         minus_s = self.minus_s
         for f in range(0,self.bottom_batchsize):
             for i in range(0,self.nPeople):
-                m_scene = tms1_message[f,75+(i+1)*self.message_num_action*self.nAction-self.nAction:75+(i+1)*self.message_num_action*self.nAction]
-                if i < self.label_stop[f] and output_c < 2:
-                    output_c += 1
-                u_action_pi = unary_input[f,5+i*self.nAction:5+(i+1)*self.nAction]
-                tmpdata[count] = numpy.append(m_scene,u_action_pi,axis = 1)
-                print 'scene:',tms1_message[f,0:5]
-                print u_action_pi
-                count += 1
-        top[0].data[...] = tmpdata       
+                for j in range(0,self.nPeople):
+                    if i == j or i >=label_stop[f] or j >=label_stop[f]:
+                        continue
+                    unary = unary_input[f,self.nScene+i*self.nAction:self.nScene+(i+1)*self.nAction].copy()
+                    #print 'unary',unary.shape
+                    #print 'a2a',a2a_message[count].shape
+                    pair = numpy.append(unary,a2a_message[count],axis = 0).copy()
+                    if len(bottom) > 3:
+                        pair = numpy.append(pair,distance[i+f*self.nPeoples,j])
+                    tmpdata[count] = pair.copy()
+                    count += 1
+        top[0].data[...] = tmpdata 
+             
 
     def backward(self, top, propagate_down, bottom):
         return

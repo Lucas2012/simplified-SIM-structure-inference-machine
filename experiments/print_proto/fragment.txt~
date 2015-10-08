@@ -1,28 +1,3 @@
-input: "MessageIn0"
-input: "Initial_Messages"
-input: "label_action"
-input: "fc8_context"
-input: "concat_all"
-force_backward: true
-input_shape {
-  dim: 5
-  dim: 1545
-}
-input_shape {
-  dim: 5
-  dim: 103
-}
-input_shape {
-  dim: 70
-}
-input_shape {
-  dim: 5
-  dim: 5
-}
-input_shape {
-  dim: 5
-  dim: 103
-}
 layer {
   name: "Belief_Propagation_Recurrent_Neural_Network_slice_action_frame_0"
   type: "Slice"

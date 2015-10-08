@@ -100,6 +100,8 @@ class simplified_message_in(caffe.Layer):
         # top1: action2action prediction
         # top2: action2scene prediction
         # top3: scene2action prediction 
+        
+        #print 'forward',bottom[0].data[0]
         label_stop = self.nPeople*numpy.ones([self.bottom_batchsize[0]])
         labels = bottom[1].data
         count = 0

@@ -1,0 +1,18 @@
+#%Module1.0
+## CAFFE
+##
+
+module-whatis    "Caffe version 20150928"
+module load vml
+#module load LIB/Boost/1.58
+module load VML/LIB/OpenCV/2.4.10_CUDA7.0 LIB/HDF5/1.8.12 LIB/GLOG/0.3.3 LIB/LEVELDB/20150213 TOOLS/LMDB/lmdb VML/LIB/PROTOBUF/2.6.1 VML/TOOLS/CUDA/7.0
+module load natlang
+module load NL/LIB/BOOST/1.58.0
+module load TOOLS/Anaconda-2.2.0/Python-2.7
+
+#prepend-path PATH /cs/vml2/avahdat/software/caffe/build/tools
+#prepend-path LD_LIBRARY_PATH /cs/vml2/avahdat/software/caffe/build/lib/
+#prepend-path INCLUDE /cs/vml2/avahdat/software/caffe/include
+#prepend-path MANPATH /cs/vml2/avahdat/software/caffe/man
+prepend-path PYTHONPATH /cs/vml2/zhiweid/CVPR16_NEW/simplified-bprnn/caffe-master/python/MyLayers
+prepend-path PYTHONPATH /cs/vml2/zhiweid/CVPR16_NEW/simplified-bprnn/caffe-master/python

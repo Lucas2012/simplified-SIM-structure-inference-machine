@@ -10,7 +10,7 @@ class structured_gate(caffe.Layer):
 
     def setup(self, bottom, top):
         self.nScene = 5
-        self.nAction = 7
+        self.nAction = 40
         self.nPeople = 14
         self.K_ = 0;
         self.bottom_batchsize = 0
@@ -26,17 +26,18 @@ class structured_gate(caffe.Layer):
         self.top_batchsize = 0
         self.on_edge = True
         self.zero2one = True
+        self.lamda = 30
     
     def reshape(self, bottom, top):
-        # have one input one output, initialize messages for each node in the graphical model       
-        bottom_batchsize = bottom[0].data.shape[0]
+        # have 3 inputs: gate, a2a message, labels
+        # have one output: gated a2a message 
+        bottom_batchsize = bottom[2].data.shape[0]
         edge_num = self.nPeople
         self.bottom_batchsize = bottom_batchsize/self.nPeople
         top[0].reshape(*bottom[1].data.shape)
 
     def forward(self, bottom, top):
-        bot_input = bottom[0].data.copy()
-        edge_num = self.nPeople
+        gate_input = bottom[0].data.copy()
         messages = bottom[1].data.copy()
         label_stop = self.nPeople*numpy.ones([self.bottom_batchsize])
         labels = bottom[2].data
@@ -54,50 +55,50 @@ class structured_gate(caffe.Layer):
         # [(4,5),(5,4)]   [(4,6),(6,4)]
         # [(5,6),(6,5)]
         # gate design:
-        on_edge = self.on_edge
-        if on_edge:
-            s_gate = numpy.zeros(edge_num*self.bottom_batchsize)
-        else:
-            s_gate = numpy.zeros([edge_num*self.bottom_batchsize,self.nAction])
+        s_gate = numpy.zeros([self.nPeople*self.bottom_batchsize,self.nPeople*self.bottom_batchsize])
+        
         zero2one = self.zero2one
         count = 0
-        idx = 0
+        step = 0
         for f in range(0,self.bottom_batchsize):
+            step = f*self.nPeople
             for i in range(0,self.nPeople):
-                if i >= label_stop[f]:
-                    if on_edge:
-                        s_gate[idx] = 0.0
-                    else:
-                        s_gate[idx] = numpy.zeros(self.nAction)
-                else:
-                    o = bot_input[count]
-                    if zero2one == True:
-                        s_gate[idx] = (1+numpy.tanh(o))/2.0
-                    else:
-                        s_gate[idx] = numpy.tanh(o)
-                    print s_gate[idx]
-                count += 1
-        idx = 0
+                for j in range(0,self.nPeople):
+                    if i==j or i >= label_stop[f] or j >= label_stop[f]:
+                        continue
+                    s_gate[step+i,step+j] += gate_input[count]
+                    s_gate[step+j,step+i] += gate_input[count]
+                    count += 1
+        count = 0
         for f in range(0,self.bottom_batchsize):
+            step = f*self.nPeople
             for i in range(0,self.nPeople):
-                o = s_gate[idx]
-                start_i = 75+(i+1)*self.message_num_action*self.nAction-self.nAction
-                end_i = 75+(i+1)*self.message_num_action*self.nAction
-                messages[f,start_i:end_i] = numpy.multiply(o,messages[f,start_i:end_i])
-                idx += 1
+                for j in range(0,self.nPeople):
+                    if i == j or i >= label_stop[f] or j >= label_stop[f]:
+                        continue
+                    o = (1+numpy.tanh(s_gate[step+i,step+j]))/2.0
+                    messages[count] = numpy.multiply(o,messages[count])
         top[0].data[...] = messages
 
     def backward(self, top, propagate_down, bottom):
         # to be written
         # diffs for : bottom[0] -> paired gates input; bottom[1] -> messages
         # diffs from top: gated_messages
-        bot_input = bottom[0].data.copy()
+        gate_input = bottom[0].data.copy()
         gates_diff = bottom[0].diff.copy()
         messages = bottom[1].data
-        message_diff = bottom[1].diff.copy()
+        #message_diff = bottom[1].diff.copy()
         gated_message_diff = top[0].diff.copy()
-        edge_num = self.nPeople
-        
+
+        label_stop = self.nPeople*numpy.ones([self.bottom_batchsize])
+        labels = bottom[2].data
+        count = 0
+        for i in range(0,self.bottom_batchsize):
+            for j in range(0,self.nPeople):
+                if labels[i*self.nPeople+j] == 0:
+                    label_stop[i] = j
+                    break
+        self.label_stop = label_stop
 
         # gates diff:
         # the paired up inputs should be:
@@ -109,62 +110,39 @@ class structured_gate(caffe.Layer):
 
         # gate design:
         on_edge = self.on_edge
-        if on_edge == True:
-            s_gate = numpy.zeros(edge_num*self.bottom_batchsize)
-        else:
-            s_gate = numpy.zeros([edge_num*self.bottom_batchsize,self.nAction])
+        s_gate = numpy.zeros([self.nPeople*self.bottom_batchsize,self.nPeople*self.bottom_batchsize])
+       
         # non-linearity design:
         zero2one = self.zero2one
         count = 0
-        idx = 0
-        #print self.bottom_batchsize
+        step = 0
         for f in range(0,self.bottom_batchsize):
+            step = f*self.nPeople
             for i in range(0,self.nPeople):
-                if i >= self.label_stop[f]:
-                    if on_edge:
-                        s_gate[idx] = 0.0
-                    else:
-                        s_gate[idx] = numpy.zeros(self.nAction)
-                else:
-                    o = bot_input[count]
-                    if zero2one == True:
-                        s_gate[idx] = (1+numpy.tanh(o))/2.0
-                    else:
-                        s_gate[idx] = numpy.tanh(o)
-                count += 1
-                idx += 1
+                for j in range(0,self.nPeople):
+                    if i==j or i >= label_stop[f] or j >= label_stop[f]:
+                        continue
+                    s_gate[step+i,step+j] += gate_input[count]
+                    s_gate[step+j,step+i] += gate_input[count]
+                    count += 1
         count = 0
         idx = 0
         for f in range(0,self.bottom_batchsize):
+            step = f*self.nPeople
             for i in range(0,self.nPeople):
-                if i >= self.label_stop[f]:
-                     gates_diff[count] = 0.0
-                     count += 1
-                     continue
-                # gate diffs
-                start_i = 75+(i+1)*self.message_num_action*self.nAction-self.nAction
-                end_i = 75+(i+1)*self.message_num_action*self.nAction 
-                diff_i = gated_message_diff[f,start_i:end_i]
-                message_i = messages[f,start_i:end_i]
-                diff_i = numpy.multiply(diff_i,message_i)
-                tanh_sq = numpy.multiply(s_gate[idx],s_gate[idx])
-                if zero2one:
-                    divide = 2.0
-                else:
-                    divide = 1.0
-                if on_edge == True:
-                    gates_diff[count] = (1-tanh_sq)*numpy.sum(diff_i)/divide
-                else:
-                    gates_diff[count] = numpy.multiply((1-tanh_sq),diff_i)/divide
-                count += 1
-                #if gates_diff[count] != 0.0:
-                #    print gates_diff[count]
-                # tms1 message diffs:
-                message_diff[f,start_i:end_i] = numpy.multiply(s_gate[idx],gated_message_diff[f,start_i:end_i])
-                    
-                idx += 1
+                for j in range(0,self.nPeople):
+                    if i == j or i >= label_stop[f] or j >= label_stop[f]:
+                        continue
+                    diff = numpy.multiply(gated_message_diff[count],messages[count])
+                    o = (1+numpy.tanh(s_gate[step+i,step+j]))/2.0
+                    tanh_sq = numpy.multiply(o,o)
+                    gates_diff[count] = numpy.sum(diff)*(1-tanh_sq)
+                    count += 1
+                    #print o 
+        gate_input = bottom[0].data.copy()
+        gates_diff += self.lamda*gate_input
         bottom[0].diff[...] = gates_diff
-        bottom[1].diff[...] = message_diff
+        #bottom[1].diff[...] = message_diff
         
         
 

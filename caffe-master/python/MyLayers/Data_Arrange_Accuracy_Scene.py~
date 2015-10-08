@@ -22,7 +22,7 @@ class Data_Arrange_Layer(caffe.Layer):
         self.bottom_output_num = 0
         self.top_output_num = 0
         self.top_shape = []
-        self.T_ = 4
+        self.T_ = 2
         self.ifaverage = False
     
     def reshape(self, bottom, top):
@@ -37,12 +37,12 @@ class Data_Arrange_Layer(caffe.Layer):
 
     def forward(self, bottom, top):
         if self.ifaverage:
-            bottom_data = bottom[0].data[:self.bottom_batchsize]
+            bottom_data = bottom[0].data[:self.bottom_batchsize].copy()
             for i in range(1,self.T_):
-                bottom_data += bottom[0].data[i*self.bottom_batchsize:(i+1)*self.bottom_batchsize] 
-            top[0].data[...] = bottom_data/self.T_
+                bottom_data += bottom[0].data[i*self.bottom_batchsize:(i+1)*self.bottom_batchsize].copy() 
+            top[0].data[...] = bottom_data.copy()/self.T_
         else:
-            top[0].data[...] = bottom[0].data[(self.T_-1)*self.bottom_batchsize:self.T_*self.bottom_batchsize]      
+            top[0].data[...] = bottom[0].data[(self.T_-1)*self.bottom_batchsize:self.T_*self.bottom_batchsize].copy()      
               
 
     def backward(self, top, propagate_down, bottom):

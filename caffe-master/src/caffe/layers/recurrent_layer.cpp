@@ -7,6 +7,7 @@
 #include "caffe/layer.hpp"
 #include "caffe/sequence_layers.hpp"
 #include "caffe/util/math_functions.hpp"
+#include "caffe/util/io.hpp"
 
 namespace caffe {
 
@@ -80,6 +81,7 @@ void RecurrentLayer<Dtype>::LayerSetUp(const vector<Blob<Dtype>*>& bottom,
       layer->set_name(layer_name + "_" + layer->name());
     }
   }
+  WriteProtoToTextFile(net_param,"/cs/vml2/zhiweid/CVPR16_NEW/simplified-bprnn/experiments/print_proto/fragment.txt");
 
   // Create the unrolled net.
   unrolled_net_.reset(new Net<Dtype>(net_param));

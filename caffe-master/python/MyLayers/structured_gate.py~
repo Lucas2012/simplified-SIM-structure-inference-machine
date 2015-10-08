@@ -76,7 +76,7 @@ class structured_gate(caffe.Layer):
                             s_gate[idx] = (1+numpy.tanh(o))/2.0
                         else:
                             s_gate[idx] = numpy.tanh(o)
-                        print s_gate[idx]
+                        #print s_gate[idx]
                     count += 2
                     idx += 1
         idx = 0

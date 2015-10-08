@@ -62,7 +62,6 @@ class graphical_edge(caffe.Layer):
         tmpdata = top[0].data
         output_c = 0
         count = 0
-        self.id = self.id%3 + 1
         minus_s = self.minus_s
         for f in range(0,self.bottom_batchsize):
             for i in range(0,self.nPeople):

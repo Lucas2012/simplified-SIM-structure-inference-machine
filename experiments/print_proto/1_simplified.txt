@@ -1,0 +1,168 @@
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_ArrangeMessageIn1"
+  type: "Python"
+  bottom: "concat_all0"
+  bottom: "label_action"
+  top: "A_A_MessageIn1"
+  top: "A_S_MessageIn1"
+  top: "S_A_MessageIn1"
+  python_param {
+    module: "simplified_message_in"
+    layer: "simplified_message_in"
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_A_A_Message1"
+  type: "InnerProduct"
+  bottom: "A_A_MessageIn1"
+  top: "A_A_MessageOut1"
+  param {
+    name: "W_hh_1"
+    lr_mult: 10
+    decay_mult: 10
+  }
+  param {
+    lr_mult: 20
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 7
+    bias_term: true
+    weight_filler {
+      type: "uniform"
+      min: -0.08
+      max: 0.08
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+    axis: 1
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_A_S_Message1"
+  type: "InnerProduct"
+  bottom: "A_S_MessageIn1"
+  top: "A_S_MessageOut1"
+  param {
+    name: "W_hh_2"
+    lr_mult: 10
+    decay_mult: 10
+  }
+  param {
+    lr_mult: 20
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 5
+    bias_term: true
+    weight_filler {
+      type: "uniform"
+      min: -0.08
+      max: 0.08
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+    axis: 1
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_S_A_Message1"
+  type: "InnerProduct"
+  bottom: "S_A_MessageIn1"
+  top: "S_A_MessageOut1"
+  param {
+    name: "W_hh_3"
+    lr_mult: 10
+    decay_mult: 10
+  }
+  param {
+    lr_mult: 20
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 7
+    bias_term: true
+    weight_filler {
+      type: "uniform"
+      min: -0.08
+      max: 0.08
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+    axis: 1
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_ArrangeMessageOut1"
+  type: "Python"
+  bottom: "A_A_MessageOut1"
+  bottom: "A_S_MessageOut1"
+  bottom: "S_A_MessageOut1"
+  bottom: "concat_all0"
+  bottom: "label_action"
+  top: "scene_1"
+  top: "action_1"
+  python_param {
+    module: "Message_Out"
+    layer: "Message_Out"
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_Normalize_Scene_1"
+  type: "Softmax"
+  bottom: "scene_1"
+  top: "scene_normalized_1"
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_Normalize_Action_1"
+  type: "Softmax"
+  bottom: "action_1"
+  top: "action_normalized_1"
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_Data_arrange_layer_filter1"
+  type: "Python"
+  bottom: "action_normalized_1"
+  bottom: "label_action"
+  top: "fc9_filtered1"
+  python_param {
+    module: "Data_arrange"
+    layer: "Data_Arrange_Layer"
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_concatenation_s_a1"
+  type: "Concat"
+  bottom: "scene_normalized_1"
+  bottom: "fc9_filtered1"
+  top: "concat_all1"
+  concat_param {
+    concat_dim: 1
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_output_python_concat_scene"
+  type: "Python"
+  bottom: "scene_1"
+  top: "scene_pred"
+  python_param {
+    module: "MyConcat"
+    layer: "MyConcat"
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_output_python_concat_action"
+  type: "Python"
+  bottom: "action_1"
+  top: "action_pred"
+  python_param {
+    module: "MyConcat"
+    layer: "MyConcat"
+  }
+}

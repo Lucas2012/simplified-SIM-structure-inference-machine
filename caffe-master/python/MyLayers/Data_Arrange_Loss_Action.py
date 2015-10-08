@@ -21,7 +21,7 @@ class Data_Arrange_Layer(caffe.Layer):
         self.bottom_output_num = 0
         self.top_output_num = 0
         self.top_shape = []
-        self.T_ = 4
+        self.T_ = 1
         self.label_stop = []
         self.count = 0
     
@@ -34,7 +34,6 @@ class Data_Arrange_Layer(caffe.Layer):
         #print labels
         label_stop = numpy.ones([self.bottom_batchsize])
         count = 0
-        #print self.bottom_batchsize
         #print bottom_shape
         for i in range(0,self.bottom_batchsize):
             for j in range(0,self.nPeople):
@@ -76,16 +75,19 @@ class Data_Arrange_Layer(caffe.Layer):
         for i in range(0,self.T_):
             for j in range(0,self.bottom_batchsize):
                 #print bottom[0].data.shape
-                tmp = numpy.reshape(bottom[0].data[i*self.bottom_batchsize+j],[self.nPeople,self.nAction])
-                tmpdata = numpy.append(tmpdata,tmp[0:self.label_stop[j]],axis = 0)
-                tmplabel = numpy.append(tmplabel,labels[j,0:self.label_stop[j]])
-                tmplabel2 = numpy.append(tmplabel2,labels2[j,0:self.label_stop[j]])
+                tmp = numpy.reshape(bottom[0].data[i*self.bottom_batchsize+j],[self.nPeople,self.nAction]).copy()
+                tmpdata = numpy.append(tmpdata,tmp[0:self.label_stop[j]],axis = 0).copy()
+                tmplabel = numpy.append(tmplabel,labels[j,0:self.label_stop[j]]).copy()
+                tmplabel2 = numpy.append(tmplabel2,labels2[j,0:self.label_stop[j]]).copy()
+                #print tmpdata
+                #print tmplabel
         #tmplabel=numpy.reshape(tmplabel,[len(tmplabel),1])
         #tmplabel2=numpy.reshape(tmplabel2,[len(tmplabel2),1])
         top[0].data[...] = tmpdata
-        top[1].data[...] = tmplabel
+        top[1].data[...] = tmplabel+1.0
         if len(bottom) > 2:
             top[2].data[...] = tmplabel2
+            #print tmplabel2
         #print tmplabel
         #print tmpdata
         '''print "orin_label"
@@ -103,19 +105,19 @@ class Data_Arrange_Layer(caffe.Layer):
             step = 0
             for j in range(0,self.bottom_batchsize):
                 assert(self.label_stop[j] > 0)
-                tmpuse = topdiff[i,step:step+self.label_stop[j]]
-                tmpuse = numpy.reshape(tmpuse,[1,self.label_stop[j]*self.nAction])
+                tmpuse = topdiff[i,step:step+self.label_stop[j]].copy()
+                tmpuse = numpy.reshape(tmpuse,[1,self.label_stop[j]*self.nAction]).copy()
                 #print tmpuse
                 #print tmpuse[0]
                 #assert(tmpuse[0,0]!=0)
-                tmpdiff[i*self.bottom_batchsize+j,0:self.label_stop[j]*self.nAction] = tmpuse
+                tmpdiff[i*self.bottom_batchsize+j,0:self.label_stop[j]*self.nAction] = tmpuse.copy()
                 step += self.label_stop[j]
                 #print "stop:",self.label_stop[j]
                 #print tmpdiff[i*self.bottom_batchsize+j]
         #print "topshape:",top[0].diff.shape
         #print "step:",step
-        bottom[0].diff[...] = tmpdiff
-        tmpdiff = numpy.reshape(tmpdiff,[bottom[0].diff.shape[0]*self.nPeople,self.nAction])
+        bottom[0].diff[...] = tmpdiff.copy()
+        tmpdiff = numpy.reshape(tmpdiff,[bottom[0].diff.shape[0]*self.nPeople,self.nAction]).copy()
         '''print "check original"
         print "1"
         print bottom[0].diff[0:5]

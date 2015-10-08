@@ -1,0 +1,168 @@
+    Test net output #0: accuracy_action = 0.025278
+
+    Test net output #1: accuracy_scene = 0.155714
+
+    Test net output #2: loss_action = 2.14478
+
+    Test net output #3: loss_scene = 1.63523
+
+    Test net output #0: accuracy_action = 0.671597
+
+    Test net output #1: accuracy_scene = 0.678571
+
+    Test net output #2: loss_action = 1.04231
+
+    Test net output #3: loss_scene = 0.893858
+
+    Test net output #0: accuracy_action = 0.679434
+
+    Test net output #1: accuracy_scene = 0.677143
+
+    Test net output #2: loss_action = 1.02745
+
+    Test net output #3: loss_scene = 0.870357
+
+    Test net output #0: accuracy_action = 0.678877
+
+    Test net output #1: accuracy_scene = 0.682857
+
+    Test net output #2: loss_action = 1.01498
+
+    Test net output #3: loss_scene = 0.891861
+
+    Test net output #0: accuracy_action = 0.679007
+
+    Test net output #1: accuracy_scene = 0.72
+
+    Test net output #2: loss_action = 1.02106
+
+    Test net output #3: loss_scene = 0.896898
+
+    Test net output #0: accuracy_action = 0.679336
+
+    Test net output #1: accuracy_scene = 0.71
+
+    Test net output #2: loss_action = 1.01344
+
+    Test net output #3: loss_scene = 0.806707
+
+    Test net output #0: accuracy_action = 0.680549
+
+    Test net output #1: accuracy_scene = 0.701429
+
+    Test net output #2: loss_action = 0.999609
+
+    Test net output #3: loss_scene = 0.837633
+
+    Test net output #0: accuracy_action = 0.677235
+
+    Test net output #1: accuracy_scene = 0.694286
+
+    Test net output #2: loss_action = 1.00236
+
+    Test net output #3: loss_scene = 0.806921
+
+    Test net output #0: accuracy_action = 0.672843
+
+    Test net output #1: accuracy_scene = 0.69
+
+    Test net output #2: loss_action = 1.02495
+
+    Test net output #3: loss_scene = 0.842668
+
+    Test net output #0: accuracy_action = 0.686466
+
+    Test net output #1: accuracy_scene = 0.691429
+
+    Test net output #2: loss_action = 0.985359
+
+    Test net output #3: loss_scene = 0.858581
+
+    Test net output #0: accuracy_action = 0.67401
+
+    Test net output #1: accuracy_scene = 0.704286
+
+    Test net output #2: loss_action = 1.01766
+
+    Test net output #3: loss_scene = 0.866234
+
+    Test net output #0: accuracy_action = 0.676385
+
+    Test net output #1: accuracy_scene = 0.691429
+
+    Test net output #2: loss_action = 0.975059
+
+    Test net output #3: loss_scene = 0.872579
+
+    Test net output #0: accuracy_action = 0.679128
+
+    Test net output #1: accuracy_scene = 0.702857
+
+    Test net output #2: loss_action = 0.954891
+
+    Test net output #3: loss_scene = 0.931657
+
+    Test net output #0: accuracy_action = 0.686214
+
+    Test net output #1: accuracy_scene = 0.688572
+
+    Test net output #2: loss_action = 0.967901
+
+    Test net output #3: loss_scene = 1.01671
+
+    Test net output #0: accuracy_action = 0.685817
+
+    Test net output #1: accuracy_scene = 0.702857
+
+    Test net output #2: loss_action = 0.995674
+
+    Test net output #3: loss_scene = 1.09757
+
+    Test net output #0: accuracy_action = 0.677974
+
+    Test net output #1: accuracy_scene = 0.687143
+
+    Test net output #2: loss_action = 1.0534
+
+    Test net output #3: loss_scene = 1.20094
+
+    Test net output #0: accuracy_action = 0.66581
+
+    Test net output #1: accuracy_scene = 0.71
+
+    Test net output #2: loss_action = 1.11759
+
+    Test net output #3: loss_scene = 1.2759
+
+    Test net output #0: accuracy_action = 0.639396
+
+    Test net output #1: accuracy_scene = 0.691429
+
+    Test net output #2: loss_action = 1.18833
+
+    Test net output #3: loss_scene = 1.32664
+
+    Test net output #0: accuracy_action = 0.615294
+
+    Test net output #1: accuracy_scene = 0.701429
+
+    Test net output #2: loss_action = 1.25798
+
+    Test net output #3: loss_scene = 1.39486
+
+    Test net output #0: accuracy_action = 0.574427
+
+    Test net output #1: accuracy_scene = 0.624286
+
+    Test net output #2: loss_action = 1.32185
+
+    Test net output #3: loss_scene = 1.44566
+
+    Test net output #0: accuracy_action = 0.522497
+
+    Test net output #1: accuracy_scene = 0.367143
+
+    Test net output #2: loss_action = 1.37604
+
+    Test net output #3: loss_scene = 1.48658
+

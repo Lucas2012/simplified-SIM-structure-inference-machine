@@ -108,8 +108,8 @@ class graphical_edge(caffe.Layer):
                     if minus_s == False:
                         #pairij = numpy.append(reference_m_i,predicted_m_ij)
                         #pairji = numpy.append(reference_m_j,predicted_m_ji)
-                        pairij = numpy.append(u_action_pi,u_action_pj)
-                        pairji = numpy.append(u_action_pj,u_action_pi)
+                        pairij = numpy.append(predicted_m_ij,predicted_m_ji)
+                        pairji = numpy.append(predicted_m_ij,predicted_m_ji)
                     else:
                         pairij = reference_m_i - predicted_m_ij
                         pairji = reference_m_j - predicted_m_ji

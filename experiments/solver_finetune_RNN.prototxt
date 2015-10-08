@@ -8,12 +8,13 @@
 #net: "experiments_uk_iter_N/iter_2.prototxt"
 #net: "prototxts/try_2_ensemble.prototxt"
 #net: "prototxts/try_2_emsemble_constant.prototxt"
-net: "prototxts/test_print_1.prototxt"
+net: "prototxts/test_print_2_simplified_context.prototxt"
+#net: "prototxts/test.prototxt"
 #net: "prototxts/try_2.prototxt"
-#net: "prototxts/test_print_4_ensemble_orderless.prototxt"
+#net: "prototxts/test_print_2_ensemble_orderless.prototxt"
 test_iter: 140
 test_interval: 1000
-base_lr: 0.00281
+base_lr: 0.001
 #solver_type: ADAGRAD
 lr_policy: "step"
 #clip_gradients: 30
@@ -24,5 +25,5 @@ max_iter: 20000
 momentum: 0.90
 weight_decay: 0.0005
 snapshot: 1000
-snapshot_prefix: "snapshots_iter4_ensemble_orderless/snapshots_s1"
+snapshot_prefix: "snapshots_iter2_context/snapshots_s1"
 solver_mode: GPU

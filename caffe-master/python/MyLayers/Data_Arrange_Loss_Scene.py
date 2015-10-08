@@ -21,7 +21,7 @@ class Data_Arrange_Layer(caffe.Layer):
         self.bottom_output_num = 0
         self.top_output_num = 0
         self.top_shape = []
-        self.T_ = 4
+        self.T_ = 1
 
     def reshape(self, bottom, top):
         # have one input one output, initialize messages for each node in the graphical model
@@ -34,12 +34,12 @@ class Data_Arrange_Layer(caffe.Layer):
 
     def forward(self, bottom, top):
         framenum = bottom[1].data.shape[0]
-        top[0].data[...] = numpy.reshape(bottom[0].data,[self.top_batchsize,self.bottom_output_num])
+        top[0].data[...] = numpy.reshape(bottom[0].data,[self.top_batchsize,self.bottom_output_num]).copy()
         #print bottom[1].data.shape
-        tmp = numpy.reshape(bottom[1].data,[1,framenum])
+        tmp = numpy.reshape(bottom[1].data,[1,framenum]).copy()
         tmp = numpy.repeat(tmp,self.T_,axis = 0)
-        tmp = numpy.reshape(tmp,[self.T_*framenum, 1])
-        top[1].data[...] = numpy.reshape(tmp,[self.top_batchsize,1])
+        tmp = numpy.reshape(tmp,[self.T_*framenum, 1]).copy()
+        top[1].data[...] = numpy.reshape(tmp,[self.top_batchsize,1]).copy()
         #print top[1].data
         #print top[0].data
         #print self.bottom_batchsize
@@ -47,7 +47,7 @@ class Data_Arrange_Layer(caffe.Layer):
 
 
     def backward(self, top, propagate_down, bottom):
-        bottom[0].diff[...] = 30.0*numpy.reshape(top[0].diff,[self.bottom_batchsize,self.bottom_output_num])
+        bottom[0].diff[...] = numpy.reshape(top[0].diff,[self.bottom_batchsize,self.bottom_output_num]).copy()
         #print bottom[0].diff
 
 def python_net_file():

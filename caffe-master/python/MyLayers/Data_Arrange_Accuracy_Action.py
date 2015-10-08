@@ -21,7 +21,7 @@ class Data_Arrange_Layer(caffe.Layer):
         self.top_batchsize = 0
         self.top_output_num = 0
         self.top_shape = []
-        self.T_ = 4
+        self.T_ = 1
         self.label_stop = []
         self.count = 0
     
@@ -55,7 +55,7 @@ class Data_Arrange_Layer(caffe.Layer):
         #top[0].data = numpy.reshape(bottom[0].data,[self.top_batchsize,self.bottom_output_num])
         #top[1].data = numpy.repeat(bottom[1].data,self.T_)
         label_stop = self.nPeople*numpy.ones([self.bottom_batchsize])
-        labels = bottom[1].data
+        labels = bottom[1].data.copy()
         for i in range(0,self.bottom_batchsize):
             for j in range(0,self.nPeople):
                 if labels[i*self.nPeople+j] == 0:
@@ -74,13 +74,13 @@ class Data_Arrange_Layer(caffe.Layer):
         for j in range(0,self.bottom_batchsize):
             # tmp = numpy.reshape(bottom[0].data[i*self.bottom_batchsize+j],[self.nPeople,self.nAction])
             # tmpdata = numpy.append(tmpdata,tmp[0:self.label_stop[j]],axis = 0)
-            tmplabel = numpy.append(tmplabel,labels[j,0:self.label_stop[j]])
-            tmplabel2 = numpy.append(tmplabel2,labels2[j,0:self.label_stop[j]])
-        tmplabel=numpy.reshape(tmplabel,[len(tmplabel),1])   
-        tmplabel2=numpy.reshape(tmplabel2,[len(tmplabel2),1])  
-        tmpdata = bottom[0].data[(self.T_-1)*self.top_batchsize:self.T_*self.top_batchsize]
-        top[0].data[...] = tmpdata
-        top[1].data[...] = tmplabel    
+            tmplabel = numpy.append(tmplabel,labels[j,0:self.label_stop[j]]).copy()
+            tmplabel2 = numpy.append(tmplabel2,labels2[j,0:self.label_stop[j]]).copy()
+        tmplabel=numpy.reshape(tmplabel,[len(tmplabel),1]).copy()   
+        tmplabel2=numpy.reshape(tmplabel2,[len(tmplabel2),1]).copy()  
+        tmpdata = bottom[0].data[(self.T_-1)*self.top_batchsize:self.T_*self.top_batchsize].copy()
+        top[0].data[...] = tmpdata.copy()
+        top[1].data[...] = tmplabel.copy()+1.0    
         if len(bottom) > 2:
             top[2].data[...] = tmplabel2         
 

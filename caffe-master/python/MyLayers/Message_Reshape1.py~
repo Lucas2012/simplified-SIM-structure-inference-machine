@@ -20,11 +20,10 @@ class Message_Reshape1(caffe.Layer):
     def reshape(self, bottom, top):
         # have one input one output, initialize messages for each node in the graphical model 
         bottom_shape = bottom[0].data.shape
-        bottom_batchsize = bottom_shape[0]
-        top[0].reshape(bottom_batchsize, bottom_shape[1]*bottom_shape[2])
+        bottom_batchsize = bottom_shape[0]/self.nPeople
+        top[0].reshape(bottom_batchsize, bottom_shape[1]*self.nPeople)
         self.bottom_batchsize = bottom_batchsize
-        self.nPeople = bottom_shape[1]
-        self.unitlen = bottom_shape[2]
+        self.unitlen = bottom_shape[1]
         self.output_num = self.unitlen*self.nPeople
         #print self.output_num
 
@@ -32,9 +31,9 @@ class Message_Reshape1(caffe.Layer):
         top[0].data[...] = numpy.reshape(bottom[0].data,[self.bottom_batchsize,self.output_num])
 
     def backward(self, top, propagate_down, bottom):
-        bottom[0].diff[...] = numpy.reshape(top[0].diff,[self.bottom_batchsize,self.nPeople,self.unitlen])
-        print "message reshape layer1:"
-        print bottom[0].diff[0]
+        bottom[0].diff[...] = numpy.reshape(top[0].diff,[self.bottom_batchsize*self.nPeople,self.unitlen])
+        #print "message reshape layer1:"
+        #print bottom[0].diff[0]
 
 def python_net_file():
     with tempfile.NamedTemporaryFile(delete=False) as f:
