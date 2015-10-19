@@ -1,0 +1,20 @@
+def activation(gate,function_type,C):
+    # sigmoid:
+        if function_type == 1: 
+            return (1+numpy.tanh(C*gate))/2
+    # ReLU:   
+        if function_type == 2:
+            return max(C*gate,0)  
+
+def activation_diff(gate,function_type,C):
+    # sigmoid:
+        if function_type == 1: 
+            o = (1+numpy.tanh(C*gate))/2
+            print (1-o*o)*C/2
+            return (1-o*o)*C/2
+    # ReLU:   
+        if function_type == 2:
+            if gate > 0:
+                return C
+            else:
+                return 0 

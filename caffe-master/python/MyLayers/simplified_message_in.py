@@ -11,7 +11,7 @@ class simplified_message_in(caffe.Layer):
         self.nScene = 5
         self.nAction = 7
         self.nPeople = 14
-        self.K_ = 0	;
+        self.K_ = 0
         self.slen = 0
         self.alen = 0
         self.tlen_leaf = 0
@@ -123,7 +123,10 @@ class simplified_message_in(caffe.Layer):
                         top[potential_type].data[int(count[potential_type])] = bottom[0].data[i,:self.nScene].copy()
                     else:
                         top[potential_type].data[int(count[potential_type])] = bottom[0].data[i,self.nScene+(m-1)*self.nAction:self.nScene+m*self.nAction]
-                    count[potential_type] += 1                
+                    count[potential_type] += 1      
+        #print 'in',top[1].data  
+        #print  'label_frame',bottom[2].data  
+        #print 'a2s_input',top[1].data      
         
 
     def backward(self, top, propagate_down, bottom):
@@ -131,7 +134,7 @@ class simplified_message_in(caffe.Layer):
         # bottom2: label_action
         # top1: action2action prediction
         # top2: action2scene prediction
-        # top3: scene2action prediction         
+        # top3: scene2action prediction  
 
         label_stop = self.nPeople*numpy.ones([self.bottom_batchsize[0]])
         labels = bottom[1].data
@@ -153,6 +156,10 @@ class simplified_message_in(caffe.Layer):
                         bottom[0].diff[i,:self.nScene] += top[potential_type].diff[count[potential_type]].copy()
                     else:
                         bottom[0].diff[i,self.nScene+(m-1)*self.nAction:self.nScene+m*self.nAction] += top[potential_type].diff[count[potential_type]].copy()
+
+        #print 'in',top[1].data  
+        #print  'label_frame',bottom[2].data
+        #print '********    '
 
 def python_net_file():
     with tempfile.NamedTemporaryFile(delete=False) as f:

@@ -4,7 +4,7 @@ import os
 import numpy
 import caffe
 #import h5py
-class simplified_message_out_cavity(caffe.Layer):
+class simplified_holistic_entropy_loss(caffe.Layer):
     """A layer that take Messages in and output Q (Q=5) type of messages for prediction"""
 
     def setup(self, bottom, top):
@@ -27,6 +27,8 @@ class simplified_message_out_cavity(caffe.Layer):
         self.id = 0
         self.prevhardgate = True
         self.function_type = 0
+        self.lamda = 0.0
+        self.C = 5
 
         self.graph_structure=[]
         
@@ -46,8 +48,9 @@ class simplified_message_out_cavity(caffe.Layer):
         
 
         # bottom inputs:
-        bottom1_shape = bottom[2].data.shape
+        bottom1_shape = bottom[3].data.shape
         self.bottom_batchsize = [bottom1_shape[0]/self.nPeople]
+        #print bottom1_shape
         #self.bottom_output_num = [bottom1_shape[1]]
         # label_stop:
         label_stop = self.nPeople*numpy.ones([self.bottom_batchsize[0]])
@@ -81,7 +84,7 @@ class simplified_message_out_cavity(caffe.Layer):
             temp_graph[:,num_p+1:] = -1
             self.graph_structure[:,:,i] = temp_graph.copy()
         # top outputs:
-        top[i].reshape(1)
+        top[0].reshape(1)
 
  
     def forward(self, bottom, top):
@@ -94,6 +97,8 @@ class simplified_message_out_cavity(caffe.Layer):
 
         label_stop = self.nPeople*numpy.ones([self.bottom_batchsize[0]])
         labels = bottom[3].data
+        #print 'labels',labels
+        #print 'cavity_prediction',bottom[1].data
         count = 0
         for i in range(0,self.bottom_batchsize[0]):
             for j in range(0,self.nPeople):
@@ -105,15 +110,29 @@ class simplified_message_out_cavity(caffe.Layer):
         step = 0     
         count = 0   
         loss_all = 0.0
+        #print self.bottom_batchsize[0]
+        
         for f in range(0,self.bottom_batchsize[0]):
-            for j in range(0,self.label_stop[f]): 
+            #print int(self.label_stop[f])
+            for j in range(0,int(self.label_stop[f])): 
                 o = bottom[0].data[count].copy()
                 cavity_prediction = bottom[1].data[count].copy()
                 a2s_message = bottom[2].data[count].copy()
                 loss = 0
-                distance_function(loss,cavity_prediction,a2s_message,self.function_type)
-                loss_all += ((1+numpy.tanh(o))/2.0)*loss
+                loss = distance_function(cavity_prediction,a2s_message,self.function_type)
+                '''print loss
+                print 'gate',(1+numpy.tanh(self.C*o))/2.0
+                print 'pred',cavity_prediction
+                print 'a2s',a2s_message
+                print 'loss',loss
+                print 'labels',labels[f*self.nPeople:(f+1)*self.nPeople]'''
+                loss_all += ((1+numpy.tanh(self.C*o))/2.0)*loss
+                #print (1+numpy.tanh(self.C*o))/2.0
                 count += 1
+        top[0].data[...] = loss_all
+        #print loss_all
+        #print bottom[2].data
+        #print labels
  
     def backward(self, top, propagate_down, bottom):
         label_stop = self.nPeople*numpy.ones([self.bottom_batchsize[0]])
@@ -129,42 +148,52 @@ class simplified_message_out_cavity(caffe.Layer):
         step = 0
         count = 0
         for f in range(0,self.bottom_batchsize[0]):
-            for j in range(0,self.label_stop[f]):
+            for j in range(0,int(self.label_stop[f])):
                 # predicted message diff:
                 o = bottom[0].data[count].copy()
                 cavity_prediction = bottom[1].data[count].copy()
                 a2s_message = bottom[2].data[count].copy() 
                 diff = numpy.zeros(len(bottom[1].data[0]))
-                function_diff(diff,cavity_prediction,a2s_message,self.function_type)
-                bottom[1].diff[count] = diff.copy()
+                diff = function_diff(diff,cavity_prediction,a2s_message,self.function_type)
+                bottom[1].diff[count] = self.lamda*diff.copy()*(1+numpy.tanh(self.C*o))/2.0
 
                 # diff receiver: to do
                 loss = 0.0
-                distance_function(loss,cavity_prediction,a2s_message,self.function_type)
-                bottom[4].diff[count] = loss;
+                loss = distance_function(cavity_prediction,a2s_message,self.function_type)
+                #print 'loss',loss
+                #print 'prediction',cavity_prediction
+                #print 'a2s',a2s_message
+                bottom[4].diff[count] = self.lamda*(loss*(1-numpy.tanh(self.C*o)*numpy.tanh(self.C*o))*(self.C/2));
                 count += 1
 
-    def distance_function(loss,p,q,function_type):
-        # KL divergence
-        if function_type == 0:
-            loss = 0.0
-            for i in range(len(p)):
-                loss += p[i]*numpy.log(p[i]/q[i])
-        # cross entropy
-        elif function_type == 1:
-            loss = 0.0 
-            for i in range(len(p)):
-                loss -= p[i]*numpy.log(q[i])   
+        #print bottom[2].data
+        #print labels
 
-    def function_diff(diff,p,q,function_type):
-        # KL divergence
-        if function_type == 0:
-            diff = 0.0*diff
-            for i in range(0,len(p)):
-                diff[i] = numpy.log(p[i]/q[i]) + 1
-        # cross entropy: to be done
-        elif function_type == 1:
-            pass
+def distance_function(p,q,function_type):
+    # KL divergence
+    if function_type == 0:
+        loss = 0.0
+        for i in range(len(p)):
+            loss += p[i]*numpy.log(p[i]/q[i])
+        #print loss
+    # cross entropy
+    elif function_type == 1:
+        loss = 0.0 
+        for i in range(len(p)):
+            loss -= p[i]*numpy.log(q[i]) 
+    return loss
+  
+
+def function_diff(diff,p,q,function_type):
+    # KL divergence
+    if function_type == 0:
+        diff = 0.0*diff
+        for i in range(0,len(p)):
+            diff[i] = numpy.log(p[i]/q[i]) + 1
+    # cross entropy: to be done
+    elif function_type == 1:
+        pass
+    return diff
            
 
 def python_net_file():

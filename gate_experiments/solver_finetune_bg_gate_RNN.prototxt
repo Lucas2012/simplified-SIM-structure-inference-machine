@@ -1,7 +1,7 @@
 net: "prototxts/test_print_1_bg_gate_simplified_context.prototxt"
 test_iter: 639
 test_interval: 200
-base_lr: 0.001
+base_lr: 0.00001
 #solver_type: ADAGRAD
 lr_policy: "step"
 #clip_gradients: 30

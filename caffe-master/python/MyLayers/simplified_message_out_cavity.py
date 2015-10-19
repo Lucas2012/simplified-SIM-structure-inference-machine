@@ -106,7 +106,7 @@ class simplified_message_out_cavity(caffe.Layer):
         for f in range(0,self.bottom_batchsize[0]):
             a2s_frame = bottom[1].data[step:step+self.label_stop[f]].copy()
             frame_sum = a2s_frame.sum(axis = 0).copy()
-            for j in range(0,self.label_stop[f]): 
+            for j in range(0,int(self.label_stop[f])): 
                 if self.label_stop[f] > 1:
                     cavity_messages = frame_sum-a2s_frame[j]
                 else:
@@ -132,9 +132,9 @@ class simplified_message_out_cavity(caffe.Layer):
         step = 0
         count = 0
         for f in range(0,self.bottom_batchsize[0]):
-            for j in range(0,self.label_stop[f]):
+            for j in range(0,int(self.label_stop[f])):
                 if self.label_stop[f] > 1:
-                    message_diff = numpy.repeat(top[0].diff[count],self.label_stop[f],axis = 0).copy()
+                    message_diff = numpy.repeat([top[0].diff[count]],self.label_stop[f],axis = 0).copy()
                     cavity_diff = message_diff.copy()
                     cavity_diff[j] = numpy.zeros(len(cavity_diff[j]))
                     cavity_diff = cavity_diff[:,self.nScene:]

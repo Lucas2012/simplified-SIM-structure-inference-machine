@@ -24,11 +24,13 @@ class graphical_edge(caffe.Layer):
         self.message_num_action = self.nPeople+1+2*(self.K_>0)
         self.label_stop = []
         self.top_batchsize = 0
-        # 1 is compare unary input and pred_message; 2 is compare two unaries; 3 is compare pred_message with other messages
-        self.strategy = 1
+        # 1 is compare unary input and pred_message; 2 is compare two unaries; 3 is compare pred_message with other messages; 4 is metric inputs
+        self.strategy = 3
         self.id = 0
         self.minus_s = False
         self.all_message = True
+        # whether to ignore s2a message or not
+        self.if_only_scene = True
     
     def reshape(self, bottom, top):
         # have 4 inputs: bottom0 is unary inputs, bottom1 is a2s predictions, bottom2 is s2a predictions, bottom3 is labels    
@@ -47,14 +49,33 @@ class graphical_edge(caffe.Layer):
         self.label_stop = label_stop
         self.top_batchsize = int(numpy.sum(label_stop))
         if self.minus_s or self.strategy == 2:
-            action_information_len = 0#self.nScene#self.nAction
+            if self.if_only_scene:
+                action_information_len = 0
+            else:
+                action_information_len = self.nAction
             scene_information_len = self.nScene
-        else:
-            action_information_len = self.nAction*2
-            scene_information_len = self.nScene*2       
+        elif self.strategy == 1:
+            if self.if_only_scene:
+                action_information_len = 0
+            else:
+                action_information_len = self.nAction*2
+            scene_information_len = self.nScene*2 
+        elif self.strategy == 3:
+            if self.if_only_scene:
+                action_information_len = 0
+            else:
+                action_information_len = self.nAction*3
+            scene_information_len = self.nScene*3       
+        elif self.strategy == 4:
+            if self.if_only_scene:
+                action_information_len = 0
+            else:
+                action_information_len = 2
+            scene_information_len = 2       
         top[0].reshape(self.top_batchsize, action_information_len + scene_information_len)
 
     def forward(self, bottom, top):
+        #return
         unary_input = bottom[0].data.copy()
         a2s_pred = bottom[1].data.copy()
         s2a_pred = bottom[2].data.copy()
@@ -64,6 +85,7 @@ class graphical_edge(caffe.Layer):
             for j in range(0,self.nPeople):
                 if labels[i*self.nPeople+j] == 0:
                     label_stop[i] = j
+                    assert(label_stop[i] > 0)
                     break
         self.label_stop = label_stop
         # the paired up inputs should be:
@@ -88,25 +110,27 @@ class graphical_edge(caffe.Layer):
                     if p >= self.label_stop[f]:
                         continue
                     scene_unary = unary_input[f,:self.nScene].copy()
-                    scene_pred = a2s_pred[p].copy()
+                    scene_pred = a2s_pred_f[p].copy()
                     action_unary = unary_input[f,self.nScene+p*self.nAction:self.nScene+(p+1)*self.nAction]
-                    action_pred = s2a_pred[p].copy()
+                    action_pred = s2a_pred_f[p].copy()
                     if self.all_message:
-                        #scene_unary += scene_pred_all
-                        scene_unary = scene_pred_all
-                        scene_unary -= scene_pred
-                        scene_unary /= (1.0*label_stop[f])
-                        #action_unary += action_pred_all
-                        action_unary = action_pred_all
-                        action_unary -= action_pred
-                        action_unary /=(1.0*label_stop[f])
+                        scene_unary = scene_pred_all.copy()
+                        action_unary = action_pred_all.copy()
+                    else:
+                        scene_unary += scene_pred_all.copy()
+                        action_unary += action_pred_all.copy()
+                    scene_unary -= scene_pred.copy()
+                    scene_unary /= (1.0*label_stop[f])
+                    action_unary -= action_pred
+                    action_unary /=(1.0*label_stop[f])
                     scene_potential = numpy.append(scene_unary,scene_pred,axis = 0).copy()
                     action_potential = numpy.append(action_unary,action_pred,axis = 0).copy()
-                    edge_potential = numpy.append(scene_potential,action_potential,axis = 0).copy()
+                    if self.if_only_scene:
+                        edge_potential = scene_potential.copy()
+                    else:
+                        edge_potential = numpy.append(scene_potential,action_potential,axis = 0).copy()
                     tmpdata[count] = edge_potential.copy()
                     count += 1
-                    #print 'action_pred',action_pred
-                    #print 'action_unary',action_unary
                     continue
                 if self.strategy == 2:
                     if p >= self.label_stop[f]:
@@ -121,12 +145,91 @@ class graphical_edge(caffe.Layer):
                     #print tmpdata[count]
                     count += 1
                     continue
-        top[0].data[...] = tmpdata    
+                if self.strategy == 3:
+                    if p >= self.label_stop[f]:
+                        continue
+                    scene_unary = unary_input[f,:self.nScene].copy()
+                    scene_pred = a2s_pred_f[p].copy()
+                    scene_pred_other = scene_pred_all.copy()-scene_pred.copy()
+                    if label_stop[f] == 1:
+                        scene_pred_other = scene_pred.copy()
+                    scene_pred_other /= max(1,label_stop[f]-1)
+                    action_unary = unary_input[f,self.nScene+p*self.nAction:self.nScene+(p+1)*self.nAction].copy()
+                    action_pred = s2a_pred_f[p].copy()
+                    action_pred_other = action_pred_all.copy() - action_pred.copy()
+                    action_pred_other /= max(1,label_stop[f]-1)
+                    if label_stop[f] == 1:
+                        action_pred_other = s2a_pred_f[p].copy()
+                    if not self.if_only_scene:
+                        edge_potential = numpy.append(scene_unary,scene_pred)
+                        edge_potential = numpy.append(edge_potential,scene_pred_other)
+                        edge_potential = numpy.append(edge_potential,action_unary)
+                        edge_potential = numpy.append(edge_potential,action_pred)
+                        edge_potential = numpy.append(edge_potential,action_pred_other)
+                    else:
+                        edge_potential = numpy.append(scene_unary,scene_pred)
+                        edge_potential = numpy.append(edge_potential,scene_pred_other)
+                    tmpdata[count] = edge_potential.copy()
+                    count += 1
+                    continue
+                if self.strategy == 4:
+                    if p >= self.label_stop[f]:
+                        continue
+                    scene_unary = unary_input[f,:self.nScene].copy()
+                    scene_pred = a2s_pred_f[p].copy()
+                    scene_pred_other = scene_pred_all.copy()-scene_pred.copy()
+                    if label_stop[f] == 1:
+                        scene_pred_other = scene_pred.copy()
+                    scene_pred_other /= max(1,label_stop[f]-1)
+                    action_unary = unary_input[f,self.nScene+p*self.nAction:self.nScene+(p+1)*self.nAction].copy()
+                    action_pred = s2a_pred_f[p].copy()
+                    action_pred_other = action_pred_all.copy() - action_pred.copy()
+                    action_pred_other /= max(1,label_stop[f]-1)
+                    if label_stop[f] == 1:
+                        action_pred_other = s2a_pred_f[p].copy()
+                    if not self.if_only_scene:
+                        loss_s1 = distance_function(scene_unary,scene_pred,1)
+                        loss_s2 = distance_function(scene_pred_other,scene_pred,1)
+                        loss_a1 = distance_function(action_unary,action_pred,1)
+                        loss_a2 = distance_function(action_pred_other,action_pred,1)
+                        edge_potential = numpy.zeros(4)
+                        edge_potential[0] = loss_s1
+                        edge_potential[1] = loss_s2
+                        edge_potential[2] = loss_a1
+                        edge_potential[3] = loss_a2
+                    else:
+                        loss_s1 = distance_function(scene_unary,scene_pred,1)
+                        loss_s2 = distance_function(scene_pred_other,scene_pred,1)
+                        edge_potential = numpy.zeros(2)
+                        edge_potential[0] = loss_s1
+                        edge_potential[1] = loss_s2
+                    tmpdata[count] = edge_potential.copy()
+                    count += 1
+                    continue
+
+        top[0].data[...] = tmpdata  
+        #print unary_input.shape
+        #print self.label_stop[0]
+        #print 'unary_input',numpy.reshape(unary_input[0,self.nScene:self.nScene+self.label_stop[0]*self.nAction],[self.label_stop[0],self.nAction])
           
 
     def backward(self, top, propagate_down, bottom):
         return
-       
+
+def distance_function(p,q,function_type):
+    # KL divergence
+    if function_type == 0:
+        loss = 0.0
+        for i in range(len(p)):
+            loss += p[i]*numpy.log(p[i]/q[i])
+        #print loss
+    # cross entropy
+    elif function_type == 1:
+        loss = 0.0 
+        for i in range(len(p)):
+            loss -= p[i]*numpy.log(q[i]) 
+    return loss
+         
              
         
 

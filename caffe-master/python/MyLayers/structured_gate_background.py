@@ -26,7 +26,15 @@ class structured_gate(caffe.Layer):
         self.on_edge = True
         self.zero2one = True
         self.frame_num = 0
-        self.lamda = 0.01
+        self.regularizer = 1
+        self.lamda = 0.4  #best now: 0.4,10
+        self.function_type = 1
+        self.C = 10
+        self.test = False
+        self.id = 0
+        self.if_only_scene = True
+        self.normalize_gate = False
+        self.if_block_diff = True
     
     def reshape(self, bottom, top):
         # have 4 input, bottom0 is gate input, bottom1 is a2s messages, bottom2 is s2a messages, bottom3 is labels 
@@ -39,12 +47,17 @@ class structured_gate(caffe.Layer):
         top[1].reshape(*bottom[2].data.shape)
 
     def forward(self, bottom, top):
+        self.id += 1
+        #print self.id
         gate_input = bottom[0].data.copy()
         edge_num = self.nPeople
         a2s_messages = bottom[1].data.copy()
         s2a_messages = bottom[2].data.copy()
         label_stop = self.nPeople*numpy.ones([self.frame_num])
         labels = bottom[3].data
+        label_frame = bottom[4].data
+        #print 'a2s_message',a2s_messages
+        #print 'frame_label',bottom[4].data
         count = 0
         for i in range(0,self.frame_num):
             for j in range(0,self.nPeople):
@@ -60,15 +73,41 @@ class structured_gate(caffe.Layer):
         else:
             s_gate = numpy.zeros([self.bottom_batchsize,self.nAction])
         zero2one = self.zero2one
+
         idx = 0
+        for f in range(0,self.frame_num):
+            dividor = 0.0
+            for i in range(0,int(self.label_stop[f])):
+                dividor += (1+numpy.tanh(self.C*gate_input[idx]))/2.0
+                s_gate[idx] = (1+numpy.tanh(self.C*gate_input[idx]))/2.0
+                idx += 1
+            s_gate[idx-self.label_stop[f]:idx] /= (dividor+0.00001)
+        idx = 0
+        step = 1
         for f in range(0,self.bottom_batchsize):
-            o = (1+numpy.tanh(gate_input[idx]))/2.0
-            s_gate[idx] = o
+            o = (1+numpy.tanh(self.C*gate_input[idx]))/2.0
+            if self.test:
+                p_num = numpy.sum(self.label_stop[0:step])
+                if f >=p_num:
+                    step += 1
+                frame_label = label_frame[step-1]
+                pred_label = numpy.argmax(bottom[5].data[idx].copy())
+                pred_label -= 0
+                #print pred_label
+                #print frame_label
+                if pred_label == frame_label:
+                    o = 1.0 
+                else:
+                    o = 0             
             messages_a2s = a2s_messages[idx].copy()
             messages_s2a = s2a_messages[idx].copy()
+            if self.normalize_gate:
+                o = s_gate[idx]
             top[0].data[idx] = numpy.multiply(o,messages_a2s)
-            top[1].data[idx] = numpy.multiply(o,messages_s2a)
+            if not self.if_only_scene:
+                top[1].data[idx] = numpy.multiply(o,messages_s2a)
             idx += 1
+        #print ' '    
 
     def backward(self, top, propagate_down, bottom):
         # to be written
@@ -86,44 +125,101 @@ class structured_gate(caffe.Layer):
 
         gate_input = bottom[0].data.copy()
         gate_diff = bottom[0].diff.copy()
-        a2s_messages = bottom[1].data
+        a2s_messages = bottom[1].data.copy()
         a2s_message_diff = bottom[1].diff.copy()
         gated_a2s_message_diff = top[0].diff.copy()
-        s2a_messages = bottom[2].data
+        s2a_messages = bottom[2].data.copy()
         s2a_message_diff = bottom[2].diff.copy()
         gated_s2a_message_diff = top[1].diff.copy()
 
+        
         # gate design:
         on_edge = self.on_edge
-        
+        if on_edge:
+            s_gate = numpy.zeros(self.bottom_batchsize)
+        else:
+            s_gate = numpy.zeros([self.bottom_batchsize,self.nAction])
         zero2one = self.zero2one
-        count = 0
+
         idx = 0
-        for f in range(0,self.bottom_batchsize):
-            o = (1+numpy.tanh(gate_input[idx]))/2.0
-            message_a2s = a2s_messages[idx].copy()
-            message_a2s_diff = a2s_message_diff[idx].copy()
-            message_s2a = s2a_messages[idx].copy()
-            message_s2a_diff = s2a_message_diff[idx].copy()
-            # gate diff
-            tanh_sq = numpy.multiply(o,o)
-            g_d_a2s = numpy.multiply(message_a2s,gated_a2s_message_diff)
-            g_d_s2a = numpy.multiply(message_s2a,gated_s2a_message_diff)
-            gate_diff[idx] = (g_d_a2s.sum() + g_d_s2a.sum())*(1-tanh_sq)
-            # a2s message diff
-            a2s_mesasge_diff = numpy.multiply(o,gated_a2s_message_diff)
-            # s2a message diff
-            s2a_mesasge_diff = numpy.multiply(o,gated_s2a_message_diff)
-            idx += 1
-            #print message_s2a_diff
-            #print o
-        gate_input = bottom[0].data.copy()
-        gate_diff += self.lamda*gate_input
+        for f in range(0,self.frame_num):
+            dividor = 0.0
+            for i in range(0,int(self.label_stop[f])):
+                dividor += (1+numpy.tanh(self.C*gate_input[idx]))/2.0
+                s_gate[idx] = (1+numpy.tanh(self.C*gate_input[idx]))/2.0
+                idx += 1
+            s_gate[idx-self.label_stop[f]:idx] /= (dividor+0.00001)
+        
+        if not self.normalize_gate:
+            idx = 0
+            for f in range(0,self.bottom_batchsize):
+                o = (1+numpy.tanh(self.C*gate_input[idx]))/2.0
+                message_a2s = a2s_messages[idx].copy()
+                message_a2s_diff = a2s_message_diff[idx].copy()
+                message_s2a = s2a_messages[idx].copy()
+                message_s2a_diff = s2a_message_diff[idx].copy()
+                # gate diff
+                tanh_sq = numpy.multiply(o,o)
+                g_d_a2s = numpy.multiply(message_a2s,gated_a2s_message_diff[idx].copy())
+                g_d_s2a = numpy.multiply(message_s2a,gated_s2a_message_diff[idx].copy())
+                if self.if_only_scene:
+                    gate_diff[idx] = (g_d_a2s.sum())*(1-tanh_sq)*self.C
+                else:
+                    gate_diff[idx] = (g_d_a2s.sum() + g_d_s2a.sum())*(1-tanh_sq)*self.C
+                    s2a_message_diff[idx] = numpy.multiply(o,gated_s2a_message_diff[idx].copy())
+                if self.regularizer == 1:
+                    tanh_sq = ((1+numpy.tanh(gate_input[idx]*self.C))/2)*((1+numpy.tanh(gate_input[idx]*self.C))/2)
+                    gate_diff[idx] += self.lamda*(1-tanh_sq)*self.C/2.0
+                elif self.regularizer == 2:
+                    tanh_sq = ((1+numpy.tanh(gate_input[idx]*self.C))/2)*((1+numpy.tanh(gate_input[idx]*self.C))/2)
+                    gate_diff[idx] += self.lamda*((1+numpy.tanh(self.C*gate_input[idx]))/2.0)*(1-tanh_sq)*self.C
+                # a2s message diff
+                a2s_message_diff[idx] = numpy.multiply(o,gated_a2s_message_diff[idx].copy())
+                # s2a message diff
+                s2a_message_diff[idx] = numpy.multiply(o,gated_s2a_message_diff[idx].copy())
+                idx += 1
+        elif self.normalize_gate:
+            idx = 0
+            step = 0
+            for f in range(0,self.frame_num):
+                dividor = s_gate[step:step+self.label_stop[f]].sum()
+                f_s_gate = s_gate[step:step+self.label_stop[f]].copy()
+                f_a2s_messages = a2s_messages[step:step+self.label_stop[f]].copy()
+                f_gated_a2s_diff = gated_a2s_message_diff[step:step+self.label_stop[f]].copy()
+                f_s2a_messages = s2a_messages[step:step+self.label_stop[f]].copy()
+                f_gated_s2a_diff = gated_s2a_message_diff[step:step+self.label_stop[f]].copy()
+                for i in range(0,int(self.label_stop[f])):
+                    diff_i = 0.0
+                    zo_i_diff = (1-f_s_gate[i]*f_s_gate[i])*self.C/2
+                    for j in range(0,int(self.label_stop[f])):
+                        temp_diff_a2s = numpy.multiply(f_a2s_messages[j],f_gated_a2s_diff[j])
+                        temp_diff_a2s = temp_diff_a2s.sum()
+                        temp_diff = temp_diff_a2s.copy();
+                        if not if_only_scene:
+                            temp_diff_s2a = numpy.multiply(f_s2a_messages[j],f_gated_s2a_diff[j])
+                            temp_diff_s2a = temp_diff_s2a.sum()
+                            temp_diff += temp_diff_s2a
+                        g_diff = f_s_gate[j]*zo_i_diff/(dividor*dividor)
+                        if i == j:
+                            g_diff += zo_i_diff/dividor
+                        diff_i += g_diff*temp_diff
+                    gate_diff[step + i] = diff_i.copy()
+                    if self.regularizer == 1:
+                        tanh_sq = f_s_gate[i]*f_s_gate[i]
+                        gate_diff[step + i] += self.lamda*(1-tanh_sq)*self.C/2.0
+                    elif self.regularizer == 2:
+                        tanh_sq = f_s_gate[i]*f_s_gate[i]
+                        gate_diff[step + i] += self.lamda*(f_s_gate[i])*(1-tanh_sq)*self.C
+                step += self.label_stop[f]    
+
         bottom[0].diff[...] = gate_diff
         bottom[1].diff[...] = a2s_message_diff
         bottom[2].diff[...] = s2a_message_diff
+        if self.if_block_diff:
+            bottom[1].diff[...] = 0.0*bottom[1].diff 
+            bottom[2].diff[...] = 0.0*bottom[2].diff
         
-        
+
 
 def python_net_file():
     with tempfile.NamedTemporaryFile(delete=False) as f:

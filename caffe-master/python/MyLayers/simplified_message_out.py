@@ -92,6 +92,7 @@ class simplified_message_out(caffe.Layer):
         # bottom4: unaries
 
         label_stop = self.nPeople*numpy.ones([self.bottom_batchsize[0]])
+        #print 'message out',bottom[1].data
         labels = bottom[3].data
         count = 0
         for i in range(0,self.bottom_batchsize[0]):
