@@ -30,7 +30,7 @@ class graphical_edge(caffe.Layer):
         self.minus_s = False
         self.all_message = True
         # whether to ignore s2a message or not
-        self.if_only_scene = True
+        self.if_only_scene = False
     
     def reshape(self, bottom, top):
         # have 4 inputs: bottom0 is unary inputs, bottom1 is a2s predictions, bottom2 is s2a predictions, bottom3 is labels    
@@ -79,6 +79,7 @@ class graphical_edge(caffe.Layer):
         unary_input = bottom[0].data.copy()
         a2s_pred = bottom[1].data.copy()
         s2a_pred = bottom[2].data.copy()
+        #print 'a2s_pred',a2s_pred
         label_stop = self.nPeople*numpy.ones([self.bottom_batchsize])
         labels = bottom[3].data
         for i in range(0,self.bottom_batchsize):

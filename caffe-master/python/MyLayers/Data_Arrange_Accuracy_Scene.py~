@@ -43,6 +43,7 @@ class Data_Arrange_Layer(caffe.Layer):
             top[0].data[...] = bottom_data.copy()/self.T_
         else:
             top[0].data[...] = bottom[0].data[(self.T_-1)*self.bottom_batchsize:self.T_*self.bottom_batchsize].copy()      
+            #top[0].data[...] = bottom[0].data[(0)*self.bottom_batchsize:1*self.bottom_batchsize].copy()      
               
 
     def backward(self, top, propagate_down, bottom):

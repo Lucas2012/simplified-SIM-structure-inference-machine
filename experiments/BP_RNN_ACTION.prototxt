@@ -1245,7 +1245,7 @@ layer {
   bp_recurrent_param {
     num_output: 1000  # doesnt need anymore?
     num_frame: 0
-    num_iteration: 3
+    num_iteration: 2
     num_people:14
     scene_class: 5
     action_class: 7

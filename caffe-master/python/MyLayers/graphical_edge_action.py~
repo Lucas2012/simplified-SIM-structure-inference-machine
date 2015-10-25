@@ -36,12 +36,12 @@ class graphical_edge(caffe.Layer):
         self.bottom_batchsize = bottom_batchsize
         self.top_batchsize = bottom[1].data.shape[0]
         if self.minus_s:
-            if len(bottom) > 3:
+            if len(bottom) > 3 and bottom[3].data.shape[1] == self.nPeople:
                 top[0].reshape(self.top_batchsize, self.nAction+1)
             else:
                 top[0].reshape(self.top_batchsize, self.nAction)
         else:
-            if len(bottom) > 3:
+            if len(bottom) > 3  and bottom[3].data.shape[1] == self.nPeople:
                 if self.strategy == 3:
                     top[0].reshape(self.top_batchsize, self.nAction*3+1)
                 elif self.strategy == 1 or self.strategy == 2:
@@ -55,8 +55,17 @@ class graphical_edge(caffe.Layer):
     def forward(self, bottom, top):
         unary_input = bottom[0].data.copy()
         a2a_message_pred = bottom[1].data.copy()
+        #print a2a_message_pred.shape
+        print 'a2apred',a2a_message_pred
+        
         label_stop = self.nPeople*numpy.ones([self.bottom_batchsize])
         labels = bottom[2].data
+
+        print 'labels',labels
+        #for i in range(0,a2a_message_pred.shape[0]):
+        #    print 'action in',bottom[3].data[i]
+        #    print 'a2a_pred',a2a_message_pred[i]
+
         if len(bottom) > 3:
             distance = bottom[3].data.copy()
         count = 0
@@ -71,31 +80,33 @@ class graphical_edge(caffe.Layer):
         count = 0
         step = 0
         minus_s = self.minus_s
+        #print self.bottom_batchsize
+        #print label_stop[0]
         for f in range(0,self.bottom_batchsize):
             for i in range(0,self.nPeople):
                 if i >= label_stop[f] or label_stop[f] == 1:
                     continue
                 f_a2a_message_pred = a2a_message_pred[step:step+self.label_stop[f]-1]
-                a2a_pred_all = f_a2a_message_pred.sum()
+                a2a_pred_all = f_a2a_message_pred.sum(axis = 0)
                 for j in range(0,self.nPeople):
                     if i == j or j >=label_stop[f]:
                         continue
                     unary = unary_input[f,self.nScene+i*self.nAction:self.nScene+(i+1)*self.nAction].copy()
-                    #print 'unary',unary.shape
-                    #print 'a2a',a2a_message_pred[count].shape
+
                     pair = numpy.append(unary,a2a_message_pred[count],axis = 0).copy()
                     if self.strategy == 3:
                         if self.label_stop[f]-2 == 0:
                             pair = numpy.append(pair,a2a_message_pred[count],axis = 0).copy()
                         else:
                             others = (a2a_pred_all-a2a_message_pred[count])/(self.label_stop[f]-2)
-                            pair = numpy.append(pair,others,axis = 0)
-                    if len(bottom) > 3:
+                            pair = numpy.append(pair,others,axis = 0).copy()
+                    if len(bottom) > 3 and bottom[3].data.shape[1] == self.nPeople:
                         pair = numpy.append(pair,distance[i+f*self.nPeople,j])
                     tmpdata[count] = pair.copy()
                     count += 1
                 step += self.label_stop[f]-1
         top[0].data[...] = tmpdata 
+        #print tmpdata
              
 
     def backward(self, top, propagate_down, bottom):

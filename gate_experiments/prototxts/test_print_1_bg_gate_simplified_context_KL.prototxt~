@@ -763,11 +763,11 @@ layer {
   bottom: "data_context"
   top: "fc8_context"
   param {
-    lr_mult: 10
-    decay_mult: 10
+    lr_mult: 0
+    decay_mult: 0
   }
   param {
-    lr_mult: 20
+    lr_mult: 0
     decay_mult: 0
   }
   inner_product_param {
@@ -794,7 +794,8 @@ layer {
 layer {
   name: "prob_frame"
   type: "Softmax"
-  bottom: "sum_frame"
+  #bottom: "sum_frame"
+  bottom: "fc8_CAD_frame"
   top: "fc8_CAD_frame_prob"
 }
 layer {
@@ -832,6 +833,7 @@ layer {
   bottom: "concat_all0"
   bottom: "label_action"
   bottom: "label_frame"
+  bottom: "fc8_context"
   top: "A_A_MessageIn1"
   top: "A_S_MessageIn1"
   top: "S_A_MessageIn1"
@@ -939,30 +941,17 @@ layer {
     axis: 1
   }
 }
-#layer {
-#  name: "Belief_Propagation_Recurrent_Neural_Network_h_neuron3_1"
-#  type: "TanH"
-#  bottom: "S_A_MessageOut_neuron_input_1"
-#  top: "S_A_MessageOut1"
-#}
-#layer {
-#  name: "Belief_Propagation_Recurrent_Neural_Network_Normalize_s2a_1"
-#  type: "Softmax"
-#  bottom: "S_A_MessageOut_for_norm1"
-#  top: "S_A_MessageOut1"
-#}
-#layer {
-#  name: "Belief_Propagation_Recurrent_Neural_Network_Normalize_a2a_1"
-#  type: "Softmax"
-#  bottom: "A_A_MessageOut_for_norm1"
-#  top: "A_A_MessageOut1"
-#}
 layer {
   name: "Belief_Propagation_Recurrent_Neural_Network_simplified_message_out_a2s1"
   type: "Python"
   bottom: "A_S_MessageOut1"
+  bottom: "S_A_MessageOut1"
+  bottom: "A_A_MessageOut1"
   bottom: "label_action"
+  bottom: ""
   top: "A_S_for_prediction1"
+  top: "S_A_for_prediction1"
+  top: "A_A_for_prediction1"
   python_param {
     module: "simplified_message_out_a2s"
     layer: "simplified_message_out_a2s"
@@ -998,23 +987,137 @@ layer {
   }
 }
 layer {
-  name: "Belief_Propagation_Recurrent_Neural_Network_Normalize_scene_1"
+  name: "Belief_Propagation_Recurrent_Neural_Network_Action_s2a1"
+  type: "InnerProduct"
+  bottom: "S_A_for_prediction1"
+  top: "S_A_prediction_for_norm1"
+  param {
+    name: "W_ho_2"
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 7
+    bias_term: true
+    weight_filler {
+      type: "uniform"
+      min: -0.08
+      max: 0.08
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+    axis: 1
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_Action_a2a1"
+  type: "InnerProduct"
+  bottom: "A_A_for_prediction1"
+  top: "A_A_prediction_for_norm1"
+  param {
+    name: "W_ho_2"
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 7
+    bias_term: true
+    weight_filler {
+      type: "uniform"
+      min: -0.08
+      max: 0.08
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+    axis: 1
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_Normalize_scene_a2s_1"
   type: "Softmax"
   bottom: "A_S_prediction_for_norm1"
   top: "A_S_prediction1"
 }
 layer {
-  name: "Belief_Propagation_Recurrent_Neural_Network_graphical_edge1"
+  name: "Belief_Propagation_Recurrent_Neural_Network_Normalize_action_s2a_1"
+  type: "Softmax"
+  bottom: "S_A_prediction_for_norm1"
+  top: "S_A_prediction1"
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_Normalize_action_a2a_1"
+  type: "Softmax"
+  bottom: "A_A_prediction_for_norm1"
+  top: "A_A_prediction1"
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_graphical_edge_bg1"
   type: "Python"
   bottom: "concat_all0"
   #bottom: "A_S_MessageOut1"
   bottom: "A_S_prediction1"
-  bottom: "S_A_MessageOut1"
+  #bottom: "S_A_MessageOut1"
+  bottom: "S_A_prediction1"
   bottom: "label_action"
   top: "gate_input1"
   python_param {
     module: "graphical_edge_background"
     layer: "graphical_edge"
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_graphical_edge_action1"
+  type: "Python"
+  bottom: "concat_all0"
+  bottom: "A_A_prediction1"
+  #bottom: "A_A_MessageOut1"
+  bottom: "label_action"
+  bottom: "A_A_MessageIn1"
+  top: "gate_input2"
+  python_param {
+    module: "graphical_edge_action"
+    layer: "graphical_edge"
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_gate2_0_action" ## action
+  type: "InnerProduct"
+  bottom: "gate_input2"
+  top: "gate_output2"
+  param {
+    #name: "W_hg_gate_2_0"
+    lr_mult: 10
+    decay_mult: 10
+  }
+  param {
+    lr_mult: 20
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 1
+    bias_term: true
+    weight_filler {
+      type: "uniform"
+      min: -0.08
+      max: 0.08
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+    axis: 1
   }
 }
 layer {
@@ -1063,78 +1166,21 @@ layer {
   }
 }
 layer {
-  name: "Belief_Propagation_Recurrent_Neural_Network_message_out_cavity1"
+  name: "Belief_Propagation_Recurrent_Neural_Network_structure_gate1"
   type: "Python"
-  bottom: "gated_S_A_MessageOut1"
-  bottom: "gated_A_S_MessageOut1"
+  bottom: "gate_output2"
+  bottom: "A_A_MessageOut1"
   bottom: "label_action"
-  bottom: "concat_all0"
-  top: "cavity_scene1"
+  top: "gated_A_A_MessageOut1"
   python_param {
-    module: "simplified_message_out_cavity"
-    layer: "simplified_message_out_cavity"
-  }
-}
-layer {
-  name: "Belief_Propagation_Recurrent_Neural_Network_Scene_cavity1"
-  type: "InnerProduct"
-  bottom: "cavity_scene1"
-  top: "cavity_scene_out_for_norm1"
-  param {
-    name: "W_ho_1"
-    lr_mult: 0
-    decay_mult: 0
-  }
-  param {
-    lr_mult: 0
-    decay_mult: 0
-  }
-  inner_product_param {
-    num_output: 5
-    bias_term: true
-    weight_filler {
-      type: "uniform"
-      min: -0.08
-      max: 0.08
-    }
-    bias_filler {
-      type: "constant"
-      value: 0
-    }
-    axis: 1
-  }
-}
-layer {
-  name: "Belief_Propagation_Recurrent_Neural_Network_Normalize_scene_1"
-  type: "Softmax"
-  bottom: "cavity_scene_out_for_norm1"
-  top: "cavity_scene_out1"
-}
-layer {
-  name: "Belief_Propagation_Recurrent_Neural_Network_Normalize_a2s_1"
-  type: "Softmax"
-  bottom: "A_S_MessageOut1"
-  top: "A_S_MessageOut_normalized1"
-}
-layer {
-  name: "Belief_Propagation_Recurrent_Neural_Network_holistic_entropy_loss1"
-  type: "Python"
-  bottom: "gate_output1"
-  bottom: "cavity_scene_out1"
-  #bottom: "A_S_MessageOut_normalized1"
-  bottom: "A_S_prediction1"
-  bottom: "label_action"
-  bottom: "gate_output1"
-  top: "holistic_scene_loss"
-  python_param {
-    module: "simplified_holistic_entropy_loss"
-    layer: "simplified_holistic_entropy_loss"
+    module: "structured_gate_action"
+    layer: "structured_gate"
   }
 }
 layer {
   name: "Belief_Propagation_Recurrent_Neural_Network_ArrangeMessageOut1"
   type: "Python"
-  bottom: "A_A_MessageOut1"
+  bottom: "gated_A_A_MessageOut1"
   bottom: "gated_A_S_MessageOut1"
   #bottom: "gated_S_A_MessageOut1"
   bottom: "S_A_MessageOut1"
@@ -1274,6 +1320,7 @@ layer {
   name: "Data_arrange_layer_filter_mean"
   type: "Python"
   bottom: "action_pred"
+  #bottom: "fc8_CAD_action"
   bottom: "label_action"
   top: "action_pred_clean"
   top: "label_action_clean"
@@ -1328,8 +1375,10 @@ layer {
   bottom: "gated_S_A_MessageOut1"
   bottom: "gated_A_S_MessageOut1"
   bottom: "fc8_CAD_frame"
-  bottom: "A_S_MessageOut_normalized1"
+  bottom: "A_A_prediction1"
+  #bottom: "A_S_MessageOut_normalized1"
   bottom: "sum_frame"
+  bottom: "label_action_accu"
   python_param{
     module: "Silence"
     layer: "Silence_Layer"
@@ -1365,12 +1414,22 @@ layer {
     phase: TEST
   }
 }
+#layer {
+#  name: "loss_action"
+#  type: "SoftmaxWithLoss"
+#  bottom: "action_pred_clean"
+#  bottom: "label_action_clean"
+#  top: "loss_action"
+#}
 layer {
   name: "loss_action"
-  type: "SoftmaxWithLoss"
+  type: "HingeLoss"
   bottom: "action_pred_clean"
   bottom: "label_action_clean"
   top: "loss_action"
+  hinge_loss_param{
+    norm: L1
+  }
 }
 layer {
   name: "accuracy_action"

@@ -40,6 +40,7 @@ class Data_Arrange_Layer(caffe.Layer):
         tmp = numpy.repeat(tmp,self.T_,axis = 0)
         tmp = numpy.reshape(tmp,[self.T_*framenum, 1]).copy()
         top[1].data[...] = numpy.reshape(tmp,[self.top_batchsize,1]).copy()
+        #print bottom[0].data
         #print top[1].data
         #print top[0].data
         #print self.bottom_batchsize
@@ -47,8 +48,9 @@ class Data_Arrange_Layer(caffe.Layer):
 
 
     def backward(self, top, propagate_down, bottom):
+        #print 'top',top[0].diff
         bottom[0].diff[...] = numpy.reshape(top[0].diff,[self.bottom_batchsize,self.bottom_output_num]).copy()
-        #print bottom[0].diff
+        #print 'bottom',bottom[0].diff
 
 def python_net_file():
     with tempfile.NamedTemporaryFile(delete=False) as f:

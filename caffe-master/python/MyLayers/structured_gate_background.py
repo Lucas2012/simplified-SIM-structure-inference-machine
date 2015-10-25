@@ -32,7 +32,7 @@ class structured_gate(caffe.Layer):
         self.C = 10
         self.test = False
         self.id = 0
-        self.if_only_scene = True
+        self.if_only_scene = False
         self.normalize_gate = False
         self.if_block_diff = True
     
@@ -55,8 +55,8 @@ class structured_gate(caffe.Layer):
         s2a_messages = bottom[2].data.copy()
         label_stop = self.nPeople*numpy.ones([self.frame_num])
         labels = bottom[3].data
-        label_frame = bottom[4].data
-        #print 'a2s_message',a2s_messages
+        #label_frame = bottom[4].data
+        #print 's2a_message',s2a_messages
         #print 'frame_label',bottom[4].data
         count = 0
         for i in range(0,self.frame_num):
@@ -195,7 +195,7 @@ class structured_gate(caffe.Layer):
                         temp_diff_a2s = numpy.multiply(f_a2s_messages[j],f_gated_a2s_diff[j])
                         temp_diff_a2s = temp_diff_a2s.sum()
                         temp_diff = temp_diff_a2s.copy();
-                        if not if_only_scene:
+                        if not self.if_only_scene:
                             temp_diff_s2a = numpy.multiply(f_s2a_messages[j],f_gated_s2a_diff[j])
                             temp_diff_s2a = temp_diff_s2a.sum()
                             temp_diff += temp_diff_s2a

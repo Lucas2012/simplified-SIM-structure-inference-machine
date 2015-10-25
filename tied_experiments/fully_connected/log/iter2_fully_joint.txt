@@ -1,0 +1,16 @@
+    Test net output #0: accuracy_action_1 = 0.716839
+
+    Test net output #1: accuracy_scene_1 = 0.729264
+
+    Test net output #2: loss_action_1 = 0.959259
+
+    Test net output #3: loss_scene_1 = 0.82412
+
+    Test net output #0: accuracy_action_1 = 0.702003
+
+    Test net output #1: accuracy_scene_1 = 0.72457
+
+    Test net output #2: loss_action_1 = 0.980901
+
+    Test net output #3: loss_scene_1 = 0.928464
+

@@ -1,0 +1,147 @@
+name: "CaffeNet"
+force_backward:true
+layer {
+  name: "data_frame"
+  type: "Data"
+  top: "data_frame"
+  top: "label_frame"
+  include {
+    phase: TRAIN
+  }
+  transform_param {
+    mirror: true
+    crop_size: 227
+    mean_file: "imagenet_mean.binaryproto"
+  }
+  data_param {
+    #source: "/cs/vml2/zhiweid/CVPR16_NEW/bp-rnn/experiments/0419_context/CAD_train_lmdb_0419_frame_context"
+    source: "/cs/vml2/zhiweid/CVPR16_NEW/data/0930/CAD_frame_train_lmdb_0930"
+    batch_size: 5
+    backend: LMDB
+  }
+}
+layer {
+  name: "data_frame"
+  type: "Data"
+  top: "data_frame"
+  top: "label_frame"
+  include {
+    phase: TEST
+  }
+  transform_param {
+    mirror: false
+    crop_size: 227
+    mean_file: "imagenet_mean.binaryproto"
+  }
+  data_param {
+    #source: "/cs/vml2/zhiweid/CVPR16_NEW/bp-rnn/experiments/0419_context/CAD_val_lmdb_0419_frame_context"
+    source: "/cs/vml2/zhiweid/CVPR16_NEW/data/0930/CAD_frame_val_lmdb_0930"
+    batch_size: 1
+    backend: LMDB
+  }
+}
+layer {
+  name: "context"
+  type: "HDF5Data"
+  top: "data_context"
+  include {
+    phase: TRAIN
+  }
+  hdf5_data_param {
+    source: "/cs/vml2/zhiweid/CVPR16_NEW/data/0930/hdf5db/train_context.txt"
+    batch_size: 5
+  }
+}
+layer {
+  name: "context"
+  type: "HDF5Data"
+  top: "data_context"
+  include {
+    phase: TEST
+  }
+  hdf5_data_param {
+    source: "/cs/vml2/zhiweid/CVPR16_NEW/data/0930/hdf5db/val_context.txt"
+    batch_size: 1
+  }
+}
+layer {
+  name: "conv1_frame"
+  type: "Convolution"
+  bottom: "data_frame"
+  top: "conv1_frame"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 96
+    kernel_size: 11
+    stride: 4
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+
+layer {
+  name: "fc8_context_111"
+  type: "InnerProduct"
+  bottom: "data_context"
+  top: "fc8_context"
+  param {
+    lr_mult: 10
+    decay_mult: 10
+  }
+  param {
+    lr_mult: 20
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 5
+    bias_term: true
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+  }
+}
+layer {
+  name: "silence_layer"
+  type: "Python"
+  bottom: "data_frame"
+  python_param{
+    module: "Silence"
+    layer: "Silence_Layer"
+  }
+}
+layer {
+  name: "loss_scene"
+  type: "HingeLoss"
+  bottom: "fc8_context"
+  bottom: "label_frame"
+  top: "loss_scene"
+  hinge_loss_param{
+    norm: L1
+  }
+}
+layer {
+  name: "accuracy_scene"
+  type: "Accuracy"
+  bottom: "fc8_context"
+  #bottom: "fc8_CAD_frame_prob_for_check"
+  bottom: "label_frame"
+  top: "accuracy_scene"
+  include {
+    phase: TEST
+  }
+}
+

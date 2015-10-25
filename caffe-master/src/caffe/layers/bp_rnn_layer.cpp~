@@ -221,9 +221,10 @@ void BP_RNNLayer<Dtype>::BP_FillUnrolledNet(NetParameter* net_param) const {
   float w_decay_mult = 10,b_decay_mult = 0;
   //bool ifgate = false;
   bool ifforprint = true;
-  bool ifneuron = true;
+  bool ifneuron = false;
   bool ifjoint = false;
-  bool ifuntie = true;
+  bool ifuntie = false;
+  bool ifgateexp = false;
   //bool if_ensemble_message = false;
   //bool if_ensemble_previous = false;
   
@@ -271,11 +272,11 @@ void BP_RNNLayer<Dtype>::BP_FillUnrolledNet(NetParameter* net_param) const {
       
       // Add layer to re-arrange all messages to each innerproduct component
       {
-		  LayerParameter* python_message_in = net_param->add_layer();
+          LayerParameter* python_message_in = net_param->add_layer();
           python_message_in->set_name("ArrangeMessageIn" + ts);
-		  python_message_in->set_type("Python");
-		  python_message_in->mutable_python_param()->set_module("simplified_message_in");
-		  python_message_in->mutable_python_param()->set_layer("simplified_message_in");
+          python_message_in->set_type("Python");
+          python_message_in->mutable_python_param()->set_module("simplified_message_in");
+          python_message_in->mutable_python_param()->set_layer("simplified_message_in");
           if (ifforprint){
 		      python_message_in->add_bottom("concat_all" + tm1s);
           }else{
@@ -295,17 +296,24 @@ void BP_RNNLayer<Dtype>::BP_FillUnrolledNet(NetParameter* net_param) const {
           caffe::ParamSpec* weight = action_message_pred->add_param();
           caffe::ParamSpec* weight_bias = action_message_pred->add_param();
           if (ifuntie){
-              weight->set_name("W_hh_1" + ts);
+              weight->set_name("W_hh_1_" + ts);
           }
           else{
               weight->set_name("W_hh_1");
           }
           if (!ifjoint) {
                if (t ==this->T_){
-                   weight->set_lr_mult(w_lr_mult);
-                   weight->set_decay_mult(w_decay_mult);
-                   weight_bias->set_lr_mult(b_lr_mult);
-                   weight_bias->set_decay_mult(b_decay_mult);
+                   if (ifgateexp){
+                       weight->set_lr_mult(0);
+                       weight->set_decay_mult(0);
+                       weight_bias->set_lr_mult(0);
+                       weight_bias->set_decay_mult(0);
+                   }else{
+                       weight->set_lr_mult(w_lr_mult);
+                       weight->set_decay_mult(w_decay_mult);
+                       weight_bias->set_lr_mult(b_lr_mult);
+                       weight_bias->set_decay_mult(b_decay_mult);
+                   }
                }
                else
                {
@@ -316,10 +324,17 @@ void BP_RNNLayer<Dtype>::BP_FillUnrolledNet(NetParameter* net_param) const {
                }
           }
           else{
-               weight->set_lr_mult(w_lr_mult);
-               weight->set_decay_mult(w_decay_mult);
-               weight_bias->set_lr_mult(b_lr_mult);
-               weight_bias->set_decay_mult(b_decay_mult);
+               if (ifgateexp){
+		       weight->set_lr_mult(0);
+		       weight->set_decay_mult(0);
+		       weight_bias->set_lr_mult(0);
+		       weight_bias->set_decay_mult(0);
+		   }else{
+		       weight->set_lr_mult(w_lr_mult);
+		       weight->set_decay_mult(w_decay_mult);
+		       weight_bias->set_lr_mult(b_lr_mult);
+		       weight_bias->set_decay_mult(b_decay_mult);
+		   }
           }
 
           action_message_pred->add_bottom("A_A_MessageIn" + ts);
@@ -346,10 +361,17 @@ void BP_RNNLayer<Dtype>::BP_FillUnrolledNet(NetParameter* net_param) const {
           }
           if (!ifjoint) {
                if (t ==this->T_){
-                   weight->set_lr_mult(w_lr_mult);
-                   weight->set_decay_mult(w_decay_mult);
-                   weight_bias->set_lr_mult(b_lr_mult);
-                   weight_bias->set_decay_mult(b_decay_mult);
+                   if (ifgateexp){
+                       weight->set_lr_mult(0);
+                       weight->set_decay_mult(0);
+                       weight_bias->set_lr_mult(0);
+                       weight_bias->set_decay_mult(0);
+                   }else{
+                       weight->set_lr_mult(w_lr_mult);
+                       weight->set_decay_mult(w_decay_mult);
+                       weight_bias->set_lr_mult(b_lr_mult);
+                       weight_bias->set_decay_mult(b_decay_mult);
+                   }
                }
                else
                {
@@ -360,10 +382,17 @@ void BP_RNNLayer<Dtype>::BP_FillUnrolledNet(NetParameter* net_param) const {
                }
           }
           else{
-               weight->set_lr_mult(w_lr_mult);
-               weight->set_decay_mult(w_decay_mult);
-               weight_bias->set_lr_mult(b_lr_mult);
-               weight_bias->set_decay_mult(b_decay_mult);
+               if (ifgateexp){
+                       weight->set_lr_mult(0);
+                       weight->set_decay_mult(0);
+                       weight_bias->set_lr_mult(0);
+                       weight_bias->set_decay_mult(0);
+                   }else{
+                       weight->set_lr_mult(w_lr_mult);
+                       weight->set_decay_mult(w_decay_mult);
+                       weight_bias->set_lr_mult(b_lr_mult);
+                       weight_bias->set_decay_mult(b_decay_mult);
+                   }
           }
           scene_message_pred_as->add_bottom("A_S_MessageIn" + ts);
           if (ifneuron){
@@ -389,10 +418,17 @@ void BP_RNNLayer<Dtype>::BP_FillUnrolledNet(NetParameter* net_param) const {
           }
           if (!ifjoint) {
                if (t ==this->T_){
-                   weight->set_lr_mult(w_lr_mult);
-                   weight->set_decay_mult(w_decay_mult);
-                   weight_bias->set_lr_mult(b_lr_mult);
-                   weight_bias->set_decay_mult(b_decay_mult);
+                   if (ifgateexp){
+                       weight->set_lr_mult(0);
+                       weight->set_decay_mult(0);
+                       weight_bias->set_lr_mult(0);
+                       weight_bias->set_decay_mult(0);
+                   }else{
+                       weight->set_lr_mult(w_lr_mult);
+                       weight->set_decay_mult(w_decay_mult);
+                       weight_bias->set_lr_mult(b_lr_mult);
+                       weight_bias->set_decay_mult(b_decay_mult);
+                   }
                }
                else
                {
@@ -403,10 +439,17 @@ void BP_RNNLayer<Dtype>::BP_FillUnrolledNet(NetParameter* net_param) const {
                }
           }
           else{
-               weight->set_lr_mult(w_lr_mult);
-               weight->set_decay_mult(w_decay_mult);
-               weight_bias->set_lr_mult(b_lr_mult);
-               weight_bias->set_decay_mult(b_decay_mult);
+               if (ifgateexp){
+                       weight->set_lr_mult(0);
+                       weight->set_decay_mult(0);
+                       weight_bias->set_lr_mult(0);
+                       weight_bias->set_decay_mult(0);
+                   }else{
+                       weight->set_lr_mult(w_lr_mult);
+                       weight->set_decay_mult(w_decay_mult);
+                       weight_bias->set_lr_mult(b_lr_mult);
+                       weight_bias->set_decay_mult(b_decay_mult);
+                   }
           }
           scene_message_pred->add_bottom("S_A_MessageIn" + ts);
           if (ifneuron){
@@ -443,7 +486,259 @@ void BP_RNNLayer<Dtype>::BP_FillUnrolledNet(NetParameter* net_param) const {
 		  }
       }
       }
-      
+//******************** gate experiment starts ********************
+      if (ifgateexp){
+        // unit message 
+        {
+          LayerParameter* python_message_out_single = net_param->add_layer();
+          python_message_out_single->set_name("simplified_message_out_single" + ts);
+          python_message_out_single->set_type("Python");
+          python_message_out_single->mutable_python_param()->set_module("simplified_message_out_a2s");
+          python_message_out_single->mutable_python_param()->set_layer("simplified_message_out_a2s");
+          python_message_out_single->add_bottom("A_S_MessageOut" + ts);
+          python_message_out_single->add_bottom("S_A_MessageOut" + ts);
+          python_message_out_single->add_bottom("A_A_MessageOut" + ts);
+          python_message_out_single->add_bottom("label_action");
+          python_message_out_single->add_bottom("concat_all" + tm1s);
+          python_message_out_single->add_top("A_S_for_prediction" + ts);
+          python_message_out_single->add_top("S_A_for_prediction" + ts);
+          python_message_out_single->add_top("A_A_for_prediction" + ts);
+        }
+
+        // unit message prediction, scene, a2s
+        {
+          LayerParameter* scene_message_pred = net_param->add_layer();
+          scene_message_pred->CopyFrom(scene_lb);
+          scene_message_pred->set_name("Scene_a2s" + ts);
+          caffe::ParamSpec* weight = scene_message_pred->add_param();
+          caffe::ParamSpec* weight_bias = scene_message_pred->add_param();
+          if (ifuntie){
+              weight->set_name("W_ho_1_" + ts);
+          }
+          else{
+              weight->set_name("W_ho_1");
+          }
+          weight->set_lr_mult(0);
+          weight->set_decay_mult(0);
+          weight_bias->set_lr_mult(0);
+          weight_bias->set_decay_mult(0);
+
+          scene_message_pred->add_bottom("A_S_for_prediction" + ts);
+          scene_message_pred->add_top("A_S_prediction_for_norm" + ts);          
+          scene_message_pred->mutable_inner_product_param()->set_axis(1);  // batchsize*num_people
+      }
+
+      // unit message prediction, action, s2a
+      {
+          LayerParameter* scene_message_pred = net_param->add_layer();
+          scene_message_pred->CopyFrom(spatial1_lb);
+          scene_message_pred->set_name("Action_s2a" + ts);
+          caffe::ParamSpec* weight = scene_message_pred->add_param();
+          caffe::ParamSpec* weight_bias = scene_message_pred->add_param();
+          if (ifuntie){
+              weight->set_name("W_ho_2_" + ts);
+          }
+          else{
+              weight->set_name("W_ho_2");
+          }
+
+          weight->set_lr_mult(0);
+          weight->set_decay_mult(0);
+          weight_bias->set_lr_mult(0);
+          weight_bias->set_decay_mult(0);
+
+          scene_message_pred->add_bottom("S_A_for_prediction" + ts);
+          scene_message_pred->add_top("S_A_prediction_for_norm" + ts); 
+          scene_message_pred->mutable_inner_product_param()->set_axis(1);  // batchsize*num_people
+      }
+      // unit message prediction, action, a2a
+      {
+          LayerParameter* scene_message_pred = net_param->add_layer();
+          scene_message_pred->CopyFrom(spatial1_lb);
+          scene_message_pred->set_name("Action_a2a" + ts);
+          caffe::ParamSpec* weight = scene_message_pred->add_param();
+          caffe::ParamSpec* weight_bias = scene_message_pred->add_param();
+          if (ifuntie){
+              weight->set_name("W_ho_2_" + ts);
+          }
+          else{
+              weight->set_name("W_ho_2");
+          }
+
+          weight->set_lr_mult(0);
+          weight->set_decay_mult(0);
+          weight_bias->set_lr_mult(0);
+          weight_bias->set_decay_mult(0);
+
+          scene_message_pred->add_bottom("A_A_for_prediction" + ts);
+          scene_message_pred->add_top("A_A_prediction_for_norm" + ts); 
+          scene_message_pred->mutable_inner_product_param()->set_axis(1);  // batchsize*num_people
+      }
+      // Add layer to normalize prediction
+      {
+          LayerParameter* softmax_layer_normalize1 = net_param->add_layer();
+          softmax_layer_normalize1->set_type("Softmax");
+          softmax_layer_normalize1->set_name("Normalize_scene_a2s" + ts);
+          softmax_layer_normalize1->add_bottom("A_S_prediction_for_norm" + ts);
+          softmax_layer_normalize1->add_top("A_S_prediction" + ts);
+      }
+      {
+          LayerParameter* softmax_layer_normalize1 = net_param->add_layer();
+          softmax_layer_normalize1->set_type("Softmax");
+          softmax_layer_normalize1->set_name("Normalize_action_s2a" + ts);
+          softmax_layer_normalize1->add_bottom("S_A_prediction_for_norm" + ts);
+          softmax_layer_normalize1->add_top("S_A_prediction" + ts);
+      }
+      {
+          LayerParameter* softmax_layer_normalize1 = net_param->add_layer();
+          softmax_layer_normalize1->set_type("Softmax");
+          softmax_layer_normalize1->set_name("Normalize_action_a2a" + ts);
+          softmax_layer_normalize1->add_bottom("A_A_prediction_for_norm" + ts);
+          softmax_layer_normalize1->add_top("A_A_prediction" + ts);
+      }
+      // graphical edge, bg layer
+      {
+          LayerParameter* python_message_out_single = net_param->add_layer();
+          python_message_out_single->set_name("graphical_edge_bg" + ts);
+          python_message_out_single->set_type("Python");
+          python_message_out_single->mutable_python_param()->set_module("graphical_edge_background");
+          python_message_out_single->mutable_python_param()->set_layer("graphical_edge");
+          python_message_out_single->add_bottom("concat_all" + tm1s);
+          python_message_out_single->add_bottom("A_S_prediction" + ts);
+          python_message_out_single->add_bottom("S_A_prediction" + ts);
+          python_message_out_single->add_bottom("label_action");
+          python_message_out_single->add_top("gate_input1" + ts);
+        }
+        // graphical edge, action layer
+        {
+          LayerParameter* python_message_out_single = net_param->add_layer();
+          python_message_out_single->set_name("graphical_edge_action" + ts);
+          python_message_out_single->set_type("Python");
+          python_message_out_single->mutable_python_param()->set_module("graphical_edge_action");
+          python_message_out_single->mutable_python_param()->set_layer("graphical_edge");
+          python_message_out_single->add_bottom("concat_all" + tm1s);
+          python_message_out_single->add_bottom("A_A_prediction" + ts);
+          python_message_out_single->add_bottom("label_action");
+          python_message_out_single->add_top("gate_input2" + ts);
+        }
+        // gate1
+        {
+          LayerParameter* scene_message_pred = net_param->add_layer();
+          scene_message_pred->set_type("InnerProduct");
+          scene_message_pred->set_name("gate1_bg" + ts);
+          caffe::ParamSpec* weight = scene_message_pred->add_param();
+          caffe::ParamSpec* weight_bias = scene_message_pred->add_param();
+          if (ifuntie){
+              weight->set_name("W_hg_gate1_" + ts);
+          }
+          else{
+              weight->set_name("W_hg_gate1");
+          }
+
+          if (!ifjoint) {
+               if (t ==this->T_){
+                   weight->set_lr_mult(w_lr_mult);
+                   weight->set_decay_mult(w_decay_mult);
+                   weight_bias->set_lr_mult(b_lr_mult);
+                   weight_bias->set_decay_mult(b_decay_mult);
+               }
+               else
+               {
+                   weight->set_lr_mult(0);
+                   weight->set_decay_mult(0);
+                   weight_bias->set_lr_mult(0);
+                   weight_bias->set_decay_mult(0);
+               }
+          }
+          else{
+                   weight->set_lr_mult(w_lr_mult);
+                   weight->set_decay_mult(w_decay_mult);
+                   weight_bias->set_lr_mult(b_lr_mult);
+                   weight_bias->set_decay_mult(b_decay_mult);
+          }
+
+          scene_message_pred->add_bottom("gate_input1" + ts);
+          scene_message_pred->add_top("gate_output1" + ts); 
+          scene_message_pred->mutable_inner_product_param()->set_num_output(1);
+          scene_message_pred->mutable_inner_product_param()->set_bias_term(true);
+          scene_message_pred->mutable_inner_product_param()->set_axis(1);     // batchsize*num_related_messages_all*inputsize
+          scene_message_pred->mutable_inner_product_param()->mutable_weight_filler()->CopyFrom(weight_filler);
+          scene_message_pred->mutable_inner_product_param()->mutable_bias_filler()->CopyFrom(bias_filler);
+        }
+        // gate2
+        {
+          LayerParameter* scene_message_pred = net_param->add_layer();
+          scene_message_pred->set_type("InnerProduct");
+          scene_message_pred->set_name("gate2_action" + ts);
+          caffe::ParamSpec* weight = scene_message_pred->add_param();
+          caffe::ParamSpec* weight_bias = scene_message_pred->add_param();
+          if (ifuntie){
+              weight->set_name("W_hg_gate2_" + ts);
+          }
+          else{
+              weight->set_name("W_hg_gate2");
+          }
+
+          if (!ifjoint) {
+               if (t ==this->T_){
+                   weight->set_lr_mult(w_lr_mult);
+                   weight->set_decay_mult(w_decay_mult);
+                   weight_bias->set_lr_mult(b_lr_mult);
+                   weight_bias->set_decay_mult(b_decay_mult);
+               }
+               else
+               {
+                   weight->set_lr_mult(0);
+                   weight->set_decay_mult(0);
+                   weight_bias->set_lr_mult(0);
+                   weight_bias->set_decay_mult(0);
+               }
+          }
+          else{
+                   weight->set_lr_mult(w_lr_mult);
+                   weight->set_decay_mult(w_decay_mult);
+                   weight_bias->set_lr_mult(b_lr_mult);
+                   weight_bias->set_decay_mult(b_decay_mult);
+          }
+
+          scene_message_pred->add_bottom("gate_input2" + ts);
+          scene_message_pred->add_top("gate_output2" + ts); 
+          scene_message_pred->mutable_inner_product_param()->set_num_output(1);
+          scene_message_pred->mutable_inner_product_param()->set_bias_term(true);
+          scene_message_pred->mutable_inner_product_param()->set_axis(1);     // batchsize*num_related_messages_all*inputsize
+          scene_message_pred->mutable_inner_product_param()->mutable_weight_filler()->CopyFrom(weight_filler);
+          scene_message_pred->mutable_inner_product_param()->mutable_bias_filler()->CopyFrom(bias_filler);
+        }
+        // structure gate, BG layer
+        {
+          LayerParameter* python_message_out_single = net_param->add_layer();
+          python_message_out_single->set_name("structure_gate1_bg" + ts);
+          python_message_out_single->set_type("Python");
+          python_message_out_single->mutable_python_param()->set_module("structured_gate_background");
+          python_message_out_single->mutable_python_param()->set_layer("structured_gate");
+          python_message_out_single->add_bottom("gate_output1" + ts);
+          python_message_out_single->add_bottom("A_S_MessageOut" + ts);
+          python_message_out_single->add_bottom("S_A_MessageOut" + ts);
+          python_message_out_single->add_bottom("label_action");
+          python_message_out_single->add_top("gated_A_S_MessageOut" + ts);
+          python_message_out_single->add_top("gated_S_A_MessageOut" + ts);
+        }
+        // structure gate, action layer
+        {
+          LayerParameter* python_message_out_single = net_param->add_layer();
+          python_message_out_single->set_name("structure_gate1_action" + ts);
+          python_message_out_single->set_type("Python");
+          python_message_out_single->mutable_python_param()->set_module("structured_gate_action");
+          python_message_out_single->mutable_python_param()->set_layer("structured_gate");
+          python_message_out_single->add_bottom("gate_output2" + ts);
+          python_message_out_single->add_bottom("A_A_MessageOut" + ts);
+          python_message_out_single->add_bottom("label_action");
+          python_message_out_single->add_top("gated_A_A_MessageOut" + ts);
+        }
+      // gate experiment ends
+      }
+//******************** gate experiment ends ********************
+
       // Add layer to re-arrange messages from each component
       {
           LayerParameter* python_message_out = net_param->add_layer();
@@ -451,12 +746,18 @@ void BP_RNNLayer<Dtype>::BP_FillUnrolledNet(NetParameter* net_param) const {
           python_message_out->set_type("Python");
           python_message_out->mutable_python_param()->set_module("simplified_message_out");
           python_message_out->mutable_python_param()->set_layer("simplified_message_out");
-          python_message_out->add_bottom("A_A_MessageOut" + ts);
-          python_message_out->add_bottom("A_S_MessageOut" + ts);
-          python_message_out->add_bottom("S_A_MessageOut" + ts);
+          if (!ifgateexp){
+              python_message_out->add_bottom("A_A_MessageOut" + ts);
+              python_message_out->add_bottom("A_S_MessageOut" + ts);
+              python_message_out->add_bottom("S_A_MessageOut" + ts);
+          }else{
+              python_message_out->add_bottom("gated_A_A_MessageOut" + ts);
+              python_message_out->add_bottom("gated_A_S_MessageOut" + ts);
+              python_message_out->add_bottom("gated_S_A_MessageOut" + ts);
+          }
           python_message_out->add_bottom("label_action");
           if (ifforprint){
-              python_message_out->add_bottom("concat_all0");
+              python_message_out->add_bottom("concat_all" + tm1s);
           }else{
               python_message_out->add_bottom("UnaryInput");
           }

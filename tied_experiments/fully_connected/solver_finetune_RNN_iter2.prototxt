@@ -1,0 +1,16 @@
+net: "prototxts/iter1_fully_connected_no_hidden.prototxt"
+test_iter: 639
+test_interval: 1000
+base_lr: 0.0001
+#solver_type: ADAGRAD
+lr_policy: "step"
+clip_gradients: 40
+gamma: 0.1
+stepsize: 10000
+display: 20
+max_iter: 20000
+momentum: 0.90
+weight_decay: 0.0005
+snapshot: 1000
+snapshot_prefix: "snapshots/iter2_fully_no_hidden/snapshots_s1"
+solver_mode: GPU

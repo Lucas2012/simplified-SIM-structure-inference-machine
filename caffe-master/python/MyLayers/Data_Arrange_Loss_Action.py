@@ -69,13 +69,13 @@ class Data_Arrange_Layer(caffe.Layer):
             labels2 = bottom[1].data
         labels = numpy.reshape(labels,[self.bottom_batchsize,self.nPeople])
         labels2 = numpy.reshape(labels2,[self.bottom_batchsize,self.nPeople])
-        tmpdata = numpy.zeros([0,self.nAction])
+        tmpdata = numpy.zeros([0,self.top_output_num])
         tmplabel = numpy.zeros([0,0])
         tmplabel2 = numpy.zeros([0,0])
         for i in range(0,self.T_):
             for j in range(0,self.bottom_batchsize):
                 #print bottom[0].data.shape
-                tmp = numpy.reshape(bottom[0].data[i*self.bottom_batchsize+j],[self.nPeople,self.nAction]).copy()
+                tmp = numpy.reshape(bottom[0].data[i*self.bottom_batchsize+j],[self.nPeople,self.top_output_num]).copy()
                 tmpdata = numpy.append(tmpdata,tmp[0:self.label_stop[j]],axis = 0).copy()
                 tmplabel = numpy.append(tmplabel,labels[j,0:self.label_stop[j]]).copy()
                 tmplabel2 = numpy.append(tmplabel2,labels2[j,0:self.label_stop[j]]).copy()
@@ -84,7 +84,8 @@ class Data_Arrange_Layer(caffe.Layer):
         #tmplabel=numpy.reshape(tmplabel,[len(tmplabel),1])
         #tmplabel2=numpy.reshape(tmplabel2,[len(tmplabel2),1])
         top[0].data[...] = tmpdata
-        top[1].data[...] = tmplabel+1.0
+        if top[0].data.shape[1]==7:
+            top[1].data[...] = tmplabel+1.0
         if len(bottom) > 2:
             top[2].data[...] = tmplabel2
             #print tmplabel2
@@ -99,25 +100,25 @@ class Data_Arrange_Layer(caffe.Layer):
 
     def backward(self, top, propagate_down, bottom):
         topdiff = top[0].diff
-        topdiff = numpy.reshape(topdiff,[self.T_,self.count,self.nAction])
+        topdiff = numpy.reshape(topdiff,[self.T_,self.count,self.top_output_num])
         tmpdiff = numpy.zeros(bottom[0].data.shape)
         for i in range(0,self.T_):
             step = 0
             for j in range(0,self.bottom_batchsize):
                 assert(self.label_stop[j] > 0)
                 tmpuse = topdiff[i,step:step+self.label_stop[j]].copy()
-                tmpuse = numpy.reshape(tmpuse,[1,self.label_stop[j]*self.nAction]).copy()
+                tmpuse = numpy.reshape(tmpuse,[1,self.label_stop[j]*self.top_output_num]).copy()
                 #print tmpuse
                 #print tmpuse[0]
                 #assert(tmpuse[0,0]!=0)
-                tmpdiff[i*self.bottom_batchsize+j,0:self.label_stop[j]*self.nAction] = tmpuse.copy()
+                tmpdiff[i*self.bottom_batchsize+j,0:self.label_stop[j]*self.top_output_num] = tmpuse.copy()
                 step += self.label_stop[j]
                 #print "stop:",self.label_stop[j]
                 #print tmpdiff[i*self.bottom_batchsize+j]
         #print "topshape:",top[0].diff.shape
         #print "step:",step
         bottom[0].diff[...] = tmpdiff.copy()
-        tmpdiff = numpy.reshape(tmpdiff,[bottom[0].diff.shape[0]*self.nPeople,self.nAction]).copy()
+        tmpdiff = numpy.reshape(tmpdiff,[bottom[0].diff.shape[0]*self.nPeople,self.top_output_num]).copy()
         '''print "check original"
         print "1"
         print bottom[0].diff[0:5]

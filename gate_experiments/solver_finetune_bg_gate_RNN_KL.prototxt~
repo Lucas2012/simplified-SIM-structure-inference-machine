@@ -1,4 +1,4 @@
-net: "prototxts/test_print_1_bg_gate_simplified_context_KL.prototxt"
+net: "prototxts/old_exp/tbackup_success.prototxt"
 #net: "prototxts/temp.prototxt"
 #net: "prototxts/backup_success.prototxt"
 test_iter: 639

@@ -10,7 +10,7 @@ layer {
     phase: TRAIN
   }
   transform_param {
-    mirror: false
+    mirror: true
     crop_size: 227
     mean_file: "imagenet_mean.binaryproto"
   }
@@ -37,7 +37,7 @@ layer {
   data_param {
     #source: "/cs/vml2/zhiweid/CVPR16_NEW/bp-rnn/experiments/0419_context/CAD_val_lmdb_0419_context"
     source: "/cs/vml2/zhiweid/CVPR16_NEW/data/0930/CAD_action_val_lmdb_0930"
-    batch_size: 70
+    batch_size: 14
     backend: LMDB
   }
 }
@@ -408,7 +408,7 @@ layer {
   data_param {
     #source: "/cs/vml2/zhiweid/CVPR16_NEW/bp-rnn/experiments/0419_context/CAD_val_lmdb_0419_frame_context"
     source: "/cs/vml2/zhiweid/CVPR16_NEW/data/0930/CAD_frame_val_lmdb_0930"
-    batch_size: 5
+    batch_size: 1
     backend: LMDB
   }
 }
@@ -433,7 +433,7 @@ layer {
   }
   hdf5_data_param {
     source: "/cs/vml2/zhiweid/CVPR16_NEW/data/0930/hdf5db/val_context.txt"
-    batch_size: 5
+    batch_size: 1
   }
 }
 layer {
@@ -758,10 +758,10 @@ layer {
   }
 }
 layer {
-  name: "fc8_context"
+  name: "fc8_context_1_tmp"
   type: "InnerProduct"
   bottom: "data_context"
-  top: "fc8_context"
+  top: "fc8_context_1"
   param {
     lr_mult: 10
     decay_mult: 10
@@ -779,24 +779,62 @@ layer {
     }
   }
 }
+#layer {
+#  name: "concatenation_s_a_p"
+#  type: "Concat"
+#  bottom: "fc8_CAD_frame"
+#  bottom: "fc8_context_1"
+#  top: "concat_frame"
+#  concat_param {
+#    concat_dim: 1
+#  }
+#}
 layer {
-  name: "sum_frame"
-  type: "Eltwise"
-  bottom: "fc8_context"
-  bottom: "fc8_CAD_frame"
-  top: "sum_frame"
-  eltwise_param {
-    operation: SUM
+  name: "fc8_context_2_tmp"
+  type: "InnerProduct"
+  #bottom: "concat_frame"
+  bottom: "fc8_context_1"
+  top: "fc8_context_2"
+  param {
+    lr_mult: 10
+    decay_mult: 10
+  }
+  param {
+    lr_mult: 20
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 5
+    bias_term: true
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
   }
 }
+#layer {
+#  name: "sum_frame"
+#  type: "Eltwise"
+#  bottom: "fc8_context"
+#  bottom: "fc8_CAD_frame"
+#  top: "sum_frame"
+#  eltwise_param {
+#    operation: SUM
+#  }
+#}
 
 ################################################### re-arrange data ###############################################
 layer {
   name: "prob_frame"
   type: "Softmax"
-  bottom: "sum_frame"
+  #bottom: "sum_frame"
   #bottom: "fc8_context"
+  #bottom: "fc8_context_1"
+  bottom: "fc8_CAD_frame"
   top: "fc8_CAD_frame_prob"
+  softmax_param{
+      axis: 1
+  }
 }
 layer {
   name: "prob_action"
@@ -954,6 +992,7 @@ layer {
   bottom: "S_A_MessageOut1"
   bottom: "label_action"
   bottom: "concat_all0"
+  #bottom: "S_A_MessageIn1"
   top: "scene_1"
   top: "action_1"
   python_param {
@@ -1022,8 +1061,7 @@ layer {
 layer {
   name: "message_reshape11"
   type: "Python"
-  #bottom: "action_out1"
-  bottom: "fc8_CAD_action"
+  bottom: "action_out1"
   top: "action_out_reshaped1"
   python_param {
     module: "Message_Reshape1"
@@ -1140,9 +1178,15 @@ layer {
   bottom: "scene_pred_final"
   bottom: "label_frame"
   bottom: "concat_all1"
+  bottom: "fc8_CAD_frame_prob"
   bottom: "fc8_CAD_frame"
+  bottom: "scene_pred_all"
+  bottom: "scene_label_all"
   bottom: "action_out1"
-  bottom: "sum_frame"
+  bottom: "fc8_context_2"
+  bottom: "scene_pred_final"
+  #bottom: "sum_frame"
+  bottom: "scene_pred_final"
   python_param{
     module: "Silence"
     layer: "Silence_Layer"
@@ -1152,8 +1196,9 @@ layer {
   name: "loss_scene"
   type: "SoftmaxWithLoss"
   bottom: "scene_pred_all"
-  #bottom: "scene_pred_final"
   bottom: "scene_label_all"
+  #bottom: "fc8_context_2"
+  #bottom: "label_frame"
   top: "loss_scene"
 }
 layer {

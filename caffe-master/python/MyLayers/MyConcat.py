@@ -22,6 +22,8 @@ class MyConcat(caffe.Layer):
         for i in range(1,len(bottom)):
             tmpdata = numpy.append(tmpdata,bottom[i].data,axis = 0)
         top[0].data[...] = tmpdata
+        #if len(bottom[1].data[0]) == 5:
+        #    print bottom[1].data
         
     def backward(self, top, propagate_down, bottom):
         step = len(top[0].data)/len(bottom)

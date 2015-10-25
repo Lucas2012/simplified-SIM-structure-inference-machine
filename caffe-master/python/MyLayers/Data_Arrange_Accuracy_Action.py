@@ -45,7 +45,7 @@ class Data_Arrange_Layer(caffe.Layer):
         self.count = count
         self.label_stop = label_stop
         self.top_batchsize = count
-        self.top_output_num = self.nAction
+        self.top_output_num = bottom[0].data.shape[1]
         top[0].reshape(self.top_batchsize, self.top_output_num)
         top[1].reshape(self.top_batchsize,1)
         if len(bottom) > 2:
@@ -68,11 +68,11 @@ class Data_Arrange_Layer(caffe.Layer):
             labels2 = bottom[1].data
         labels = numpy.reshape(labels,[self.bottom_batchsize,self.nPeople])
         labels2 = numpy.reshape(labels2,[self.bottom_batchsize,self.nPeople])
-        tmpdata = numpy.zeros([0,self.nAction])
+        tmpdata = numpy.zeros([0,self.top_output_num])
         tmplabel = numpy.zeros([0,0])
         tmplabel2 = numpy.zeros([0,0])
         for j in range(0,self.bottom_batchsize):
-            # tmp = numpy.reshape(bottom[0].data[i*self.bottom_batchsize+j],[self.nPeople,self.nAction])
+            # tmp = numpy.reshape(bottom[0].data[i*self.bottom_batchsize+j],[self.nPeople,self.top_output_num])
             # tmpdata = numpy.append(tmpdata,tmp[0:self.label_stop[j]],axis = 0)
             tmplabel = numpy.append(tmplabel,labels[j,0:self.label_stop[j]]).copy()
             tmplabel2 = numpy.append(tmplabel2,labels2[j,0:self.label_stop[j]]).copy()
@@ -80,9 +80,11 @@ class Data_Arrange_Layer(caffe.Layer):
         tmplabel2=numpy.reshape(tmplabel2,[len(tmplabel2),1]).copy()  
         tmpdata = bottom[0].data[(self.T_-1)*self.top_batchsize:self.T_*self.top_batchsize].copy()
         top[0].data[...] = tmpdata.copy()
-        top[1].data[...] = tmplabel.copy()+1.0    
+        if top[0].data.shape[1] == 7:
+            top[1].data[...] = tmplabel.copy()+1.0  
+  
         if len(bottom) > 2:
-            top[2].data[...] = tmplabel2         
+            top[2].data[...] = tmplabel2  
 
     def backward(self, top, propagate_down, bottom):
         pass
