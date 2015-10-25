@@ -1,7 +1,7 @@
 net: "prototxts/fully_connected/iter2_fully_connected_on_gate.prototxt"
 test_iter: 639
 test_interval: 1000
-base_lr: 0.01
+base_lr: 0.001
 #solver_type: ADAGRAD
 lr_policy: "step"
 #clip_gradients: 40

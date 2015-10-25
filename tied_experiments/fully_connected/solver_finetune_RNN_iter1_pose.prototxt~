@@ -12,5 +12,5 @@ max_iter: 20000
 momentum: 0.90
 weight_decay: 0.0005
 snapshot: 1000
-snapshot_prefix: "snapshots/iter1_fully_no_hidden/snapshots_s1"
+snapshot_prefix: "snapshots/iter1_fully_pose/snapshots_s1"
 solver_mode: GPU

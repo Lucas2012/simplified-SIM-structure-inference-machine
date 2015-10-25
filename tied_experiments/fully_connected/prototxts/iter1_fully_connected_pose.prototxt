@@ -1165,6 +1165,7 @@ layer {
 }
 
 ################################################### re-arrange data ###############################################
+
 layer {
   name: "prob_frame"
   type: "Softmax"
@@ -1317,12 +1318,56 @@ layer {
   }
 }
 layer {
-  name: "Belief_Propagation_Recurrent_Neural_Network_Scene1"
+  name: "pose_all1"
+  type: "Python"
+  bottom: "fc8_CAD_pose"
+  bottom: "label_action"
+  top: "pose_all_1"
+  python_param {
+    module: "pose_all"
+    layer: "pose_all"
+  }
+}
+layer {
+  name: "p_s_11"
   type: "InnerProduct"
-  bottom: "scene_1"
-  top: "scene_out1"
+  bottom: "pose_all_1"
+  top: "scene_out_p_for_neuron1"
   param {
-    name: "W_ho_1"
+    lr_mult: 10
+    decay_mult: 10
+  }
+  param {
+    lr_mult: 20
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 10
+    bias_term: true
+    weight_filler {
+      type: "uniform"
+      min: -0.08
+      max: 0.08
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+    axis: 1
+  }
+}
+layer {
+  name: "neuron_p_s"
+  type: "TanH"
+  bottom: "scene_out_p_for_neuron1"
+  top: "scene_out_p1"
+}
+layer {
+  name: "p_s_21"
+  type: "InnerProduct"
+  bottom: "scene_out_p1"
+  top: "scene_out_p1"
+  param {
     lr_mult: 10
     decay_mult: 10
   }
@@ -1343,6 +1388,45 @@ layer {
       value: 0
     }
     axis: 1
+  }
+}
+
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_Scene1"
+  type: "InnerProduct"
+  bottom: "scene_1"
+  top: "scene_out_for_sum1"
+  param {
+    lr_mult: 10
+    decay_mult: 10
+  }
+  param {
+    lr_mult: 20
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 5
+    bias_term: true
+    weight_filler {
+      type: "uniform"
+      min: -0.08
+      max: 0.08
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+    axis: 1
+  }
+}
+layer {
+  name: "sum_frame"
+  type: "Eltwise"
+  bottom: "scene_out_for_sum1"
+  bottom: "scene_out_p1"
+  top: "scene_out1"
+  eltwise_param {
+    operation: SUM
   }
 }
 layer {

@@ -5,12 +5,12 @@ import numpy
 
 import caffe
 
-class Data_Arrange_Layer(caffe.Layer):
+class pose_all(caffe.Layer):
     """A layer that initialize messages for recurrent belief propagation"""
 
     def setup(self, bottom, top):
         self.nScene = 5
-        self.nAction = 40#7
+        self.nAction = 7
         self.nPeople = 14
         self.K_ = 0;
         self.bottom_batchsize = 0
@@ -18,49 +18,50 @@ class Data_Arrange_Layer(caffe.Layer):
         self.output_num = 0
         self.bottom_batchsize = 0
         self.top_batchsize = 0
-        self.bottom_output_num = 0
         self.top_output_num = 0
         self.top_shape = []
         self.label_stop = []
+        self.count = 0
     
     def reshape(self, bottom, top):
-        # have one input one output, initialize messages for each node in the graphical model 
-        bottom_shape = bottom[0].data.shape 
-        self.bottom_batchsize = bottom_shape[0]
-        self.bottom_output_num = bottom_shape[1]
-        if self.bottom_output_num == self.nAction:
-            self.top_batchsize = self.bottom_batchsize/self.nPeople
-            self.top_output_num = self.bottom_output_num*self.nPeople
-        self.top_shape = [self.top_batchsize, self.top_output_num] 
-        top[0].reshape(self.top_batchsize, self.top_output_num)
-
-    def forward(self, bottom, top):
-        labels = bottom[1].data
+        # have one input one output, initialize messages for each node in the graphical model
+        bottom_shape = bottom[1].data.shape
+        self.bottom_batchsize = bottom_shape[0]/self.nPeople   #-->numbers of frame in a batch
+        labels=bottom[1].data
+        label_stop = numpy.ones([self.bottom_batchsize])
         count = 0
-        label_stop = self.nPeople*numpy.ones([bottom[1].data.shape[0]])
-        for i in range(0,self.top_batchsize):
+        for i in range(0,self.bottom_batchsize):
             for j in range(0,self.nPeople):
                 if labels[i*self.nPeople+j] == 0:
                     label_stop[i] = j
-                    assert(label_stop[i] > 0)
+                    count += j
+                    break
+
+        self.count = count
+        self.label_stop = label_stop
+        self.top_batchsize = self.bottom_batchsize
+        self.top_output_num = bottom[0].data.shape[1]
+        top[0].reshape(self.top_batchsize, self.top_output_num)
+
+
+    def forward(self, bottom, top):
+        label_stop = self.nPeople*numpy.ones([self.bottom_batchsize])
+        labels = bottom[1].data.copy()
+        for i in range(0,self.bottom_batchsize):
+            for j in range(0,self.nPeople):
+                if labels[i*self.nPeople+j] == 0:
+                    label_stop[i] = j
                     break
         self.label_stop = label_stop
-        tmpdata = numpy.reshape(bottom[0].data,[self.top_batchsize,self.top_output_num])
-        for i in range(0,self.top_batchsize):
-            tmpdata[i,label_stop[i]*self.nAction:self.nPeople*self.nAction] = numpy.zeros([1,(self.nPeople-label_stop[i])*self.nAction])
-            top[0].data[i] = tmpdata[i]
-        #print tmpdata[0]
+
+        for f in range(0,self.bottom_batchsize):
+            pose_f = bottom[0].data[f*self.nPeople:(f+1)*self.nPeople]
+            pose_all_f=pose_f[:self.label_stop[f]]
+            top[0].data[f] = pose_all_f.sum(axis = 0)/self.label_stop[f]
+                 
 
     def backward(self, top, propagate_down, bottom):
-        label_stop = self.label_stop
-        tmpdiff = top[0].diff
-        for i in range(0,self.top_batchsize):
-            assert(label_stop[i] > 0)
-            tmpdiff[i,label_stop[i]*self.nAction:self.nPeople*self.nAction] = numpy.zeros([1,(self.nPeople-label_stop[i])*self.nAction])
-        tmpdiff = numpy.reshape(top[0].diff,[self.bottom_batchsize,self.bottom_output_num])
-        bottom[0].diff[...] = tmpdiff
-        #print tmpdiff[0]
-        #print tmpdiff.shape
+        pass
 
 def python_net_file():
     with tempfile.NamedTemporaryFile(delete=False) as f:

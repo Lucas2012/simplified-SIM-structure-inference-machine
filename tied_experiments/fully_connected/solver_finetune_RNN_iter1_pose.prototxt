@@ -4,7 +4,7 @@ test_interval: 1000
 base_lr: 0.001
 #solver_type: ADAGRAD
 lr_policy: "step"
-clip_gradients: 40
+#clip_gradients: 40
 gamma: 0.1
 stepsize: 10000
 display: 20
