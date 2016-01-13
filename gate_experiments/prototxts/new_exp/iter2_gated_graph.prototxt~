@@ -1392,7 +1392,7 @@ layer {
   top: "S_A_for_prediction2"
   top: "A_A_for_prediction2"
   python_param {
-    module: "simplified_message_out_a2s_2"
+    module: "simplified_message_out_a2s"
     layer: "simplified_message_out_a2s"
   }
 }
@@ -1510,7 +1510,7 @@ layer {
   bottom: "label_action"
   top: "gate_input12"
   python_param {
-    module: "graphical_edge_background_2"
+    module: "graphical_edge_background"
     layer: "graphical_edge"
   }
 }
@@ -1522,7 +1522,7 @@ layer {
   bottom: "label_action"
   top: "gate_input22"
   python_param {
-    module: "graphical_edge_action_2"
+    module: "graphical_edge_action"
     layer: "graphical_edge"
   }
 }
@@ -1596,7 +1596,7 @@ layer {
   top: "gated_A_S_MessageOut2"
   top: "gated_S_A_MessageOut2"
   python_param {
-    module: "structured_gate_background_2"
+    module: "structured_gate_background"
     layer: "structured_gate"
   }
 }
@@ -1608,14 +1608,14 @@ layer {
   bottom: "label_action"
   top: "gated_A_A_MessageOut2"
   python_param {
-    module: "structured_gate_action_2"
+    module: "structured_gate_action"
     layer: "structured_gate"
   }
 }
 layer {
   name: "Belief_Propagation_Recurrent_Neural_Network_ArrangeMessageOut2"
   type: "Python"
-  bottom: "gated_A_A_MessageOut2"
+  bottom: "A_A_MessageOut2"
   bottom: "gated_A_S_MessageOut2"
   bottom: "S_A_MessageOut2"
   bottom: "label_action"
@@ -1623,7 +1623,7 @@ layer {
   top: "scene_2"
   top: "action_2"
   python_param {
-    module: "simplified_message_out_2"
+    module: "simplified_message_out"
     layer: "simplified_message_out"
   }
 }

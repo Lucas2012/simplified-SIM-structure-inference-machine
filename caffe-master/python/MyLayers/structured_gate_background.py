@@ -9,8 +9,8 @@ class structured_gate(caffe.Layer):
     """A layer that initialize messages for recurrent belief propagation"""
 
     def setup(self, bottom, top):
-        self.nScene = 5
-        self.nAction = 7
+        self.nScene = 6
+        self.nAction = 6
         self.nPeople = 14
         self.K_ = 0;
         self.bottom_batchsize = 0
@@ -55,7 +55,8 @@ class structured_gate(caffe.Layer):
         s2a_messages = bottom[2].data.copy()
         label_stop = self.nPeople*numpy.ones([self.frame_num])
         labels = bottom[3].data
-        #label_frame = bottom[4].data
+        if self.test:
+            label_frame = bottom[4].data
         #print 's2a_message',s2a_messages
         #print 'frame_label',bottom[4].data
         count = 0
@@ -84,6 +85,7 @@ class structured_gate(caffe.Layer):
             s_gate[idx-self.label_stop[f]:idx] /= (dividor+0.00001)
         idx = 0
         step = 1
+        forout = 0;
         for f in range(0,self.bottom_batchsize):
             o = (1+numpy.tanh(self.C*gate_input[idx]))/2.0
             if self.test:
@@ -93,21 +95,23 @@ class structured_gate(caffe.Layer):
                 frame_label = label_frame[step-1]
                 pred_label = numpy.argmax(bottom[5].data[idx].copy())
                 pred_label -= 0
-                #print pred_label
-                #print frame_label
                 if pred_label == frame_label:
                     o = 1.0 
                 else:
-                    o = 0             
+                    o = 0      
+            #print o    
+            forout = numpy.append(forout,o)    
             messages_a2s = a2s_messages[idx].copy()
             messages_s2a = s2a_messages[idx].copy()
+            #print bottom[5].data[idx]
+            #print frame_label
             if self.normalize_gate:
                 o = s_gate[idx]
             top[0].data[idx] = numpy.multiply(o,messages_a2s)
             if not self.if_only_scene:
                 top[1].data[idx] = numpy.multiply(o,messages_s2a)
             idx += 1
-        #print ' '    
+        print forout    
 
     def backward(self, top, propagate_down, bottom):
         # to be written

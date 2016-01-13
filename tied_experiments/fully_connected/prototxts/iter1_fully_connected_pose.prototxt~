@@ -1334,6 +1334,7 @@ layer {
   bottom: "pose_all_1"
   top: "scene_out_p_for_neuron1"
   param {
+    name: "pose_all_0"
     lr_mult: 10
     decay_mult: 10
   }
@@ -1368,6 +1369,7 @@ layer {
   bottom: "scene_out_p1"
   top: "scene_out_p1"
   param {
+    name: "pose_all_1"
     lr_mult: 10
     decay_mult: 10
   }
@@ -1423,7 +1425,7 @@ layer {
   name: "sum_frame"
   type: "Eltwise"
   bottom: "scene_out_for_sum1"
-  bottom: "fc8_CAD_frame"
+  bottom: "scene_out_p1"
   top: "scene_out1"
   eltwise_param {
     operation: SUM

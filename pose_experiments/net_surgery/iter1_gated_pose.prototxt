@@ -1,0 +1,389 @@
+name: "CaffeNet"
+force_backward:true
+
+################################################################ pose net ###################################################################################
+
+layer {
+  name: "data_pose"
+  type: "Data"
+  top: "data_pose"
+  top: "label_pose"
+  include {
+    phase: TRAIN
+  }
+  transform_param {
+    mirror: true
+    crop_size: 227
+    mean_file: "imagenet_mean.binaryproto"
+  }
+  data_param {
+    source: "/cs/vml2/zhiweid/CVPR16_NEW/data/0930/CAD_pose_train_lmdb_0930"
+    batch_size: 70
+    backend: LMDB
+  }
+}
+layer {
+  name: "data_pose"
+  type: "Data"
+  top: "data_pose"
+  top: "label_pose"
+  include {
+    phase: TEST
+  }
+  transform_param {
+    mirror: false
+    crop_size: 227
+    mean_file: "imagenet_mean.binaryproto"
+  }
+  data_param {
+    source: "/cs/vml2/zhiweid/CVPR16_NEW/data/0930/CAD_pose_val_lmdb_0930"
+    batch_size: 14
+    backend: LMDB
+  }
+}
+
+
+layer {
+  name: "conv1_pose"
+  type: "Convolution"
+  bottom: "data_pose"
+  top: "conv1_pose"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 96
+    kernel_size: 11
+    stride: 4
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "relu1_pose"
+  type: "ReLU"
+  bottom: "conv1_pose"
+  top: "conv1_pose"
+}
+layer {
+  name: "pool1_pose"
+  type: "Pooling"
+  bottom: "conv1_pose"
+  top: "pool1_pose"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "norm1_pose"
+  type: "LRN"
+  bottom: "pool1_pose"
+  top: "norm1_pose"
+  lrn_param {
+    local_size: 5
+    alpha: 0.0001
+    beta: 0.75
+  }
+}
+layer {
+  name: "conv2_pose"
+  type: "Convolution"
+  bottom: "norm1_pose"
+  top: "conv2_pose"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 256
+    pad: 2
+    kernel_size: 5
+    group: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layer {
+  name: "relu2_pose"
+  type: "ReLU"
+  bottom: "conv2_pose"
+  top: "conv2_pose"
+}
+layer {
+  name: "pool2_pose"
+  type: "Pooling"
+  bottom: "conv2_pose"
+  top: "pool2_pose"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "norm2_pose"
+  type: "LRN"
+  bottom: "pool2_pose"
+  top: "norm2_pose"
+  lrn_param {
+    local_size: 5
+    alpha: 0.0001
+    beta: 0.75
+  }
+}
+layer {
+  name: "conv3_pose"
+  type: "Convolution"
+  bottom: "norm2_pose"
+  top: "conv3_pose"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 384
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "relu3_pose"
+  type: "ReLU"
+  bottom: "conv3_pose"
+  top: "conv3_pose"
+}
+layer {
+  name: "conv4_pose"
+  type: "Convolution"
+  bottom: "conv3_pose"
+  top: "conv4_pose"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 384
+    pad: 1
+    kernel_size: 3
+    group: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layer {
+  name: "relu4_pose"
+  type: "ReLU"
+  bottom: "conv4_pose"
+  top: "conv4_pose"
+}
+layer {
+  name: "conv5_pose"
+  type: "Convolution"
+  bottom: "conv4_pose"
+  top: "conv5_pose"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 256
+    pad: 1
+    kernel_size: 3
+    group: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layer {
+  name: "relu5_pose"
+  type: "ReLU"
+  bottom: "conv5_pose"
+  top: "conv5_pose"
+}
+layer {
+  name: "pool5_pose"
+  type: "Pooling"
+  bottom: "conv5_pose"
+  top: "pool5_pose"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "fc6_pose"
+  type: "InnerProduct"
+  bottom: "pool5_pose"
+  top: "fc6_pose"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 4096
+    weight_filler {
+      type: "gaussian"
+      std: 0.005
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layer {
+  name: "relu6_pose"
+  type: "ReLU"
+  bottom: "fc6_pose"
+  top: "fc6_pose"
+}
+layer {
+  name: "drop6_pose"
+  type: "Dropout"
+  bottom: "fc6_pose"
+  top: "fc6_pose"
+  dropout_param {
+    dropout_ratio: 0.5
+  }
+}
+layer {
+  name: "fc7_pose"
+  type: "InnerProduct"
+  bottom: "fc6_pose"
+  top: "fc7_pose"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 4096
+    weight_filler {
+      type: "gaussian"
+      std: 0.005
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layer {
+  name: "relu7_pose"
+  type: "ReLU"
+  bottom: "fc7_pose"
+  top: "fc7_pose"
+}
+layer {
+  name: "drop7_pose"
+  type: "Dropout"
+  bottom: "fc7_pose"
+  top: "fc7_pose"
+  dropout_param {
+    dropout_ratio: 0.4
+  }
+}
+layer {
+  name: "fc8_CAD_pose"
+  type: "InnerProduct"
+  bottom: "fc7_pose"
+  top: "fc8_CAD_pose"
+  param {
+    lr_mult: 10
+    decay_mult: 10
+  }
+  param {
+    lr_mult: 20
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 8
+    bias_term: true
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+  }
+}
+
+
+layer {
+  name: "loss_pose_1"
+  type: "SoftmaxWithLoss"
+  bottom: "fc8_CAD_pose"
+  bottom: "label_pose"
+  top: "loss_pose_1"
+}
+layer {
+  name: "accuracy_pose_1"
+  type: "Accuracy"
+  bottom: "fc8_CAD_pose"
+  bottom: "label_pose"
+  top: "accuracy_pose_1"
+  include {
+    phase: TEST
+  }
+}

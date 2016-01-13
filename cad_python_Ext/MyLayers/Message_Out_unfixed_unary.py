@@ -1,0 +1,447 @@
+import unittest
+import tempfile
+import os
+import numpy
+import caffe
+
+class Message_Out(caffe.Layer):
+    """A layer that just multiplies by ten"""
+
+    def setup(self, bottom, top):
+        self.nScene = 5
+        self.nAction = 40
+        self.nPeople = 14
+        self.K_ = 0;
+        self.top_batchsize = 0
+        self.slen = 0
+        self.alen = 0
+        self.tlen_leaf = 0
+        self.tlen_mid = 0 
+        self.aunit = 0
+        self.bottom_shape0 = [] # Unary input
+        self.bottom_shape1 = [] # scene->action
+        self.bottom_shape2 = [] # action->scene
+        self.bottom_shape3 = [] # action->action
+        self.bottom_shape4 = [] # temporal_after->temporal_before
+        self.bottom_shape5 = [] # temporal_before->temporal_after
+        self.message_num_action = self.nPeople+2*(self.K_>0)+1
+        self.label_stop = []
+        self.total = 0
+        self.bottom_batchsize_frame = 0   # initial batchsize, for how many frames are used in one batch
+    
+    def reshape(self, bottom, top):
+        # this layer has 6 input message blobs and 5 top blob output
+        bottom1_shape = bottom[0].data.shape
+        bottom1_batchsize = bottom1_shape[0]
+        slen = (self.nPeople+1)*self.nScene
+        alen = self.nPeople*self.message_num_action*self.nAction
+        tlen_leaf = 0
+        tlen_mid = 0
+        top_batchsize = bottom1_batchsize
+        top_shape = [top_batchsize, slen+alen+tlen_leaf+tlen_mid]
+        self.total = top_shape[1]
+        top[0].reshape(*top_shape)
+        top[1].reshape(top_batchsize,(self.nPeople+1)*self.nScene)
+        top[2].reshape(top_batchsize,self.nPeople,self.message_num_action*self.nAction)
+        if self.K_ > 0:
+            tlen_leaf = 2*self.nPeople*2*self.nAction # 2 leaves, n people, each has 2 input messages
+            self.tlen_leaf = tlen_leaf
+            top[3].reshape(self.top_batchsize,2,self.nPeople,2*self.nAction)
+        if self.K_ > 1:
+            tlen_mid = 2*(self.K_-1)*self.nPeople*3*self.nAction
+            self.tlen_mid = tlen_mid
+            top[4].reshape(self.top_batchsize,2*(self.K_-1),self.nPeople,3*self.nAction)
+        
+        self.slen = slen
+        self.alen = alen
+        self.top_batchsize = top_batchsize 
+        self.bottom_batchsize_frame = bottom1_batchsize
+        self.label_stop = [0]
+
+    def forward(self, bottom, top):
+        '''
+        bottom[0] : unary input
+        bottom[1] : scene->action   [bottom_batchsize*self.nPeople, self.nAction]
+        bottom[2] : action->scene    [bottom_batchsize*self.nPeople, self.nScene]
+        bottom[3] : action->action  [bottom_batchsize*self.nPeople*self.nPeople, self.nAction]
+        bottom[4] : temporal after->temporal before  [bottom_batchsize*self.nPeople*2*self.K_, self.nAction]
+        bottom[5] : temporal before->temporal after  [bottom_batchsize*self.nPeople*2*self.K_, self.nAction]
+        # this layer has 5 diffs from top
+        # top[0].diff for the whole message layer ---> [N,]
+        # top[1].diff for scene prediction diff  ---> [N,(npeople+1)*nScene]
+        # top[2].diff for action prediction diff  ---> [N,npeople,(npeople+2+1)*nAction]
+        # top[3].diff for temporal_leaf prediction diff--->[N,2,npeople,2*nAction]
+        # top[4].diff for temporal_mid prediction diff ---> [N,2*(self.K_-1),npeople,3*nAction]
+        '''
+        if self.K_>0:
+            labels = bottom[6].data
+        else:
+            labels = bottom[4].data
+        label_stop = 0*numpy.ones([self.bottom_batchsize_frame])
+        mask_s = numpy.ones([self.top_batchsize,(self.nPeople+1)*self.nScene])
+        for i in range(0,self.bottom_batchsize_frame):
+            for j in range(0,self.nPeople):
+                if labels[i*self.nPeople+j] == 0:
+                    label_stop[i] = j
+                    mask_s[i,label_stop[i]*self.nScene:self.nPeople*self.nScene] = numpy.zeros([1,(self.nPeople-label_stop[i])*self.nScene])
+                    break
+        self.label_stop = label_stop
+        scenenode = numpy.zeros([0,0])
+        # scene node:
+        tmp = numpy.reshape(bottom[2].data,[self.top_batchsize,self.nPeople*self.nScene])
+        tmpU = bottom[0].data[:,0:self.nScene]
+        #print bottom[0].data[:,:5]
+        #print numpy.reshape(bottom[0].data[:,5:],[2,14,40])
+        scenenode = numpy.append(tmp,tmpU,axis = 1)
+        scenenode = numpy.multiply(scenenode,mask_s)
+        tmpa_all = numpy.reshape(bottom[3].data,[self.top_batchsize,self.nPeople,self.nPeople*self.nAction])
+        actionnode = numpy.zeros([0,0])
+        action_s = numpy.reshape(bottom[1].data,[self.top_batchsize,self.nPeople,self.nAction])
+        #print bottom[1].data
+        #print action_s
+        if self.K_>0:
+            ta_tb = numpy.reshape(bottom[4].data,[self.top_batchsize,self.nPeople,self.K_*2*self.nAction])
+            tb_ta = numpy.reshape(bottom[5].data,[self.top_batchsize,self.nPeople,self.K_*2*self.nAction])
+            temporal_lf = numpy.zeros([0,0])
+        if self.K_>1:
+            temporal_md = numpy.zeros([0,0])
+            unit = self.tlen_mid/(2*self.K_-2)
+        for i in range(0,self.top_batchsize):
+            # action node:
+            # action to action:
+            assert(label_stop[i]>0)
+            tmpa = tmpa_all[i]
+            tmp1 = numpy.zeros([0,self.nPeople*self.nAction])
+            for j in range(0,self.nPeople):                #--- add unary
+                if j >= label_stop[i]:
+                    tmpj = numpy.zeros([1,self.nPeople*self.nAction])
+                    tmp1 = numpy.append(tmp1,tmpj,axis = 0)
+                    continue
+                tmpj = tmpa[:,j*self.nAction:(j+1)*self.nAction]
+                
+                tmpj[label_stop[i]:self.nPeople] = numpy.zeros([self.nPeople-label_stop[i],self.nAction])
+                tmpj[j] = bottom[0].data[i,self.nScene+j*self.nAction:self.nScene+(j+1)*self.nAction]
+                #print tmpj[j]
+                tmpj = numpy.reshape(tmpj,[1,self.nPeople*self.nAction])
+                tmp1 = numpy.append(tmp1,tmpj,axis = 0)
+            #print numpy.reshape(tmp1,[14,14,40])
+            #assert((0.025 in tmp1) == False)
+            # scene to action
+            tmpa_s = action_s[i]
+            #print tmp1.shape
+            #print tmpa_s
+            tmpa_s[label_stop[i]:self.nPeople] = numpy.zeros([self.nPeople-label_stop[i],self.nAction])
+            #print tmpa_s
+            #print tmp1.shape
+            #print tmpa_s.shape
+            #assert((0.025 in tmpa_s) == False)
+            tmp1 = numpy.append(tmp1,tmpa_s,axis = 1)
+            #print tmp1.shape
+            #print numpy.reshape(tmp1,[14,15,40])
+            #assert((0.025 in tmp1) == False)
+            if self.K_>=1:
+                # t_after->t_before to action
+                tmpab = ta_tb[i]
+                tmpa = tmpab[:,(self.K-1)*self.nAction,self.K_*self.nAction]
+                tmp1 = numpy.append(tmp1,tmpa,axis = 1)
+                # t_before->t_after to action     -----> what if only leaves! cannot handle k = 1
+                tmpba = tb_ta[i]
+                tmpa = tmpba[:,(self.K-1)*self.nAction,self.K_*self.nAction]
+                tmp1 = numpy.append(tmp1,tmpa,axis = 1)
+                tmp1 = numpy.reshape(tmp1,[1,self.nPeople*self.message_num_action*self.nAction]) # --->?
+            #print tmp1
+            if actionnode.shape[0] == 0:
+                actionnode=tmp1
+            else:
+                actionnode = numpy.append(actionnode,tmp1,axis = 0)
+            if self.K_<1:
+                continue
+            #temporal nodes:
+            #leaf                      
+            tmp1 = numpy.zeros([0,0])      #-lack of unary
+            stp = self.slen+self.alen
+            tmpuse = bottom[0].data[i,stp:stp+self.tlen_leaf/2]
+            tmpuse = numpy.reshape(tmpuse,[self.nPeople,self.nAction])
+            tmp1 = tmpuse
+            tmpa = tmpba[:,(2*self.K_-1)*self.nAction:2*self.K_*self.nAction]
+            tmp11 = numpy.append(tmp1,tmpa,axis = 1)
+            # temporal_lf = numpy.append(temporal_lf,tmp1,axis = 0)
+            tmp1 = numpy.zeros([0,0]) 
+            tmpuse = bottom[0].data[i,stp+self.tlen_leaf/2:stp+self.tlen_leaf]
+            tmpuse = numpy.reshape(tmpuse,[self.nPeople,self.nAction])
+            tmp1 = tmpuse
+            tmpa = tmpab[:,(2*self.K_-1)*self.nAction:2*self.K_*self.nAction]	
+            tmp1 = numpy.append(tmp1,tmpa,axis = 1)
+            tmp1 = numpy.append(tmp11,tmp1,axis = 0)
+            tmp1 = numpy.reshape(tmp1,[1,2*self.nPeople*2*self.nAction])
+            if temporal_lf.shape[0] == 0:
+                temporal_lf = tmp1
+            else:
+                temporal_lf = numpy.append(temporal_lf,tmp1,axis = 0)
+            #mid
+            #tmpa = tmpab[:,0:self.nAction] - lack of unary
+            stp = stp+self.tlen_leaf
+            tm = numpy.zeros([1,0]) 
+            for j in range(0,self.K_-1):
+                tmp1 = numpy.zeros([0,0])
+                tmpuse = bottom[0].data[i,stp:stp+unit]
+                tmpuse = numpy.reshape(tmpuse,[self.nPeople,self.nAction])
+                tmpa = tmpab[:,j*self.nAction:(j+1)*self.nAction]
+                tmp1 = numpy.append(tmpuse,tmpa)  # add axis!
+                flag = 2*self.K_-2-j
+                tmpa = tmpba[:,flag*self.nAction:(flag+1)*self.nAction]
+                tmp1 = numpy.append(tmp1,tmpa)      # add axis!
+                tmp1 = numpy.reshape(tmp1,[1,self.nPeople*3*self.nAction])
+                tm = numpy.append(tm,tmp1,axis = 1)
+                stp = stp+unit
+            for j in range(self.K_,2*self.K_-2):
+                tmp1 = numpy.zeros([0,0])
+                tmpuse = bottom[0].data[i,stp:stp+unit]
+                tmpuse = numpy.reshape(tmpuse,[self.nPeople,self.nAction])
+                tmpa = tmpab[:,j*self.nAction:(j+1)*self.nAction]
+                tmp1 = numpy.append(tmpuse,tmpa)     # add axis!
+                flag = 2*self.K_-2-j
+                tmpa = tmpba[:,flag*self.nAction,(flag+1)*self.nAction]
+                tmp1 = numpy.append(tmp1,tmpa)     # add axis!
+                tmp1 = numpy.reshape(tmp1,[1,self.nPeople*3*self.nAction])
+                tm = numpy.append(tm,tmp1,axis = 1)
+                stp = stp+unit
+            if temporal_md.shape[0] == 0:
+                temporal_md = tm
+            else:
+                temporal_md = numpy.append(temporal_md,tm,axis = 0)
+        tmp_all = scenenode 
+        top[1].data[...] = scenenode
+        #print scenenode
+        actionnode = numpy.reshape(actionnode,[self.top_batchsize,self.nPeople,self.message_num_action*self.nAction])
+        top[2].data[...] = actionnode
+        actionnode = numpy.reshape(actionnode,[self.top_batchsize,self.nPeople*self.message_num_action*self.nAction])
+        tmp_all = numpy.append(tmp_all,actionnode,axis = 1) 
+        if self.K_ > 0:
+            tmp_all = numpy.append(tmp_all,temporal_lf,axis = 1) 
+            top[3].data[...] = numpy.reshape(temporal_lf,[self.top_batchsize,2,self.nPeople,2*self.nAction])
+        if self.K_>1:
+            tmp_all = numpy.append(tmp_all,temporal_md,axis = 1)   
+            top[4].data[...] = numpy.reshape(temporal_md,[self.top_batchsize,2*(self.K_-1),self.nPeople,3*self.nAction])
+        top[0].data[...] = tmp_all
+        #print numpy.reshape(top[2].data[0],[14,15,40])
+        
+
+    def backward(self, top, propagate_down, bottom):
+        '''if self.K_>0:
+            labels = bottom[6].data
+        else:
+            labels = bottom[4].data
+        label_stop = self.nPeople*numpy.ones([self.bottom_batchsize_frame])
+        for i in range(0,self.bottom_batchsize_frame):
+            for j in range(0,self.nPeople):
+                if labels[i*self.nPeople+j] == 0:
+                    label_stop[i] = j
+                    break'''
+        diff0 = top[0].diff
+        diff1 = top[1].diff
+        #print top[2].diff[0]
+        mask1 = numpy.ones([0,0])
+        for i in range(0,self.top_batchsize):
+            mask = numpy.ones([1,self.slen])
+            lstop = self.label_stop[i]
+            mask[0,lstop*self.nScene:self.nPeople*self.nScene] = numpy.zeros([1,(self.nPeople-lstop)*self.nScene])           
+            for j in range(0,self.nPeople):
+                if j >= lstop:
+                    tmp = numpy.zeros([1,self.message_num_action*self.nAction])
+                    mask = numpy.append(mask,tmp,axis = 1)
+                    continue
+                tmp = numpy.ones([1,self.message_num_action*self.nAction])
+                tmp[0,lstop*self.nAction:self.nPeople*self.nAction] = numpy.zeros([1,(self.nPeople-lstop)*self.nAction])
+                mask = numpy.append(mask,tmp,axis = 1)
+            if mask1.shape[0] == 0:
+                mask1 = mask
+            else:
+                mask1 = numpy.append(mask1,mask,axis = 0)
+            
+        tmpdiff = numpy.reshape(top[2].diff,[self.top_batchsize,self.nPeople*self.message_num_action*self.nAction])
+        diff1 = numpy.append(diff1,tmpdiff, axis = 1)
+        if self.K_>0:
+            tmpdiff = numpy.reshape(top[3].diff,[self.top_batchsize,2*self.nPeople*2*self.nAction])
+            diff1 = numpy.append(diff1,tmpdiff, axis = 1)
+        if self.K_>1:
+            tmpdiff = numpy.reshape(top[4].diff,[self.top_batchsize,2*(self.K_-1)*npeople*3*nAction])
+            diff1 = numpy.append(diff1,tmpdiff, axis = 1)
+        diff = numpy.multiply((diff0+diff1),mask1)
+        stpp = self.slen
+        top[1].diff[...] = diff[:,0:self.slen]
+        top[2].diff[...] = numpy.reshape(diff[:,stpp:stpp+self.alen],[self.top_batchsize,self.nPeople,self.message_num_action*self.nAction])
+        #print top[2].diff[0]
+        stpp+=self.alen
+        if self.K_>0:
+            top3diff = diff[:,stpp:stpp+self.tlen_leaf]
+            top[3].diff[...] = numpy.reshape(top3diff,[self.top_batchsize,2,2*self.nAction*self.nPeople])
+            stpp+=self.tlen_leaf
+        if self.K_>1:
+            top4diff = diff[:,stpp:stpp+self.tlen_mid]
+            top[4].diff[...] = numpy.reshape(top4diff,[self.top_batchsize,2*(self.K_-1),3*self.nAction*self.nPeople])
+        tmpdiff0 = numpy.zeros([0,0])
+        tmpdiff1 = numpy.zeros([0,0])
+        tmpdiff2 = numpy.zeros([0,0])
+        tmpdiff3 = numpy.zeros([0,0])
+        tmpdiff4 = numpy.zeros([0,0])
+        tmpdiff5 = numpy.zeros([0,0])
+        '''
+        bottom[0] : unary input [bottom_batchsize,]
+        bottom[1] : scene->action   [bottom_batchsize*self.nPeople, self.nAction]
+        bottom[2] : action->scene    [bottom_batchsize*self.nPeople, self.nScene]
+        bottom[3] : action->action  [bottom_batchsize*self.nPeople*self.nPeople, self.nAction]
+        bottom[4] : temporal after->temporal before  [bottom_batchsize*self.nPeople*2*self.K_, self.nAction]
+        bottom[5] : temporal before->temporal after  [bottom_batchsize*self.nPeople*2*self.K_, self.nAction]
+        '''
+        # probbly change the use of top[1,2,3] to see if it affects?                      
+        for i in range(0,self.top_batchsize):            #--->set zeros to unary part
+            # for bottom[1]:
+            tmp2 = top[2].diff[i]
+            tmp2 = tmp2[:,self.nPeople*self.nAction:(self.nPeople+1)*self.nAction]
+            tmp2[self.label_stop[i]:self.nPeople] = numpy.zeros([self.nPeople-self.label_stop[i],self.nAction])
+            if tmpdiff1.shape[0] == 0:
+                tmpdiff1 = tmp2
+            else:
+                tmpdiff1 = numpy.append(tmpdiff1,tmp2,axis = 0)
+            # bottom[2]:
+            tmp2 = top[1].diff[i]
+            tmp2 = tmp2[0:self.nPeople*self.nScene]
+            tmp2 = numpy.reshape(tmp2,[self.nPeople,self.nScene])
+            tmp2[self.label_stop[i]:self.nPeople] = numpy.zeros([self.nPeople-self.label_stop[i],self.nScene])
+            if tmpdiff2.shape[0] == 0:
+                tmpdiff2 = tmp2
+            else:
+                tmpdiff2 = numpy.append(tmpdiff2,tmp2,axis = 0)
+            # bottom[3]:
+            tmp2 = top[2].diff[i]
+            tmp2 = tmp2[:,0:self.nPeople*self.nAction]
+            for p in range(0,self.nPeople):
+                tmp3 = tmp2[:,p*self.nAction:(p+1)*self.nAction]
+                tmp3[p] = numpy.zeros([1,self.nAction])
+                if tmpdiff3.shape[0] == 0:
+                    tmpdiff3 = tmp3
+                else:
+                    tmpdiff3 = numpy.append(tmpdiff3,tmp3,axis = 0)
+            if self.K_ >= 1:
+                # bottom[4]:
+                tmp3 = top[4].diff[i]
+                tmp2 = top[3].diff[i]
+                tmp1 = top[2].diff[i]
+                tmp1 = tmp1[:,(self.nPeople+1)*self.nAction:(self.nPeople+2)*self.nAction]
+                mdunit = 3*self.nAction
+                lfunit = 2*self.nAction
+                #pos = self.nAction*(self.nPeople+1)
+                for p in range(0,self.nPeople):
+                    tmp3_1 = tmp3[0:self.K_-1,p*mdunit:(p+1)*mdunit]
+                    tmp00 = tmp3_1[:,self.nAction:2*self.nAction]
+                    # diff from action node:
+                    tmp00 = numpy.append(tmp00,tmp1[p],axis = 0)
+                    # diff from before frames:
+                    tmp3_2 = tmp3[self.K_-1:2*(self.K_-1),p*mdunit:(p+1)*mdunit]
+                    tmp3_2 = tmp3_2[:,self.nAction:2*self.nAction]
+                    tmp3_3 = tmp2[1,p*lfunit:(p+1)*lfunit]
+                    tmp00 = numpy.append(tmp00,tmp3_2,axis = 0)
+                    tmp00 = numpy.append(tmp00,tmp3_3[self.nAction:2*self.nAction],axis = 0)  
+                    if tmpdiff4.shape[0] == 0:
+                        tmpdiff4 = tmp00
+                    else:
+                        tmpdiff4 = numpy.append(tmpdiff4,tmp00)     # add axis!
+                # bottom[5]:
+                tmp3 = numpy.flipud(tmp3)
+                tmp1 = top[2].diff[i]
+                tmp1 = tmp1[:,(self.nPeople+2)*self.nAction:(self.nPeople+3)*self.nAction]
+                #pos = self.nAction*(self.nPeople+1)
+                for p in range(0,self.nPeople):
+                    tmp3_1 = tmp3[0:self.K_-1,p*mdunit:(p+1)*mdunit]
+                    tmp00 = tmp3_1[:,2*self.nAction:3*self.nAction]
+                    # diff from action node:
+                    tmp00 = numpy.append(tmp00,tmp1[p],axis = 0)
+                    # diff from after frames:
+                    tmp3_2 = tmp3[self.K_-1:2*(self.K_-1),p*mdunit:(p+1)*mdunit]
+                    tmp3_2 = tmp3_2[:,self.nAction:2*self.nAction]
+                    tmp3_3 = tmp2[0,p*lfunit:(p+1)*lfunit]
+                    tmp00 = numpy.append(tmp00,tmp3_2,axis = 0)
+                    tmp00 = numpy.append(tmp00,tmp3_3[self.nAction:2*self.nAction],axis = 0) 
+                    if tmpdiff5.shape[0] == 0:
+                        tmpdiff5 = tmp00
+                    else:
+                        tmpdiff5 = numpy.append(tmpdiff5,tmp00)         # add axis!
+            # bottom[0]:
+            if tmpdiff0.shape[0] == 0:
+                tmpdiff0 = diff[i,self.nPeople*self.nScene:(self.nPeople+1)*self.nScene]
+            else:
+                tmpdiff0 = numpy.append(tmpdiff0,diff[i,self.nPeople*self.nScene:(self.nPeople+1)*self.nScene],axis = 1)   
+            tmpuse = numpy.reshape(diff[i,self.slen:self.slen+self.alen],[self.nPeople,self.message_num_action*self.nAction])
+            for p in range(0,self.nPeople):
+                tmp = tmpuse[p,p*self.nAction:p*self.nAction+self.nAction]
+                tmpdiff0 = numpy.append(tmpdiff0,tmp,axis = 1)   
+            step = self.slen+self.alen
+            if self.K_>=1:
+                tmpuse = diff[i,step:step+self.tlen_leaf]
+                tmpuse = numpy.reshape(tmpuse,[2*self.nPeople,2*self.nAction])
+                tmpuse = numpy.reshape(tmpuse[:,0:self.nAction],[1,2*self.nPeople*self.nAction])
+                tmpdiff0 = numpy.append(tmpdiff0,tmpuse,axis = 1) 
+            if self.K_ >= 2:
+                step = step + self.tlen_leaf
+                tmpuse = diff[i,step:step+self.tlen_mid]
+                tmpuse = numpy.reshape(tmpuse,[2*(self.K_-1)*self.nPeople,3*self.nAction])
+                tmpuse = numpy.reshape(tmpuse[:,0:self.nAction],[1,2*(self.K_-1)*self.nPeople*self.nAction])
+                tmpdiff0 = numpy.append(tmpdiff0,tmpuse,axis = 1)         # add axis!
+        tmpdiff0 = numpy.reshape(tmpdiff0,bottom[0].diff.shape)
+        bottom[0].diff[...] = tmpdiff0
+        bottom[1].diff[...] = tmpdiff1
+        bottom[2].diff[...] = tmpdiff2
+        bottom[3].diff[...] = tmpdiff3
+        #print bottom[3].diff[1] # all zeros!!!!!
+        if self.K_>0:
+            bottom[4].diff[...] = tmpdiff4
+            bottom[5].diff[...] = tmpdiff5
+
+def python_net_file():
+    with tempfile.NamedTemporaryFile(delete=False) as f:
+        f.write("""name: 'pythonnet' force_backward: true
+        input: 'data' input_shape { dim: 10 dim: 9 dim: 8 }
+        layer { type: 'Python' name: 'one' bottom: 'data' top: 'one'
+          python_param { module: 'test_python_layer' layer: 'SimpleLayer' } }
+        layer { type: 'Python' name: 'two' bottom: 'one' top: 'two'
+          python_param { module: 'test_python_layer' layer: 'SimpleLayer' } }
+        layer { type: 'Python' name: 'three' bottom: 'two' top: 'three'
+          python_param { module: 'test_python_layer' layer: 'SimpleLayer' } }""")
+        return f.name
+
+class TestPythonLayer(unittest.TestCase):
+    def setUp(self):
+        net_file = python_net_file()
+        self.net = caffe.Net(net_file, caffe.TRAIN)
+        os.remove(net_file)
+        self.net.setup()
+
+    def test_forward(self):
+        '''
+        bottom[0] : unary input     [bottom_batchsize, self.nScene+self.nPeople*self.nAction]
+        bottom[1] : scene->action   [bottom_batchsize*self.nPeople, self.nAction]
+        bottom[2] : action->scene    [bottom_batchsize*self.nPeople, self.nScene]
+        bottom[3] : action->action  [bottom_batchsize*self.nPeople*self.nPeople, self.nAction]
+        bottom[4] : action label'''
+        #x = range()
+        x = 8
+        self.net.blobs['data'].data[...] = x
+        self.net.forward()
+        for y in self.net.blobs['three'].data.flat:
+            self.assertEqual(y, 10**3 * x)
+
+    def test_backward(self):
+        x = 7
+        self.net.blobs['three'].diff[...] = x
+        self.net.backward()
+        for y in self.net.blobs['data'].diff.flat:
+            self.assertEqual(y, 10**3 * x)
+
+    def test_reshape(self):
+        s = 4
+        self.net.blobs['data'].reshape(s, s, s, s)
+        self.net.forward()
+        for blob in self.net.blobs.itervalues():
+            for d in blob.data.shape:
+                self.assertEqual(s, d)

@@ -1,0 +1,17 @@
+#net: "prototxts/iter1_fully_connected_pose_gated.prototxt"
+#net: "prototxts/iter1_fully_connected_pose_gated.prototxt"
+test_iter: 639
+test_interval: 200
+base_lr: 0.000005
+#solver_type: ADAGRAD
+lr_policy: "step"
+#clip_gradients: 30
+gamma: 0.1
+stepsize: 1000
+display: 20
+max_iter: 5000
+momentum: 0.90
+weight_decay: 0.0005
+snapshot: 200
+snapshot_prefix: "snapshots/snapshots_iter1_gated/iter1_gated_snapshots_s1"
+solver_mode: GPU

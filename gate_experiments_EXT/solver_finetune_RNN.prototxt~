@@ -1,0 +1,16 @@
+net: "prototxts/share_weights_fully/iter2_fully_connected.prototxt"
+test_iter: 1106
+test_interval: 1000
+base_lr: 0.001
+#solver_type: ADAGRAD
+lr_policy: "step"
+#clip_gradients: 30
+gamma: 0.1
+stepsize: 10000
+display: 20
+max_iter: 20000
+momentum: 0.90
+weight_decay: 0.0005
+snapshot: 1000
+snapshot_prefix: "snapshots/snapshots_iter2/snapshots_s1"
+solver_mode: GPU

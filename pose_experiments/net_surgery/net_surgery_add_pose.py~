@@ -1,0 +1,70 @@
+# Make sure that caffe is on the python path:
+#caffe_root = '../'  # this file is expected to be in {caffe_root}/examples
+import os, sys, optparse
+import sys
+#sys.path.insert(0, caffe_root + 'python')
+
+import caffe
+
+
+optparser = optparse.OptionParser()
+optparser.add_option("-f", "--fold", dest="fold", default="1", help="Base Dir")
+(opts, _)= optparser.parse_args()
+
+def net_surgery(fold):
+  # Load the original network and extract the fully connected layers' parameters.
+  net = caffe.Net('iter1_gated_tian.prototxt', 
+                'iter_1200.caffemodel', 
+                caffe.TRAIN)
+
+  # Initialize weights and biases
+  params_keys = net.params.keys()
+  print params_keys
+  n_params = {pr: (net.params[pr][0].data, net.params[pr][1].data) for pr in params_keys}  # n_params = {name: (weights, biases)}
+  blobs_keys = net.blobs.keys()
+  n_blobs = {pr: (net.blobs[pr].data) for pr in blobs_keys}
+  #print n_blobs
+
+
+  # Load the original network and extract the fully connected layers' parameters.
+  frame_net = caffe.Net('iter1_gated_pose.prototxt', 
+                'net_surgery_forzhiwei.caffemodel', 
+                caffe.TRAIN)
+
+  # Initialize weights and biases
+  frame_params_keys = frame_net.params.keys()
+  print frame_params_keys
+  frame_n_params = {pr: (frame_net.params[pr][0].data, frame_net.params[pr][1].data) for pr in frame_params_keys}  # n_params = {name: (weights, biases)}
+  frame_blobs_keys = frame_net.blobs.keys()
+  frame_n_blobs = {pr: (frame_net.blobs[pr].data) for pr in frame_blobs_keys}
+
+
+
+
+  ns_net = caffe.Net('iter1_gated_tian_pose.prototxt',caffe.TRAIN)
+  ns_params_keys = ns_net.params.keys()
+  print ns_params_keys
+  ns_params = {pr: (ns_net.params[pr][0].data, ns_net.params[pr][1].data) for pr in ns_params_keys}
+  # ns_params = {pr: (ns_net.params[pr][0].data) for pr in ns_params_keys}
+  length = len(params_keys)
+  ns_length = len(ns_params_keys)
+  print length,ns_length
+  for i in range(ns_length):
+	ns_pr = ns_params_keys[i]
+	try: 
+		print ns_pr,ns_params[ns_pr][0].shape,n_params[ns_pr][0].shape
+		ns_params[ns_pr][0].flat = n_params[ns_pr][0].flat
+		ns_params[ns_pr][1].flat = n_params[ns_pr][1].flat
+	except:
+		print j,ns_pr,"frame_"+pr,ns_params[ns_pr][0].shape,frame_n_params[ns_pr][0].shape
+		ns_params[ns_pr][0].flat = frame_n_params[ns_pr][0].flat
+		ns_params[ns_pr][1].flat = frame_n_params[ns_pr][1].flat
+
+
+
+
+  ns_net.save('iter1_gated_pose_tian.caffemodel')
+
+if __name__=="__main__":
+  net_surgery(opts.fold)
+

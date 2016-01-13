@@ -16,7 +16,7 @@ layer {
   }
   data_param {
     #source: "/cs/vml2/zhiweid/CVPR16_NEW/bp-rnn/experiments/0419_context/CAD_train_lmdb_0419_context"
-    source: "/cs/vml2/zhiweid/CVPR16_NEW/data/0930/CAD_action_train_lmdb_0930"
+    source: "/cs/vml2/zhiweid/CVPR16_NEW/data/1030/CAD_action_train_lmdb_1030"
     batch_size: 70
     backend: LMDB
   }
@@ -36,7 +36,7 @@ layer {
   }
   data_param {
     #source: "/cs/vml2/zhiweid/CVPR16_NEW/bp-rnn/experiments/0419_context/CAD_val_lmdb_0419_context"
-    source: "/cs/vml2/zhiweid/CVPR16_NEW/data/0930/CAD_action_val_lmdb_0930"
+    source: "/cs/vml2/zhiweid/CVPR16_NEW/data/1030/CAD_action_val_lmdb_1030"
     batch_size: 14
     backend: LMDB
   }
@@ -387,7 +387,7 @@ layer {
   }
   data_param {
     #source: "/cs/vml2/zhiweid/CVPR16_NEW/bp-rnn/experiments/0419_context/CAD_train_lmdb_0419_frame_context"
-    source: "/cs/vml2/zhiweid/CVPR16_NEW/data/0930/CAD_frame_train_lmdb_0930"
+    source: "/cs/vml2/zhiweid/CVPR16_NEW/data/1030/CAD_frame_train_lmdb_1030"
     batch_size: 5
     backend: LMDB
   }
@@ -407,7 +407,7 @@ layer {
   }
   data_param {
     #source: "/cs/vml2/zhiweid/CVPR16_NEW/bp-rnn/experiments/0419_context/CAD_val_lmdb_0419_frame_context"
-    source: "/cs/vml2/zhiweid/CVPR16_NEW/data/0930/CAD_frame_val_lmdb_0930"
+    source: "/cs/vml2/zhiweid/CVPR16_NEW/data/1030/CAD_frame_val_lmdb_1030"
     batch_size: 1
     backend: LMDB
   }
@@ -1138,6 +1138,8 @@ layer {
   bottom: "A_S_MessageOut1"
   bottom: "S_A_MessageOut1"
   bottom: "label_action"
+  bottom: "label_frame"
+  bottom: "A_S_prediction1"
   top: "gated_A_S_MessageOut1"
   top: "gated_S_A_MessageOut1"
   python_param {
@@ -1161,8 +1163,8 @@ layer {
 layer {
   name: "Belief_Propagation_Recurrent_Neural_Network_ArrangeMessageOut1"
   type: "Python"
-  bottom: "gated_A_A_MessageOut1"
-  bottom: "gated_A_S_MessageOut1"
+  bottom: "A_A_MessageOut1"
+  bottom: "A_S_MessageOut1"
   bottom: "S_A_MessageOut1"
   bottom: "label_action"
   bottom: "concat_all0"
@@ -1325,6 +1327,7 @@ layer {
   name: "scene_accuracy_arrange"
   type: "Python"
   bottom: "scene_pred"
+  bottom: "label_frame"
   top: "scene_pred_final"
   python_param{
     module: "Data_Arrange_Accuracy_Scene"

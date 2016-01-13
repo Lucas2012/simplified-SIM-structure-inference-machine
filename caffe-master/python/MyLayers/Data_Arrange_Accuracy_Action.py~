@@ -9,9 +9,9 @@ class Data_Arrange_Layer(caffe.Layer):
     """A layer that initialize messages for recurrent belief propagation"""
 
     def setup(self, bottom, top):
-        self.nScene = 5
+        self.nScene = 6
         #self.nAction = 15
-        self.nAction = 7
+        self.nAction = 6
         self.nPeople = 14
         self.K_ = 0;
         self.bottom_batchsize = 0
@@ -56,6 +56,7 @@ class Data_Arrange_Layer(caffe.Layer):
         #top[1].data = numpy.repeat(bottom[1].data,self.T_)
         label_stop = self.nPeople*numpy.ones([self.bottom_batchsize])
         labels = bottom[1].data.copy()
+        print labels
         for i in range(0,self.bottom_batchsize):
             for j in range(0,self.nPeople):
                 if labels[i*self.nPeople+j] == 0:
@@ -80,14 +81,13 @@ class Data_Arrange_Layer(caffe.Layer):
         tmplabel2=numpy.reshape(tmplabel2,[len(tmplabel2),1]).copy()  
         tmpdata = bottom[0].data[(self.T_-1)*self.top_batchsize:self.T_*self.top_batchsize].copy()
         top[0].data[...] = tmpdata.copy()
-        if top[0].data.shape[1] == 7:
-            top[1].data[...] = tmplabel.copy()+1.0  
+        if top[0].data.shape[1] == 6:
+            top[1].data[...] = tmplabel.copy()-1.0  
         else:
-            print 'data',top[0].data              
+            top[1].data[...] = tmplabel.copy()
   
         if len(bottom) > 2:
             top[2].data[...] = tmplabel2  
-            print 'label',tmplabel2       
 
     def backward(self, top, propagate_down, bottom):
         pass

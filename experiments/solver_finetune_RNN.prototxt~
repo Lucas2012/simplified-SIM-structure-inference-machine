@@ -1,7 +1,7 @@
-net: "prototxts/new_exp/iter1_fully_connected.prototxt"
+net: "prototxts/untied_weights/iter2_graph.prototxt"
 #net: "prototxts/new_exp/iter2_fully_connected_extended.prototxt"
 test_iter: 639
-test_interval: 1000
+test_interval: 200
 base_lr: 0.001
 #solver_type: ADAGRAD
 lr_policy: "step"
@@ -13,5 +13,5 @@ max_iter: 20000
 momentum: 0.90
 weight_decay: 0.0005
 snapshot: 1000
-snapshot_prefix: "new_exp/snapshots_iter2_fully_connected_extended/snapshots_s1"
+snapshot_prefix: "new_exp/snapshots_iter3_untied/snapshots_s1"
 solver_mode: GPU

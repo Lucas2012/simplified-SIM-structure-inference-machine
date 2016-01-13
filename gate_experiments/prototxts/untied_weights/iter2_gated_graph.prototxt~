@@ -1,0 +1,1924 @@
+name: "CaffeNet"
+force_backward:true
+################################################################## action net ############################################################
+layer {
+  name: "data_action"
+  type: "Data"
+  top: "data_action"
+  top: "label_action"
+  include {
+    phase: TRAIN
+  }
+  transform_param {
+    mirror: false
+    crop_size: 227
+    mean_file: "imagenet_mean.binaryproto"
+  }
+  data_param {
+    #source: "/cs/vml2/zhiweid/CVPR16_NEW/bp-rnn/experiments/0419_context/CAD_train_lmdb_0419_context"
+    source: "/cs/vml2/zhiweid/CVPR16_NEW/data/1030/CAD_action_train_lmdb_1030"
+    batch_size: 70
+    backend: LMDB
+  }
+}
+layer {
+  name: "data_action"
+  type: "Data"
+  top: "data_action"
+  top: "label_action"
+  include {
+    phase: TEST
+  }
+  transform_param {
+    mirror: false
+    crop_size: 227
+    mean_file: "imagenet_mean.binaryproto"
+  }
+  data_param {
+    #source: "/cs/vml2/zhiweid/CVPR16_NEW/bp-rnn/experiments/0419_context/CAD_val_lmdb_0419_context"
+    source: "/cs/vml2/zhiweid/CVPR16_NEW/data/1030/CAD_action_val_lmdb_1030"
+    batch_size: 14
+    backend: LMDB
+  }
+}
+layer {
+  name: "conv1_action"
+  type: "Convolution"
+  bottom: "data_action"
+  top: "conv1_action"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 96
+    kernel_size: 11
+    stride: 4
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "relu1_action"
+  type: "ReLU"
+  bottom: "conv1_action"
+  top: "conv1_action"
+}
+layer {
+  name: "pool1_action"
+  type: "Pooling"
+  bottom: "conv1_action"
+  top: "pool1_action"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "norm1_action"
+  type: "LRN"
+  bottom: "pool1_action"
+  top: "norm1_action"
+  lrn_param {
+    local_size: 5
+    alpha: 0.0001
+    beta: 0.75
+  }
+}
+layer {
+  name: "conv2_action"
+  type: "Convolution"
+  bottom: "norm1_action"
+  top: "conv2_action"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 256
+    pad: 2
+    kernel_size: 5
+    group: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layer {
+  name: "relu2_action"
+  type: "ReLU"
+  bottom: "conv2_action"
+  top: "conv2_action"
+}
+layer {
+  name: "pool2_action"
+  type: "Pooling"
+  bottom: "conv2_action"
+  top: "pool2_action"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "norm2_action"
+  type: "LRN"
+  bottom: "pool2_action"
+  top: "norm2_action"
+  lrn_param {
+    local_size: 5
+    alpha: 0.0001
+    beta: 0.75
+  }
+}
+layer {
+  name: "conv3_action"
+  type: "Convolution"
+  bottom: "norm2_action"
+  top: "conv3_action"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 384
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "relu3_action"
+  type: "ReLU"
+  bottom: "conv3_action"
+  top: "conv3_action"
+}
+layer {
+  name: "conv4_action"
+  type: "Convolution"
+  bottom: "conv3_action"
+  top: "conv4_action"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 384
+    pad: 1
+    kernel_size: 3
+    group: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layer {
+  name: "relu4_action"
+  type: "ReLU"
+  bottom: "conv4_action"
+  top: "conv4_action"
+}
+layer {
+  name: "conv5_action"
+  type: "Convolution"
+  bottom: "conv4_action"
+  top: "conv5_action"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 256
+    pad: 1
+    kernel_size: 3
+    group: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layer {
+  name: "relu5_action"
+  type: "ReLU"
+  bottom: "conv5_action"
+  top: "conv5_action"
+}
+layer {
+  name: "pool5_action"
+  type: "Pooling"
+  bottom: "conv5_action"
+  top: "pool5_action"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "fc6_action"
+  type: "InnerProduct"
+  bottom: "pool5_action"
+  top: "fc6_action"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 4096
+    weight_filler {
+      type: "gaussian"
+      std: 0.005
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layer {
+  name: "relu6_action"
+  type: "ReLU"
+  bottom: "fc6_action"
+  top: "fc6_action"
+}
+layer {
+  name: "drop6_action"
+  type: "Dropout"
+  bottom: "fc6_action"
+  top: "fc6_action"
+  dropout_param {
+    dropout_ratio: 0.5
+  }
+}
+layer {
+  name: "fc7_action"
+  type: "InnerProduct"
+  bottom: "fc6_action"
+  top: "fc7_action"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 4096
+    weight_filler {
+      type: "gaussian"
+      std: 0.005
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layer {
+  name: "relu7_action"
+  type: "ReLU"
+  bottom: "fc7_action"
+  top: "fc7_action"
+}
+layer {
+  name: "drop7_action"
+  type: "Dropout"
+  bottom: "fc7_action"
+  top: "fc7_action"
+  dropout_param {
+    dropout_ratio: 0.5
+  }
+}
+layer {
+  name: "fc8_CAD_action"
+  type: "InnerProduct"
+  bottom: "fc7_action"
+  top: "fc8_CAD_action"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  } 
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 7
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+
+############################################################### frame net #################################################################
+
+layer {
+  name: "data_frame"
+  type: "Data"
+  top: "data_frame"
+  top: "label_frame"
+  include {
+    phase: TRAIN
+  }
+  transform_param {
+    mirror: true
+    crop_size: 227
+    mean_file: "imagenet_mean.binaryproto"
+  }
+  data_param {
+    #source: "/cs/vml2/zhiweid/CVPR16_NEW/bp-rnn/experiments/0419_context/CAD_train_lmdb_0419_frame_context"
+    source: "/cs/vml2/zhiweid/CVPR16_NEW/data/1030/CAD_frame_train_lmdb_1030"
+    batch_size: 5
+    backend: LMDB
+  }
+}
+layer {
+  name: "data_frame"
+  type: "Data"
+  top: "data_frame"
+  top: "label_frame"
+  include {
+    phase: TEST
+  }
+  transform_param {
+    mirror: false
+    crop_size: 227
+    mean_file: "imagenet_mean.binaryproto"
+  }
+  data_param {
+    #source: "/cs/vml2/zhiweid/CVPR16_NEW/bp-rnn/experiments/0419_context/CAD_val_lmdb_0419_frame_context"
+    source: "/cs/vml2/zhiweid/CVPR16_NEW/data/1030/CAD_frame_val_lmdb_1030"
+    batch_size: 1
+    backend: LMDB
+  }
+}
+layer {
+  name: "context"
+  type: "HDF5Data"
+  top: "data_context"
+  include {
+    phase: TRAIN
+  }
+  hdf5_data_param {
+    source: "/cs/vml2/zhiweid/CVPR16_NEW/data/0930/hdf5db/train_context.txt"
+    batch_size: 5
+  }
+}
+layer {
+  name: "context"
+  type: "HDF5Data"
+  top: "data_context"
+  include {
+    phase: TEST
+  }
+  hdf5_data_param {
+    source: "/cs/vml2/zhiweid/CVPR16_NEW/data/0930/hdf5db/val_context.txt"
+    batch_size: 1
+  }
+}
+layer {
+  name: "conv1_frame"
+  type: "Convolution"
+  bottom: "data_frame"
+  top: "conv1_frame"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 96
+    kernel_size: 11
+    stride: 4
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "relu1_frame"
+  type: "ReLU"
+  bottom: "conv1_frame"
+  top: "conv1_frame"
+}
+layer {
+  name: "pool1_frame"
+  type: "Pooling"
+  bottom: "conv1_frame"
+  top: "pool1_frame"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "norm1_frame"
+  type: "LRN"
+  bottom: "pool1_frame"
+  top: "norm1_frame"
+  lrn_param {
+    local_size: 5
+    alpha: 0.0001
+    beta: 0.75
+  }
+}
+layer {
+  name: "conv2_frame"
+  type: "Convolution"
+  bottom: "norm1_frame"
+  top: "conv2_frame"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 256
+    pad: 2
+    kernel_size: 5
+    group: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layer {
+  name: "relu2_frame"
+  type: "ReLU"
+  bottom: "conv2_frame"
+  top: "conv2_frame"
+}
+layer {
+  name: "pool2_frame"
+  type: "Pooling"
+  bottom: "conv2_frame"
+  top: "pool2_frame"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "norm2_frame"
+  type: "LRN"
+  bottom: "pool2_frame"
+  top: "norm2_frame"
+  lrn_param {
+    local_size: 5
+    alpha: 0.0001
+    beta: 0.75
+  }
+}
+layer {
+  name: "conv3_frame"
+  type: "Convolution"
+  bottom: "norm2_frame"
+  top: "conv3_frame"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 384
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "relu3_frame"
+  type: "ReLU"
+  bottom: "conv3_frame"
+  top: "conv3_frame"
+}
+layer {
+  name: "conv4_frame"
+  type: "Convolution"
+  bottom: "conv3_frame"
+  top: "conv4_frame"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 384
+    pad: 1
+    kernel_size: 3
+    group: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layer {
+  name: "relu4_frame"
+  type: "ReLU"
+  bottom: "conv4_frame"
+  top: "conv4_frame"
+}
+layer {
+  name: "conv5_frame"
+  type: "Convolution"
+  bottom: "conv4_frame"
+  top: "conv5_frame"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 256
+    pad: 1
+    kernel_size: 3
+    group: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layer {
+  name: "relu5_frame"
+  type: "ReLU"
+  bottom: "conv5_frame"
+  top: "conv5_frame"
+}
+layer {
+  name: "pool5_frame"
+  type: "Pooling"
+  bottom: "conv5_frame"
+  top: "pool5_frame"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "fc6_frame"
+  type: "InnerProduct"
+  bottom: "pool5_frame"
+  top: "fc6_frame"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 4096
+    weight_filler {
+      type: "gaussian"
+      std: 0.005
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layer {
+  name: "relu6_frame"
+  type: "ReLU"
+  bottom: "fc6_frame"
+  top: "fc6_frame"
+}
+layer {
+  name: "drop6_frame"
+  type: "Dropout"
+  bottom: "fc6_frame"
+  top: "fc6_frame"
+  dropout_param {
+    dropout_ratio: 0.5
+  }
+}
+layer {
+  name: "fc7_frame"
+  type: "InnerProduct"
+  bottom: "fc6_frame"
+  top: "fc7_frame"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 4096
+    weight_filler {
+      type: "gaussian"
+      std: 0.005
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layer {
+  name: "relu7_frame"
+  type: "ReLU"
+  bottom: "fc7_frame"
+  top: "fc7_frame"
+}
+layer {
+  name: "drop7_frame"
+  type: "Dropout"
+  bottom: "fc7_frame"
+  top: "fc7_frame"
+  dropout_param {
+    dropout_ratio: 0.5
+  }
+}
+layer {
+  name: "fc8_CAD_frame"
+  type: "InnerProduct"
+  bottom: "fc7_frame"
+  top: "fc8_CAD_frame"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 5
+    bias_term: true
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+  }
+}
+layer {
+  name: "fc8_context"
+  type: "InnerProduct"
+  bottom: "data_context"
+  top: "fc8_context"
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 5
+    bias_term: true
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+  }
+}
+layer {
+  name: "sum_frame"
+  type: "Eltwise"
+  bottom: "fc8_context"
+  bottom: "fc8_CAD_frame"
+  top: "sum_frame"
+  eltwise_param {
+    operation: SUM
+  }
+}
+
+################################################### re-arrange data ###############################################
+layer {
+  name: "prob_frame"
+  type: "Softmax"
+  #bottom: "sum_frame"
+  bottom: "fc8_CAD_frame"
+  top: "fc8_CAD_frame_prob"
+}
+layer {
+  name: "prob_action"
+  type: "Softmax"
+  bottom: "fc8_CAD_action"
+  top: "fc8_CAD_prob"
+}
+layer {
+  name: "Data_arrange_layer_filter"
+  type: "Python"
+  bottom: "fc8_CAD_prob"
+  bottom: "label_action"
+  top: "fc9_filtered"
+  python_param{
+    module: "Data_arrange"
+    layer: "Data_Arrange_Layer"
+  }
+}
+layer {
+  name: "concatenation_s_a_p"
+  type: "Concat"
+  bottom: "fc8_CAD_frame_prob"
+  bottom: "fc9_filtered"
+  top: "concat_all0"
+  concat_param {
+    concat_dim: 1
+  }
+}
+
+############blank#############
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_ArrangeMessageIn1"
+  type: "Python"
+  bottom: "concat_all0"
+  bottom: "label_action"
+  top: "A_A_MessageIn1"
+  top: "A_S_MessageIn1"
+  top: "S_A_MessageIn1"
+  python_param {
+    module: "simplified_message_in"
+    layer: "simplified_message_in"
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_A_A_Message1"
+  type: "InnerProduct"
+  bottom: "A_A_MessageIn1"
+  top: "A_A_MessageOut1"
+  param {
+    name: "W_hh_1_1"
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 7
+    bias_term: true
+    weight_filler {
+      type: "uniform"
+      min: -0.08
+      max: 0.08
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+    axis: 1
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_A_S_Message1"
+  type: "InnerProduct"
+  bottom: "A_S_MessageIn1"
+  top: "A_S_MessageOut1"
+  param {
+    name: "W_hh_2_1"
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 5
+    bias_term: true
+    weight_filler {
+      type: "uniform"
+      min: -0.08
+      max: 0.08
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+    axis: 1
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_S_A_Message1"
+  type: "InnerProduct"
+  bottom: "S_A_MessageIn1"
+  top: "S_A_MessageOut1"
+  param {
+    name: "W_hh_3_1"
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 7
+    bias_term: true
+    weight_filler {
+      type: "uniform"
+      min: -0.08
+      max: 0.08
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+    axis: 1
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_simplified_message_out_single1"
+  type: "Python"
+  bottom: "A_S_MessageOut1"
+  bottom: "S_A_MessageOut1"
+  bottom: "A_A_MessageOut1"
+  bottom: "label_action"
+  bottom: "concat_all0"
+  top: "A_S_for_prediction1"
+  top: "S_A_for_prediction1"
+  top: "A_A_for_prediction1"
+  python_param {
+    module: "simplified_message_out_a2s"
+    layer: "simplified_message_out_a2s"
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_Scene_a2s1"
+  type: "InnerProduct"
+  bottom: "A_S_for_prediction1"
+  top: "A_S_prediction_for_norm1"
+  param {
+    name: "W_ho_1_1"
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 5
+    bias_term: true
+    weight_filler {
+      type: "uniform"
+      min: -0.08
+      max: 0.08
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+    axis: 1
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_Action_s2a1"
+  type: "InnerProduct"
+  bottom: "S_A_for_prediction1"
+  top: "S_A_prediction_for_norm1"
+  param {
+    name: "W_ho_2_1"
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 7
+    bias_term: true
+    weight_filler {
+      type: "uniform"
+      min: -0.08
+      max: 0.08
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+    axis: 1
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_Action_a2a1"
+  type: "InnerProduct"
+  bottom: "A_A_for_prediction1"
+  top: "A_A_prediction_for_norm1"
+  param {
+    name: "W_ho_2_1"
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 7
+    bias_term: true
+    weight_filler {
+      type: "uniform"
+      min: -0.08
+      max: 0.08
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+    axis: 1
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_Normalize_scene_a2s1"
+  type: "Softmax"
+  bottom: "A_S_prediction_for_norm1"
+  top: "A_S_prediction1"
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_Normalize_action_s2a1"
+  type: "Softmax"
+  bottom: "S_A_prediction_for_norm1"
+  top: "S_A_prediction1"
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_Normalize_action_a2a1"
+  type: "Softmax"
+  bottom: "A_A_prediction_for_norm1"
+  top: "A_A_prediction1"
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_graphical_edge_bg1"
+  type: "Python"
+  bottom: "concat_all0"
+  bottom: "A_S_prediction1"
+  bottom: "S_A_prediction1"
+  bottom: "label_action"
+  top: "gate_input11"
+  python_param {
+    module: "graphical_edge_background"
+    layer: "graphical_edge"
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_graphical_edge_action1"
+  type: "Python"
+  bottom: "concat_all0"
+  bottom: "A_A_prediction1"
+  bottom: "label_action"
+  top: "gate_input21"
+  python_param {
+    module: "graphical_edge_action"
+    layer: "graphical_edge"
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_gate1_bg1"
+  type: "InnerProduct"
+  bottom: "gate_input11"
+  top: "gate_output11"
+  param {
+    name: "W_hg_gate1_1"
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 1
+    bias_term: true
+    weight_filler {
+      type: "uniform"
+      min: -0.08
+      max: 0.08
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+    axis: 1
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_gate1_action1"
+  type: "InnerProduct"
+  bottom: "gate_input21"
+  top: "gate_output21"
+  param {
+    name: "W_hg_gate2_1"
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 1
+    bias_term: true
+    weight_filler {
+      type: "uniform"
+      min: -0.08
+      max: 0.08
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+    axis: 1
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_structure_gate1_bg1"
+  type: "Python"
+  bottom: "gate_output11"
+  bottom: "A_S_MessageOut1"
+  bottom: "S_A_MessageOut1"
+  bottom: "label_action"
+  top: "gated_A_S_MessageOut1"
+  top: "gated_S_A_MessageOut1"
+  python_param {
+    module: "structured_gate_background"
+    layer: "structured_gate"
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_structure_gate1_action1"
+  type: "Python"
+  bottom: "gate_output21"
+  bottom: "A_A_MessageOut1"
+  bottom: "label_action"
+  bottom: "A_A_prediction1"
+  top: "gated_A_A_MessageOut1"
+  python_param {
+    module: "structured_gate_action"
+    layer: "structured_gate"
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_ArrangeMessageOut1"
+  type: "Python"
+  bottom: "A_A_MessageOut1"
+  bottom: "gated_A_S_MessageOut1"
+  bottom: "S_A_MessageOut1"
+  bottom: "label_action"
+  bottom: "concat_all0"
+  top: "scene_1"
+  top: "action_1"
+  python_param {
+    module: "simplified_message_out"
+    layer: "simplified_message_out"
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_Scene1"
+  type: "InnerProduct"
+  bottom: "scene_1"
+  top: "scene_out1"
+  param {
+    name: "W_ho_1_1"
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 5
+    bias_term: true
+    weight_filler {
+      type: "uniform"
+      min: -0.08
+      max: 0.08
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+    axis: 1
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_Action1"
+  type: "InnerProduct"
+  bottom: "action_1"
+  top: "action_out1"
+  param {
+    name: "W_ho_2_1"
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 7
+    bias_term: true
+    weight_filler {
+      type: "uniform"
+      min: -0.08
+      max: 0.08
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+    axis: 1
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_message_reshape1"
+  type: "Python"
+  bottom: "action_out1"
+  top: "action_out_reshaped1"
+  python_param {
+    module: "Message_Reshape1"
+    layer: "Message_Reshape1"
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_Normalize_Scene_1"
+  type: "Softmax"
+  bottom: "scene_out1"
+  top: "scene_normalized_1"
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_Normalize_Action_1"
+  type: "Softmax"
+  bottom: "action_out1"
+  top: "action_normalized_1"
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_Data_arrange_layer_filter1"
+  type: "Python"
+  bottom: "action_normalized_1"
+  bottom: "label_action"
+  top: "fc9_filtered1"
+  python_param {
+    module: "Data_arrange"
+    layer: "Data_Arrange_Layer"
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_concatenation_s_a1"
+  type: "Concat"
+  bottom: "scene_normalized_1"
+  bottom: "fc9_filtered1"
+  top: "concat_all1"
+  concat_param {
+    concat_dim: 1
+  }
+}
+###################################### iter2 ######################################
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_ArrangeMessageIn2"
+  type: "Python"
+  bottom: "concat_all1"
+  bottom: "label_action"
+  top: "A_A_MessageIn2"
+  top: "A_S_MessageIn2"
+  top: "S_A_MessageIn2"
+  python_param {
+    module: "simplified_message_in"
+    layer: "simplified_message_in"
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_A_A_Message2"
+  type: "InnerProduct"
+  bottom: "A_A_MessageIn2"
+  top: "A_A_MessageOut2"
+  param {
+    name: "W_hh_1_2"
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 7
+    bias_term: true
+    weight_filler {
+      type: "uniform"
+      min: -0.08
+      max: 0.08
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+    axis: 1
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_A_S_Message2"
+  type: "InnerProduct"
+  bottom: "A_S_MessageIn2"
+  top: "A_S_MessageOut2"
+  param {
+    name: "W_hh_2_2"
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 5
+    bias_term: true
+    weight_filler {
+      type: "uniform"
+      min: -0.08
+      max: 0.08
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+    axis: 1
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_S_A_Message2"
+  type: "InnerProduct"
+  bottom: "S_A_MessageIn2"
+  top: "S_A_MessageOut2"
+  param {
+    name: "W_hh_3_2"
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 7
+    bias_term: true
+    weight_filler {
+      type: "uniform"
+      min: -0.08
+      max: 0.08
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+    axis: 1
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_simplified_message_out_single2"
+  type: "Python"
+  bottom: "A_S_MessageOut2"
+  bottom: "S_A_MessageOut2"
+  bottom: "A_A_MessageOut2"
+  bottom: "label_action"
+  bottom: "concat_all1"
+  top: "A_S_for_prediction2"
+  top: "S_A_for_prediction2"
+  top: "A_A_for_prediction2"
+  python_param {
+    module: "simplified_message_out_a2s"
+    layer: "simplified_message_out_a2s"
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_Scene_a2s2"
+  type: "InnerProduct"
+  bottom: "A_S_for_prediction2"
+  top: "A_S_prediction_for_norm2"
+  param {
+    name: "W_ho_1_2"
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 5
+    bias_term: true
+    weight_filler {
+      type: "uniform"
+      min: -0.08
+      max: 0.08
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+    axis: 1
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_Action_s2a2"
+  type: "InnerProduct"
+  bottom: "S_A_for_prediction2"
+  top: "S_A_prediction_for_norm2"
+  param {
+    name: "W_ho_2_2"
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 7
+    bias_term: true
+    weight_filler {
+      type: "uniform"
+      min: -0.08
+      max: 0.08
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+    axis: 1
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_Action_a2a2"
+  type: "InnerProduct"
+  bottom: "A_A_for_prediction2"
+  top: "A_A_prediction_for_norm2"
+  param {
+    name: "W_ho_2_2"
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 7
+    bias_term: true
+    weight_filler {
+      type: "uniform"
+      min: -0.08
+      max: 0.08
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+    axis: 1
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_Normalize_scene_a2s2"
+  type: "Softmax"
+  bottom: "A_S_prediction_for_norm2"
+  top: "A_S_prediction2"
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_Normalize_action_s2a2"
+  type: "Softmax"
+  bottom: "S_A_prediction_for_norm2"
+  top: "S_A_prediction2"
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_Normalize_action_a2a2"
+  type: "Softmax"
+  bottom: "A_A_prediction_for_norm2"
+  top: "A_A_prediction2"
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_graphical_edge_bg2"
+  type: "Python"
+  bottom: "concat_all1"
+  bottom: "A_S_prediction2"
+  bottom: "S_A_prediction2"
+  bottom: "label_action"
+  top: "gate_input12"
+  python_param {
+    module: "graphical_edge_background"
+    layer: "graphical_edge"
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_graphical_edge_action2"
+  type: "Python"
+  bottom: "concat_all1"
+  bottom: "A_A_prediction2"
+  bottom: "label_action"
+  top: "gate_input22"
+  python_param {
+    module: "graphical_edge_action"
+    layer: "graphical_edge"
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_gate1_bg2"
+  type: "InnerProduct"
+  bottom: "gate_input12"
+  top: "gate_output12"
+  param {
+    name: "W_hg_gate1_2"
+    lr_mult: 10
+    decay_mult: 10
+  }
+  param {
+    lr_mult: 20
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 1
+    bias_term: true
+    weight_filler {
+      type: "uniform"
+      min: -0.08
+      max: 0.08
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+    axis: 1
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_gate1_action2"
+  type: "InnerProduct"
+  bottom: "gate_input22"
+  top: "gate_output22"
+  param {
+    name: "W_hg_gate2_2"
+    lr_mult: 10
+    decay_mult: 10
+  }
+  param {
+    lr_mult: 20
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 1
+    bias_term: true
+    weight_filler {
+      type: "uniform"
+      min: -0.08
+      max: 0.08
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+    axis: 1
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_structure_gate1_bg2"
+  type: "Python"
+  bottom: "gate_output12"
+  bottom: "A_S_MessageOut2"
+  bottom: "S_A_MessageOut2"
+  bottom: "label_action"
+  top: "gated_A_S_MessageOut2"
+  top: "gated_S_A_MessageOut2"
+  python_param {
+    module: "structured_gate_background"
+    layer: "structured_gate"
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_structure_gate1_action2"
+  type: "Python"
+  bottom: "gate_output22"
+  bottom: "A_A_MessageOut2"
+  bottom: "label_action"
+  bottom: "A_A_prediction2"
+  top: "gated_A_A_MessageOut2"
+  python_param {
+    module: "structured_gate_action"
+    layer: "structured_gate"
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_ArrangeMessageOut2"
+  type: "Python"
+  bottom: "gated_A_A_MessageOut2"
+  bottom: "gated_A_S_MessageOut2"
+  bottom: "S_A_MessageOut2"
+  bottom: "label_action"
+  bottom: "concat_all1"
+  top: "scene_2"
+  top: "action_2"
+  python_param {
+    module: "simplified_message_out"
+    layer: "simplified_message_out"
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_Scene2"
+  type: "InnerProduct"
+  bottom: "scene_2"
+  top: "scene_out2"
+  param {
+    name: "W_ho_1_2"
+    lr_mult: 10
+    decay_mult: 10
+  }
+  param {
+    lr_mult: 20
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 5
+    bias_term: true
+    weight_filler {
+      type: "uniform"
+      min: -0.08
+      max: 0.08
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+    axis: 1
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_Action2"
+  type: "InnerProduct"
+  bottom: "action_2"
+  top: "action_out2"
+  param {
+    name: "W_ho_2_2"
+    lr_mult: 10
+    decay_mult: 10
+  }
+  param {
+    lr_mult: 20
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 7
+    bias_term: true
+    weight_filler {
+      type: "uniform"
+      min: -0.08
+      max: 0.08
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+    axis: 1
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_message_reshape2"
+  type: "Python"
+  bottom: "action_out2"
+  top: "action_out_reshaped2"
+  python_param {
+    module: "Message_Reshape1"
+    layer: "Message_Reshape1"
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_Normalize_Scene_2"
+  type: "Softmax"
+  bottom: "scene_out2"
+  top: "scene_normalized_2"
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_Normalize_Action_2"
+  type: "Softmax"
+  bottom: "action_out2"
+  top: "action_normalized_2"
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_Data_arrange_layer_filter2"
+  type: "Python"
+  bottom: "action_normalized_2"
+  bottom: "label_action"
+  top: "fc9_filtered2"
+  python_param {
+    module: "Data_arrange"
+    layer: "Data_Arrange_Layer"
+  }
+}
+layer {
+  name: "Belief_Propagation_Recurrent_Neural_Network_concatenation_s_a2"
+  type: "Concat"
+  bottom: "scene_normalized_2"
+  bottom: "fc9_filtered2"
+  top: "concat_all2"
+  concat_param {
+    concat_dim: 1
+  }
+}
+############blank#############
+
+layer {
+  name: "Data_arrange_layer_filter_mean_1"
+  type: "Python"
+  bottom: "action_out_reshaped1"
+  bottom: "label_action"
+  top: "action_pred_clean_1"
+  top: "label_action_clean_1"
+  python_param{
+    module: "Data_Arrange_Loss_Action"
+    layer: "Data_Arrange_Layer"
+  }
+}
+layer {
+  name: "Data_arrange_layer_accu_1"
+  type: "Python"
+  bottom: "action_pred_clean_1"
+  bottom: "label_action"
+  top: "action_pred_final_1"
+  top: "label_action_accu_1"
+  python_param{
+    module: "Data_Arrange_Accuracy_Action"
+    layer: "Data_Arrange_Layer"
+  }
+}
+layer {
+  name: "scene_accuracy_arrange_1"
+  type: "Python"
+  bottom: "scene_out1"
+  top: "scene_pred_final_1"
+  python_param{
+    module: "Data_Arrange_Accuracy_Scene"
+    layer: "Data_Arrange_Layer"
+  }
+}
+layer {
+  name: "scene_loss_arrange_1"
+  type: "Python"
+  bottom: "scene_out1"
+  bottom: "label_frame"
+  top: "scene_pred_all_1"
+  top: "scene_label_all_1"
+  python_param{
+    module: "Data_Arrange_Loss_Scene"
+    layer: "Data_Arrange_Layer"
+  }
+}
+layer {
+  name: "Data_arrange_layer_filter_mean_2"
+  type: "Python"
+  bottom: "action_out_reshaped2"
+  bottom: "label_action"
+  top: "action_pred_clean_2"
+  top: "label_action_clean_2"
+  python_param{
+    module: "Data_Arrange_Loss_Action"
+    layer: "Data_Arrange_Layer"
+  }
+}
+layer {
+  name: "Data_arrange_layer_accu_2"
+  type: "Python"
+  bottom: "action_pred_clean_2"
+  bottom: "label_action"
+  top: "action_pred_final_2"
+  top: "label_action_accu_2"
+  python_param{
+    module: "Data_Arrange_Accuracy_Action"
+    layer: "Data_Arrange_Layer"
+  }
+}
+layer {
+  name: "scene_accuracy_arrange_2"
+  type: "Python"
+  bottom: "scene_out2"
+  top: "scene_pred_final_2"
+  python_param{
+    module: "Data_Arrange_Accuracy_Scene"
+    layer: "Data_Arrange_Layer"
+  }
+}
+layer {
+  name: "scene_loss_arrange_2"
+  type: "Python"
+  bottom: "scene_out2"
+  bottom: "label_frame"
+  top: "scene_pred_all_2"
+  top: "scene_label_all_2"
+  python_param{
+    module: "Data_Arrange_Loss_Scene"
+    layer: "Data_Arrange_Layer"
+  }
+}
+layer {
+  name: "silence_layer"
+  type: "Python"
+  bottom: "scene_out1"
+  bottom: "scene_out2"
+  bottom: "action_out_reshaped1"
+  bottom: "label_frame"
+  bottom: "concat_all2"
+  bottom: "scene_pred_final_1"
+  bottom: "scene_pred_final_2"
+  bottom: "action_pred_final_1"
+  bottom: "action_pred_final_2"
+  bottom: "gated_S_A_MessageOut1"
+  bottom: "gated_A_S_MessageOut1"
+  bottom: "gated_S_A_MessageOut2"
+  bottom: "gated_A_S_MessageOut2"
+  bottom: "label_action_accu_1"
+  bottom: "label_action_accu_2"
+  bottom: "A_A_MessageOut1"
+  bottom: "A_A_MessageOut2"
+  bottom: "gated_A_A_MessageOut1"
+  bottom: "gated_A_A_MessageOut2"
+  bottom: "fc8_CAD_frame"
+  bottom: "action_out_reshaped2"
+  bottom: "sum_frame"
+  python_param{
+    module: "Silence"
+    layer: "Silence_Layer"
+  }
+}
+layer {
+  name: "loss_scene_1"
+  #type: "HingeLoss"
+  type: "SoftmaxWithLoss"
+  bottom: "scene_pred_all_1"
+  bottom: "scene_label_all_1"
+  top: "loss_scene_1"
+}
+layer {
+  name: "accuracy_scene_1"
+  type: "Accuracy"
+  bottom: "scene_pred_final_1"
+  bottom: "label_frame"
+  top: "accuracy_scene_1"
+  include {
+    phase: TEST
+  }
+}
+layer {
+  name: "loss_action_1"
+  #type: "HingeLoss"
+  type: "SoftmaxWithLoss"
+  bottom: "action_pred_clean_1"
+  bottom: "label_action_clean_1"
+  top: "loss_action_1"
+}
+layer {
+  name: "accuracy_action_1"
+  type: "Accuracy"
+  bottom: "action_pred_final_1"
+  bottom: "label_action_accu_1"
+  top: "accuracy_action_1"
+  include {
+    phase: TEST
+  }
+}
+layer {
+  name: "loss_scene_2"
+  #type: "HingeLoss"
+  type: "SoftmaxWithLoss"
+  bottom: "scene_pred_all_2"
+  bottom: "scene_label_all_2"
+  top: "loss_scene_2"
+}
+layer {
+  name: "accuracy_scene_2"
+  type: "Accuracy"
+  bottom: "scene_pred_final_2"
+  bottom: "label_frame"
+  top: "accuracy_scene_2"
+  include {
+    phase: TEST
+  }
+}
+layer {
+  name: "loss_action_2"
+  #type: "HingeLoss"
+  type: "SoftmaxWithLoss"
+  bottom: "action_pred_clean_2"
+  bottom: "label_action_clean_2"
+  top: "loss_action_2"
+}
+layer {
+  name: "accuracy_action_2"
+  type: "Accuracy"
+  bottom: "action_pred_final_2"
+  bottom: "label_action_accu_2"
+  top: "accuracy_action_2"
+  include {
+    phase: TEST
+  }
+}

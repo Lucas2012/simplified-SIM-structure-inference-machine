@@ -10,7 +10,6 @@ class Data_Arrange_Layer(caffe.Layer):
 
     def setup(self, bottom, top):
         self.nScene = 5
-        #self.nAction = 40
         self.nAction = 7
         self.nPeople = 14
         self.K_ = 0;
@@ -36,6 +35,8 @@ class Data_Arrange_Layer(caffe.Layer):
         
 
     def forward(self, bottom, top):
+        #print self.T_
+        #print numpy.argmax(bottom[0].data[0]),' ', bottom[1].data[0]
         if self.ifaverage:
             bottom_data = bottom[0].data[:self.bottom_batchsize].copy()
             for i in range(1,self.T_):

@@ -1,0 +1,17 @@
+#net: "prototxts/new_exp/iter2_gated_graph.prototxt"
+net: "prototxts/share_weights/iter3_gated_graph.prototxt"
+test_iter: 1260
+test_interval: 100
+base_lr: 0.00000005
+#solver_type: ADAGRAD
+lr_policy: "step"
+#clip_gradients: 30
+gamma: 0.1
+stepsize: 2000
+display: 20
+max_iter: 5000
+momentum: 0.90
+weight_decay: 0.0005
+snapshot: 1000
+snapshot_prefix: "new_exp/snapshots_iter3_gated/iter3_gated_snapshots_s1"
+solver_mode: GPU
