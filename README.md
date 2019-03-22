@@ -1,4 +1,3 @@
-# simplified-bprnn
-simplified version of bprnn
+# Structure Inference Machines: Recurrent Neural Networks for Analyzing Relations 
 
-The codes and experiment prototxts are now pretty much uncleaned.
+This is the official implementation for the paper [Structure Inference Machines: Recurrent Neural Networks for Analyzing Relations](https://arxiv.org/abs/1511.04196).
